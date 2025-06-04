@@ -1,0 +1,36 @@
+.editor {
+  border: 1px solid #aaa;
+  padding: 4px;
+  border-radius: 6px;
+  min-height: 200px;
+  font-family: Arial, sans-serif;
+}
+
+.editor p {
+  margin: 4px 0;
+}
+
+#menu {
+  margin-bottom: 10px;
+}
+
+#menu button.active {
+  background: #007bff;
+  color: white;
+  border-color: #007bff;
+  border: 2px solid #333;
+}
+
+#menu button {
+  padding: 6px 10px;
+  margin-right: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  background: white;
+  border-radius: 4px;
+}
+
+.toolbar button {
+  margin-right: 4px;
+}
