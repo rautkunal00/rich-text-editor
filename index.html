@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rich Text Editor</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+  <div class="toolbar">
+    <button id="bold-btn">Bold</button>
+    <button id="italic-btn">Italic</button>
+    <button id="underline-btn">Underline</button>
+    <button id="highlight-btn">Highlight</button>
+    <button id="bullet-list-btn">Bullet List</button>
+    <button id="ordered-list-btn">Ordered List</button>
+    <button id="align-left-btn">Left</button>
+    <button id="align-center-btn">Center</button>
+    <button id="align-right-btn">Right</button>
+    <button id="align-justify-btn">Justify</button>
+    <button id="insert-table-btn">Insert Table</button>
+    <button id="add-row-btn">Add Row</button>
+    <button id="add-col-btn">Add Col</button>
+    <button id="delete-row-btn">Delete Row</button>
+    <button id="delete-col-btn">Delete Col</button>
+    <button id="delete-table-btn">Delete Table</button>
+    <button id="image-upload-btn">Add Image</button>
+  </div>
+  <div id="editor" class="tiptap"></div>
+  <script type="module">
+    import { initTiptapEditor } from './src/index.ts';
+    initTiptapEditor('#editor');
+  </script>
+</body>
+
+</html>
