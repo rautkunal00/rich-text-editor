@@ -1,15 +1,12 @@
 import { Editor } from '@tiptap/core';
 import { getExtensions } from './extensions';
 
-export const createEditor = (selector: string): Editor => {
-    const element = document.querySelector(selector);
-    if (!element) throw new Error(`Element ${selector} not found`);
+export const createEditor = (config: any): Editor => {
 
-    const editor = new Editor({
-        element,
+    return new Editor({
+        element: document.querySelector(config.selector) as HTMLElement,
         extensions: getExtensions(),
-        content: '<p>Hello, modular world!</p>',
+        editable: config.editable,
+        content: '',
     });
-
-    return editor;
 }
