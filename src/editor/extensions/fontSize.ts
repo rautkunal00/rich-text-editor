@@ -1,6 +1,6 @@
 import { CommandProps, Mark, RawCommands } from '@tiptap/core'
 
-export const FontSize = Mark.create({
+const FontSize = Mark.create({
   name: 'fontSize',
 
   addAttributes() {
@@ -42,3 +42,5 @@ export const FontSize = Mark.create({
     } as Partial<RawCommands> 
   },
 })
+
+export default FontSize

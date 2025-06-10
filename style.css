@@ -34,3 +34,82 @@
 .toolbar button {
   margin-right: 4px;
 }
+
+.search-highlight {
+  background-color: yellow;
+}
+
+.search-dialog {
+  position: fixed;
+  top: 60px;
+  right: 20px;
+  width: 320px;
+  background: #1e1e1e;
+  color: white;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  padding: 12px 16px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  z-index: 1000;
+  display: none;
+  width: fit-content;
+}
+
+.search-dialog .row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.search-dialog label {
+  width: 70px;
+  font-size: 14px;
+  user-select: none;
+}
+
+.search-dialog input[type="text"] {
+  flex: 1;
+  padding: 6px 8px;
+  font-size: 14px;
+  border: none;
+  border-radius: 2px;
+  outline: none;
+}
+
+.search-dialog button {
+  margin-left: 8px;
+  padding: 6px 10px;
+  font-size: 14px;
+  background-color: #0e639c;
+  border: none;
+  border-radius: 2px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.search-dialog button:hover {
+  background-color: #1177d1;
+}
+
+.search-dialog .actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+#close-search-dialog {
+  background: transparent;
+  border: none;
+  color: #ccc;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 6px;
+  margin-left: 10px;
+  transition: color 0.2s ease;
+}
+
+#close-search-dialog:hover {
+  color: white;
+}

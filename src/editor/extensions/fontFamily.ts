@@ -5,7 +5,7 @@ import {
   RawCommands,
 } from '@tiptap/core'
 
-export const FontFamily = Mark.create({
+const FontFamily = Mark.create({
   name: 'fontFamily',
 
   addAttributes() {
@@ -54,3 +54,5 @@ export const FontFamily = Mark.create({
     } as Partial<RawCommands>
   },
 })
+
+export default FontFamily
