@@ -83,7 +83,14 @@
 
   <script type="module">
     import { initTiptapEditor } from './src/index.ts';
-    initTiptapEditor('#editor');
+    initTiptapEditor({
+      selector: '#editor',
+      editorConfig: {
+        disabled: true,
+        hideMenu: false,
+        hideToolbar: false,
+      }
+    });
   </script>
 </body>
 
