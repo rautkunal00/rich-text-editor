@@ -1,3 +1,4 @@
+import { createColorPicker } from "./extensions/colorPicker";
 
 type ToolbarItem =
     | [string, string] // [id, label]
@@ -91,10 +92,34 @@ export function createToolbar(editor: any): HTMLElement {
         } else if (item.type === 'palette') {
             switch (item.id) {
                 case 'text-color':
-
+                    const textColorContainer = document.createElement('div');
+                    textColorContainer.id = 'text-color-picker-container';
+                    toolbar.appendChild(textColorContainer);
+                    const clearTextColorBtn = document.createElement('button');
+                    clearTextColorBtn.id = 'clear-text-color-btn';
+                    clearTextColorBtn.textContent = 'Clear Text';
+                    toolbar.appendChild(clearTextColorBtn);
+                    createColorPicker(textColorContainer, (color) => {
+                        editor?.chain().focus().setColor(color).run();
+                    });
+                    clearTextColorBtn?.addEventListener('click', () => {
+                        editor?.chain().focus().unsetColor().run();
+                    });
                     break;
                 case 'highlight-color':
-
+                    const highlightContainer = document.createElement('div');
+                    highlightContainer.id = 'highlight-picker-container';
+                    toolbar.appendChild(highlightContainer);
+                    const clearHighlightBtn = document.createElement('button');
+                    clearHighlightBtn.id = 'clear-highlight-btn';
+                    clearHighlightBtn.textContent = 'Clear Highlight';
+                    toolbar.appendChild(clearHighlightBtn);
+                    createColorPicker(highlightContainer, (color) => {
+                        editor?.chain().focus().setHighlight(color).run();
+                    });
+                    clearHighlightBtn?.addEventListener('click', () => {
+                        editor?.chain().focus().unsetHighlight().run();
+                    });
                     break;
             }
         }
