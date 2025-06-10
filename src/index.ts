@@ -1,5 +1,6 @@
 import { createEditor } from './editor/createEditor';
 import { initMenu } from './editor/menu/initMenu';
+import { createToolbar } from './editor/toolbar';
 
 
 export interface TiptapEditorOptions {
@@ -18,6 +19,8 @@ export interface EditorAPI {
 export const initTiptapEditor = (options: TiptapEditorOptions): EditorAPI => {
     const { selector, editorConfig = {} } = options
     const editor = createEditor(options);
+    const toolbar = createToolbar(editor);
+    document.body.prepend(toolbar);
     initMenu(editor);
 
     return {

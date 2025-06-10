@@ -15,10 +15,15 @@ import { Capitalization } from './extensions/capitalization';
 import CharacterCount from '@tiptap/extension-character-count';
 import TaskList from '@tiptap/extension-task-list'
 import TaskItem from '@tiptap/extension-task-item'
+import Color from '@tiptap/extension-color';
+import TextStyle from '@tiptap/extension-text-style';
+
 export const getExtensions = () => [
     StarterKit,
+    TextStyle,
+    Color,
     Underline,
-    Highlight,
+    Highlight.configure({ multicolor: true }),
     Link,
     Image,
     Table.configure({ resizable: true }),
@@ -30,7 +35,7 @@ export const getExtensions = () => [
     FontFamily,
     TextColor,
     Capitalization,
-    CharacterCount.configure({limit: 10000}),
+    CharacterCount.configure({ limit: 10000 }),
     TaskList,
-    TaskItem.configure({nested: true,})
+    TaskItem.configure({ nested: true, })
 ];
