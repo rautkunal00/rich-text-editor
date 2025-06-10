@@ -2,7 +2,7 @@ import { Mark, mergeAttributes, CommandProps, RawCommands } from '@tiptap/core'
 
 export type CapitalizationType = 'uppercase' | 'lowercase' | 'capitalize'
 
-export const Capitalization = Mark.create({
+const Capitalization = Mark.create({
   name: 'capitalization',
 
   addAttributes() {
@@ -49,3 +49,5 @@ export const Capitalization = Mark.create({
     } as Partial<RawCommands>
   },
 })
+
+export default Capitalization

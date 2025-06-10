@@ -27,7 +27,7 @@
     <button id="delete-col-btn">Delete Col</button>
     <button id="delete-table-btn">Delete Table</button>
     <button id="image-upload-btn">Add Image</button>
-     <button id="undo-btn">Undo</button>
+    <button id="undo-btn">Undo</button>
     <button id="redo-btn">Redo</button>
     <button id="clear-formatting-btn">Clear Formatting</button>
     <select id="font-size-select">
@@ -56,9 +56,31 @@
     <button id="capitalize-capitalize-btn">Capitalize</button>
     <button id="capitalize-clear-btn">Clear Capitalization</button>
     <button id="checklist-btn">Checklist</button>
+    <button id="format-copy-btn">Copy Format</button>
+    <button id="format-apply-btn">Apply Format</button>
+    <button id="toggle-spellcheck-btn">Toggle Spellcheck</button>
+    <button id="open-search-dialog-btn">Search & Replace</button>
   </div>
-  <div id="editor" class="tiptap"></div>
+  <div id="editor" class="tiptap" spellcheck="true"></div>
     <div id="word-count">Words: 0</div>
+
+  <div class="search-dialog" id="search-dialog">
+    <div class="row">
+      <label for="search-input">Search:</label>
+      <input type="text" id="search-input" placeholder="Search..." />
+    </div>
+    <div class="row">
+      <label for="replace-input">Replace:</label>
+      <input type="text" id="replace-input" placeholder="Replace with..." />
+      <button id="replace-btn">Replace</button>
+      <button id="replace-all-btn">Replace All</button>
+    </div>
+    <div class="actions">
+      <button id="search-btn">Search</button>
+      <button id="close-search-dialog" title="Close Search Panel">×</button>
+    </div>
+  </div>
+
   <script type="module">
     import { initTiptapEditor } from './src/index.ts';
     initTiptapEditor({
