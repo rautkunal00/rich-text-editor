@@ -1,20 +1,37 @@
 export const setupSpellcheckToggle = () => {
-  const toggleBtn = document.getElementById('toggle-spellcheck-btn')
-  const editorEl = document.querySelector('.tiptap [contenteditable="true"]') as HTMLElement
+  const toggleBtn = document.getElementById('spellCheck-btn'); // Use your toolbar ID
 
-  if (!toggleBtn || !editorEl) return
+  const getEditorEl = () =>
+    document.querySelector('.tiptap [contenteditable="true"]') as HTMLElement;
+
+  if (!toggleBtn) return;
+
+  let spellcheckEnabled = false;
 
   const updateButtonText = () => {
-    const isOn = editorEl.getAttribute('spellcheck') === 'true'
-    toggleBtn.textContent = isOn ? 'Spellcheck: ON' : 'Spellcheck: OFF'
-  }
+    toggleBtn.textContent = spellcheckEnabled
+      ? 'Spellcheck: ON'
+      : 'Spellcheck: OFF';
+  };
 
-  updateButtonText()
+  const applySpellcheck = () => {
+    const editorEl = getEditorEl();
+    if (!editorEl) return;
+
+    editorEl.spellcheck = spellcheckEnabled;
+
+    editorEl.blur();
+    setTimeout(() => {
+      editorEl.focus();
+    }, 0);
+
+    updateButtonText();
+  };
+
+  applySpellcheck();
 
   toggleBtn.addEventListener('click', () => {
-    const current = editorEl.getAttribute('spellcheck') === 'true'
-    editorEl.setAttribute('spellcheck', (!current).toString())
-    updateButtonText()
-    console.log(`Spellcheck is now ${!current ? 'enabled' : 'disabled'}`)
-  })
-}
+    spellcheckEnabled = !spellcheckEnabled;
+    applySpellcheck();
+  });
+};

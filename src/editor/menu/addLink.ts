@@ -10,11 +10,11 @@ export const setupAddLink = (editor: Editor) => {
   const btnCancel = document.getElementById('link-cancel') as HTMLButtonElement;
 
   function getAnchorIds(): string[] {
-    const ids: string[] = [];
+    const ids = new Set<string>();
     document.querySelectorAll('#editor [id]').forEach(el => {
-      if (el.id) ids.push(el.id);
+      if (el.id) ids.add(el.id);
     });
-    return ids;
+    return Array.from(ids);
   }
 
   function showDialog() {

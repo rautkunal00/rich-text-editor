@@ -66,6 +66,10 @@ export function createToolbar(editor: any): HTMLElement {
         { type: 'button', id: 'delete-row', label: 'Delete Row', icon: 'list-minus' },
         { type: 'button', id: 'delete-col', label: 'Delete Col', icon: 'columns-3-cog' },
         { type: 'button', id: 'delete-table', label: 'Delete Table', icon: 'grid-2x2-x' },
+        { type: 'button', id:'subscript', label: 'Subscript'},
+        { type: 'button', id:'superscript', label: 'Superscript'},
+        { type: 'button', id:'spellCheck', label:'Spellcheck'},
+        { type: 'button', id:'open-search-dialog', label:'Search & Replace'}
     ];
 
     const toolbar = document.createElement('div');
