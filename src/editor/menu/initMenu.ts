@@ -15,6 +15,8 @@ import { setupChecklist } from './checkList';
 import { setupSpellcheckToggle } from './spellCheck';
 import { setupSearchReplace } from './setupSearchReplace';
 import { setupFormatPainter } from './setupFormatPainter';
+import { setupAddAnchorDialog } from './addAnchorId'
+import { setupAddLink } from './addLink';
 
 export const initMenu = (editor: Editor) => {
     setupFormatting(editor)
@@ -33,4 +35,6 @@ export const initMenu = (editor: Editor) => {
     setupSpellcheckToggle()
     setupSearchReplace(editor)
     setupFormatPainter(editor)
+    setupAddAnchorDialog(editor)
+    setupAddLink(editor)
 }

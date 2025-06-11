@@ -113,3 +113,69 @@
 #close-search-dialog:hover {
   color: white;
 }
+
+#custom-link-dialog {
+  display: none;
+  position: fixed;
+  top: 20%;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  background: #fff;
+  padding: 16px;
+  z-index: 1000;
+  min-width: 120px;
+  max-width: 340px;
+  box-sizing: border-box;
+  border: 1px solid #aaa;
+}
+
+#custom-link-dialog h3 {
+  margin-top: 0;
+  margin-bottom: 12px;
+}
+
+#custom-link-dialog form > div {
+  margin-bottom: 10px;
+}
+
+#custom-link-dialog label {
+  display: block;
+  margin-bottom: 3px;
+}
+
+#custom-link-dialog input[type="text"],
+#custom-link-dialog select {
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 3px;
+}
+
+#custom-link-dialog input[type="checkbox"] {
+  margin-right: 6px;
+}
+
+#custom-link-dialog button[type="submit"],
+#custom-link-dialog button[type="button"] {
+  margin-right: 8px;
+  padding: 5px 14px;
+}
+
+#custom-anchor-dialog form > div:first-child {
+  margin-bottom: 16px; 
+}
+
+#custom-anchor-dialog form > div:last-child {
+  display: flex;
+  gap: 10px; 
+}
+
+.mat-hint {
+  font-size: 0.75rem;
+  color: rgba(0, 0, 0, 0.6); 
+  margin-top: 4px;
+  font-family: "Roboto", "Helvetica Neue", sans-serif;
+  line-height: 1.25;
+  user-select: none;
+}
