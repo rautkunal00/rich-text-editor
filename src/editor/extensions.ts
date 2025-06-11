@@ -16,6 +16,7 @@ import CharacterCount from '@tiptap/extension-character-count';
 import TaskList from '@tiptap/extension-task-list';
 import TaskItem from '@tiptap/extension-task-item';
 import HighlightMark from './extensions/searchHighlight';
+import AnchorMark from './extensions/anchorMark';
 
 export const getExtensions = () => [
     StarterKit,
@@ -35,5 +36,6 @@ export const getExtensions = () => [
     CharacterCount.configure({limit: 10000}),
     TaskList,
     TaskItem.configure({nested: true,}),
-    HighlightMark
+    HighlightMark,
+    AnchorMark
 ];
