@@ -178,4 +178,6 @@
   font-family: "Roboto", "Helvetica Neue", sans-serif;
   line-height: 1.25;
   user-select: none;
+  text-align: right;
+  margin-right: 16px;
 }
