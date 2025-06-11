@@ -29,12 +29,17 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
             isColorpaletteOpen = true;
             const colorContainer = document.createElement('div');
             colorContainer.id = 'color-picker-container';
+
             const clearcolorBtn = document.createElement('button');
             clearcolorBtn.id = 'clear-color-btn';
             clearcolorBtn.textContent = 'reset';
+            clearcolorBtn.addEventListener('click', () => {
+                onChange('');
+            });
 
             // Create palette container
             const paletteContainer = document.createElement('div');
+            paletteContainer.id = 'color-palette';
             paletteContainer.style.display = 'block';
             paletteContainer.style.position = 'absolute';
             paletteContainer.style.background = '#fff';
@@ -58,7 +63,7 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
                 swatch.title = hex;
                 swatch.onclick = () => {
                     onChange(hex);
-                    paletteContainer.style.display = 'none';
+                    colorContainer.style.display = 'none';
                 }
                 paletteContainer.appendChild(swatch);
             });
@@ -69,7 +74,7 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
             advancedBtn.style.display = 'block';
             advancedBtn.style.marginTop = '8px';
             paletteContainer.appendChild(advancedBtn);
-            paletteContainer.appendChild(clearcolorBtn);
+
 
             const container = document.createElement('div');
             let iroPickerInitialized = false;
@@ -80,6 +85,7 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
                     });
                     iroPickerInitialized = true;
                 }
+                paletteContainer.style.display = 'none';
             });
 
 
@@ -91,6 +97,7 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
             colorContainer.style.position = 'absolute';
             colorContainer.style.width = '300px';
             colorContainer.appendChild(container);
+            colorContainer.appendChild(clearcolorBtn);
             toolbar.appendChild(colorContainer);
         }
     });
