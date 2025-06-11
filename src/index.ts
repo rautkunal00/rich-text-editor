@@ -4,6 +4,8 @@ import { createToolbar } from './editor/toolbar';
 import { setupAddLink } from './editor/menu/addLink'
 import { setupAddAnchorDialog } from './editor/menu/addAnchorId';
 
+declare var lucide: any;
+
 export interface TiptapEditorOptions {
     selector: string
     editorConfig?: Record<string, any>
@@ -23,9 +25,10 @@ export const initTiptapEditor = (options: TiptapEditorOptions): EditorAPI => {
     const toolbar = createToolbar(editor);
     document.body.prepend(toolbar);
     initMenu(editor);
+    lucide?.createIcons();
 
-    setupAddLink(editor)
-    setupAddAnchorDialog(editor)
+    setupAddLink(editor);
+    setupAddAnchorDialog(editor);
     const editorElement = document.querySelector(selector);
     if (editorElement) {
         editorElement.addEventListener('click', function (e) {
@@ -44,17 +47,15 @@ export const initTiptapEditor = (options: TiptapEditorOptions): EditorAPI => {
                 }
             }
         });
+
         // add drag drop for images
         editorElement.addEventListener('dragover', (event: Event) => {
             event.preventDefault();
         });
-
         editorElement.addEventListener('drop', (event: Event) => {
             event.preventDefault();
             const dragEvent = event as DragEvent;
-
             if (!dragEvent.dataTransfer) return;
-
             const files = Array.from(dragEvent.dataTransfer.files);
             files.forEach((file) => {
                 if (file.type.startsWith('image/')) {
