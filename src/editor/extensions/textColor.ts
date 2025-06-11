@@ -5,7 +5,7 @@ import {
   RawCommands,
 } from '@tiptap/core'
 
-export const TextColor = Mark.create({
+const TextColor = Mark.create({
   name: 'textColor',
 
   addAttributes() {
@@ -53,3 +53,5 @@ export const TextColor = Mark.create({
     } as Partial<RawCommands>
   },
 })
+
+export default TextColor

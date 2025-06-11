@@ -12,6 +12,11 @@ import { setupTextColor } from './textColorSetup';
 import { setupCapitalizationMenu } from './capitalizationMenu';
 import { setupWordCount } from './wordCount';
 import { setupChecklist } from './checkList';
+import { setupSpellcheckToggle } from './spellCheck';
+import { setupSearchReplace } from './setupSearchReplace';
+import { setupFormatPainter } from './setupFormatPainter';
+import { setupAddAnchorDialog } from './addAnchorId'
+import { setupAddLink } from './addLink';
 
 export const initMenu = (editor: Editor) => {
     setupFormatting(editor)
@@ -27,4 +32,9 @@ export const initMenu = (editor: Editor) => {
     setupCapitalizationMenu(editor)
     setupWordCount(editor)
     setupChecklist(editor)
+    setupSpellcheckToggle()
+    setupSearchReplace(editor)
+    setupFormatPainter(editor)
+    setupAddAnchorDialog(editor)
+    setupAddLink(editor)
 }
