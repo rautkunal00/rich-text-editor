@@ -20,6 +20,8 @@ import FontFamily from './extensions/fontFamily';
 import FontSize from './extensions/fontSize';
 import HighlightMark from './extensions/searchHighlight';
 import TextColor from './extensions/textColor';
+import Subscript from '@tiptap/extension-subscript';
+import Superscript from '@tiptap/extension-superscript';
 
 export const getExtensions = () => [
     StarterKit,
@@ -43,5 +45,7 @@ export const getExtensions = () => [
     TaskList,
     TaskItem.configure({ nested: true, }),
     HighlightMark,
-    AnchorMark
+    AnchorMark,
+    Subscript,
+    Superscript
 ];

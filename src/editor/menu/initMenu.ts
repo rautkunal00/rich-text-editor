@@ -19,6 +19,7 @@ import { setupTextColor } from './textColorSetup';
 import { setupUndoRedo } from './undeRedo';
 import { setupWordCount } from './wordCount';
 import { setupHeadingStyle } from './heading';
+import { superscriptSubscript } from './superscriptSubscript';
 
 export const initMenu = (editor: Editor) => {
     setupFormatting(editor);
@@ -41,4 +42,5 @@ export const initMenu = (editor: Editor) => {
     setupAddLink(editor);
     allowBase64Images(editor);
     setupHeadingStyle(editor);
+    superscriptSubscript(editor);
 }
