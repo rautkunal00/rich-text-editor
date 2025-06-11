@@ -15,7 +15,6 @@ import TextStyle from '@tiptap/extension-text-style';
 import Underline from '@tiptap/extension-underline';
 import StarterKit from '@tiptap/starter-kit';
 import AnchorMark from './extensions/anchorMark';
-import Capitalization from './extensions/capitalization';
 import FontFamily from './extensions/fontFamily';
 import FontSize from './extensions/fontSize';
 import HighlightMark from './extensions/searchHighlight';
@@ -40,7 +39,6 @@ export const getExtensions = () => [
     FontSize,
     FontFamily,
     TextColor,
-    Capitalization,
     CharacterCount.configure({ limit: 10000 }),
     TaskList,
     TaskItem.configure({ nested: true, }),

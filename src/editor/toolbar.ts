@@ -1,30 +1,32 @@
 import { highlightInit } from "./menu/highlight";
 import { textColorInit } from "./menu/textColor";
 
-type ToolbarItem = {
+
+export type ToolbarItem = {
     type: 'button' | 'select' | 'palette';
     id: string;
     label: string;
+    icon?: string;
     options?: string[];
 };
 
 export function createToolbar(editor: any): HTMLElement {
     const toolbarConfig: ToolbarItem[] = [
-        { type: 'button', id: 'undo', label: 'Undo' },
-        { type: 'button', id: 'redo', label: 'Redo' },
-        { type: 'button', id: 'bold', label: 'Bold' },
-        { type: 'button', id: 'italic', label: 'Italic' },
-        { type: 'button', id: 'underline', label: 'Underline' },
-        { type: 'palette', id: 'text-color', label: 'Text Color' },
-        { type: 'palette', id: 'highlight-color', label: 'Highlight Color' },
-        { type: 'button', id: 'bullet-list', label: 'Bullet List' },
-        { type: 'button', id: 'ordered-list', label: 'Ordered List' },
-        { type: 'button', id: 'align-left', label: 'Left' },
-        { type: 'button', id: 'align-center', label: 'Center' },
-        { type: 'button', id: 'align-right', label: 'Right' },
-        { type: 'button', id: 'align-justify', label: 'Justify' },
-        { type: 'button', id: 'clear-formatting', label: 'Clear Formatting' },
-        { type: 'button', id: 'image-upload', label: 'Add Image' },
+        { type: 'button', id: 'undo', label: 'Undo', icon: 'undo-2' },
+        { type: 'button', id: 'redo', label: 'Redo', icon: 'redo-2' },
+        { type: 'button', id: 'bold', label: 'Bold', icon: 'bold' },
+        { type: 'button', id: 'italic', label: 'Italic', icon: 'italic' },
+        { type: 'button', id: 'underline', label: 'Underline', icon: 'underline' },
+        { type: 'palette', id: 'text-color', label: 'Text Color', icon: 'baseline' },
+        { type: 'palette', id: 'highlight-color', label: 'Highlight Color', icon: 'highlighter' },
+        { type: 'button', id: 'bullet-list', label: 'Bullet List', icon: 'list' },
+        { type: 'button', id: 'ordered-list', label: 'Ordered List', icon: 'list-ordered' },
+        { type: 'button', id: 'align-left', label: 'Left', icon: 'align-left' },
+        { type: 'button', id: 'align-center', label: 'Center', icon: 'align-center' },
+        { type: 'button', id: 'align-right', label: 'Right', icon: 'align-right' },
+        { type: 'button', id: 'align-justify', label: 'Justify', icon: 'align-justify' },
+        { type: 'button', id: 'clear-formatting', label: 'Clear Formatting', icon: 'remove-formatting' },
+        { type: 'button', id: 'image-upload', label: 'Add Image', icon: 'image' },
         {
             type: 'select',
             id: 'heading-select',
@@ -49,37 +51,43 @@ export function createToolbar(editor: any): HTMLElement {
                 "'Comic Sans MS', cursive",
             ],
         },
-        { type: 'button', id: 'capitalize-uppercase', label: 'Uppercase' },
-        { type: 'button', id: 'capitalize-lowercase', label: 'Lowercase' },
-        { type: 'button', id: 'capitalize-capitalize', label: 'Capitalize' },
-        { type: 'button', id: 'capitalize-clear', label: 'Clear Capitalization' },
-        { type: 'button', id: 'add-anchor', label: 'Add Anchor' },
-        { type: 'button', id: 'add-link', label: 'Add Link' },
-        { type: 'button', id: 'checklist', label: 'Checklist' },
-        { type: 'button', id: 'insert-table', label: 'Insert Table' },
-        { type: 'button', id: 'add-row', label: 'Add Row' },
-        { type: 'button', id: 'add-col', label: 'Add Col' },
-        { type: 'button', id: 'delete-row', label: 'Delete Row' },
-        { type: 'button', id: 'delete-col', label: 'Delete Col' },
-        { type: 'button', id: 'delete-table', label: 'Delete Table' },
-        { type: 'button', id:'subscript', label: 'Subscript'},
-        { type: 'button', id:'superscript', label: 'Superscript'},
-        { type: 'button', id:'spellCheck', label:'Spellcheck'},
-        { type: 'button', id:'open-search-dialog', label:'Search & Replace'}
+        {
+            type: 'select',
+            id: 'capitalize-select',
+            label: 'Capitalization',
+            options: ['Uppercase', 'Lowercase', 'Capitalize']
+        },
+        { type: 'button', id: 'add-anchor', label: 'Add Anchor', icon: 'anchor' },
+        { type: 'button', id: 'add-link', label: 'Add Link', icon: 'link' },
+        { type: 'button', id: 'checklist', label: 'Checklist', icon: 'check-square' },
+        { type: 'button', id: 'insert-table', label: 'Insert Table', icon: 'table' },
+        { type: 'button', id: 'add-row', label: 'Add Row', icon: 'between-horizontal-start' },
+        { type: 'button', id: 'add-col', label: 'Add Col', icon: 'between-vertical-start' },
+        { type: 'button', id: 'delete-row', label: 'Delete Row', icon: 'list-minus' },
+        { type: 'button', id: 'delete-col', label: 'Delete Col', icon: 'columns-3-cog' },
+        { type: 'button', id: 'delete-table', label: 'Delete Table', icon: 'grid-2x2-x' },
+        { type: 'button', id: 'subscript', label: 'Subscript', icon: 'subscript' },
+        { type: 'button', id: 'superscript', label: 'Superscript', icon: 'superscript' },
+        { type: 'button', id: 'spellCheck', label: 'Spellcheck', icon: 'spell-check-2' },
+        { type: 'button', id: 'open-search-dialog', label: 'Search & Replace', icon: 'search' }
     ];
 
     const toolbar = document.createElement('div');
     toolbar.className = 'toolbar';
 
     toolbarConfig.forEach((item) => {
-        const { type, id, label, options } = item;
+        const { type, id, label, icon, options } = item;
 
         if (type === 'button') {
             const button = document.createElement('button');
             button.id = `${id}-btn`;
-            button.textContent = label;
+            button.title = label;
+            if (icon) {
+                button.innerHTML = `<i data-lucide="${icon}"></i>`;
+            } else {
+                button.textContent = label;
+            }
             toolbar.appendChild(button);
-
         } else if (type === 'select' && options) {
             const select = document.createElement('select');
             select.id = id;
@@ -97,11 +105,15 @@ export function createToolbar(editor: any): HTMLElement {
             });
 
             toolbar.appendChild(select);
-
         } else if (type === 'palette') {
             const button = document.createElement('button');
-            button.textContent = label;
             button.id = `${id}-btn`;
+            button.title = label;
+            if (icon) {
+                button.innerHTML = `<i data-lucide="${icon}"></i>`;
+            } else {
+                button.textContent = label;
+            }
             toolbar.appendChild(button);
 
             switch (id) {

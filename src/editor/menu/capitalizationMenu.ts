@@ -1,19 +1,42 @@
 import { Editor } from '@tiptap/core'
 
 export const setupCapitalizationMenu = (editor: Editor) => {
-  document.getElementById('capitalize-uppercase-btn')?.addEventListener('click', () => {
-    editor.chain().focus().setCapitalization('uppercase').run()
-  })
+  const capitalizeSelect = document.getElementById('capitalize-select') as HTMLSelectElement;
 
-  document.getElementById('capitalize-lowercase-btn')?.addEventListener('click', () => {
-    editor.chain().focus().setCapitalization('lowercase').run()
-  })
+  capitalizeSelect?.addEventListener('change', () => {
+    const value = capitalizeSelect.value;
+    const { state, commands } = editor;
 
-  document.getElementById('capitalize-capitalize-btn')?.addEventListener('click', () => {
-    editor.chain().focus().setCapitalization('capitalize').run()
-  })
+    const { from, to } = state.selection;
+    const selectedText = state.doc.textBetween(from, to);
 
-  document.getElementById('capitalize-clear-btn')?.addEventListener('click', () => {
-    editor.chain().focus().unsetCapitalization().run()
-  })
+    let transformed = selectedText;
+
+    switch (value) {
+      case 'Uppercase':
+        transformed = selectedText.toUpperCase();
+        break;
+      case 'Lowercase':
+        transformed = selectedText.toLowerCase();
+        break;
+      case 'Capitalize':
+        transformed = selectedText.replace(/\b\w/g, c => c.toUpperCase());
+        break;
+      default:
+        // do nothing, leave text as is
+        break;
+    }
+
+    if (from !== to && transformed !== selectedText) {
+      editor.chain().focus().insertContentAt({ from, to }, transformed).run();
+    }
+
+    // reset to placeholder
+    capitalizeSelect.value = '';
+  });
+
 }
+
+
+
+

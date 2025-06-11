@@ -9,7 +9,7 @@
 </head>
 
 <body>
-  <div id="editor" class="tiptap"></div>
+  <div id="editor" class="tiptap-editor editor" spellcheck="true"></div>
   <div id="word-count" class="mat-hint">Words: 0</div>
 
   <div class="search-dialog" id="search-dialog">
@@ -29,58 +29,61 @@
     </div>
   </div>
 
-<div id="custom-link-dialog">
-  <h3>Insert/Edit Link</h3>
-  <form id="link-form">
-    <div>
-      <label>Text to display:</label>
-      <input type="text" id="link-text"/>
-    </div>
-    <div>
-      <label>URL:</label>
-      <input type="text" id="link-url"/>
-    </div>
-    <div>
-      <label>Anchor:</label>
-      <select id="link-anchor">
-        <option value="">None</option>
-      </select>
-    </div>
-    <div>
-      <label><input type="checkbox" id="link-target" /> Open in new window</label>
-    </div>
-    <div>
-      <button type="submit">OK</button>
-      <button type="button" id="link-cancel">Cancel</button>
-    </div>
-  </form>
-</div>
+  <div id="custom-link-dialog">
+    <h3>Insert/Edit Link</h3>
+    <form id="link-form">
+      <div>
+        <label>Text to display:</label>
+        <input type="text" id="link-text" />
+      </div>
+      <div>
+        <label>URL:</label>
+        <input type="text" id="link-url" />
+      </div>
+      <div>
+        <label>Anchor:</label>
+        <select id="link-anchor">
+          <option value="">None</option>
+        </select>
+      </div>
+      <div>
+        <label><input type="checkbox" id="link-target" /> Open in new window</label>
+      </div>
+      <div>
+        <button type="submit">OK</button>
+        <button type="button" id="link-cancel">Cancel</button>
+      </div>
+    </form>
+  </div>
 
-<div id="custom-anchor-dialog" style="display:none; position: fixed; top: 25%; left: 50%; transform: translate(-50%, 0); background: #fff; padding: 16px; border: 1px solid #aaa; border-radius: 6px; z-index: 1000; min-width: 250px; max-width: 90vw; box-sizing: border-box;">
-  <h3>Add Anchor</h3>
-  <form id="anchor-form">
-    <div>
-      <label for="anchor-id-input">Anchor ID:</label>
-      <input type="text" id="anchor-id-input" required />
-    </div>
-    <div>
-      <button type="submit">Add</button>
-      <button type="button" id="anchor-cancel-btn">Cancel</button>
-    </div>
-  </form>
-</div>
+  <div id="custom-anchor-dialog"
+    style="display:none; position: fixed; top: 25%; left: 50%; transform: translate(-50%, 0); background: #fff; padding: 16px; border: 1px solid #aaa; border-radius: 6px; z-index: 1000; min-width: 250px; max-width: 90vw; box-sizing: border-box;">
+    <h3>Add Anchor</h3>
+    <form id="anchor-form">
+      <div>
+        <label for="anchor-id-input">Anchor ID:</label>
+        <input type="text" id="anchor-id-input" required />
+      </div>
+      <div>
+        <button type="submit">Add</button>
+        <button type="button" id="anchor-cancel-btn">Cancel</button>
+      </div>
+    </form>
+  </div>
 
   <script type="module">
     import { initTiptapEditor } from './src/index.ts';
-    initTiptapEditor({
+
+    const editor = initTiptapEditor({
       selector: '#editor',
       editorConfig: {
-        disabled: true,
+        disabled: false,
         hideMenu: false,
         hideToolbar: false,
       }
     });
   </script>
+  <script src="https://unpkg.com/lucide@latest"></script>
 </body>
 
 </html>
