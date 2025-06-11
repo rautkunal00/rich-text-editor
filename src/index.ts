@@ -1,5 +1,6 @@
 import { createEditor } from './editor/createEditor';
 import { initMenu } from './editor/menu/initMenu';
+import { createToolbar } from './editor/toolbar';
 import { setupAddLink } from './editor/menu/addLink'
 import { setupAddAnchorDialog } from './editor/menu/addAnchorId';
 
@@ -19,13 +20,15 @@ export interface EditorAPI {
 export const initTiptapEditor = (options: TiptapEditorOptions): EditorAPI => {
     const { selector, editorConfig = {} } = options
     const editor = createEditor(options);
+    const toolbar = createToolbar(editor);
+    document.body.prepend(toolbar);
     initMenu(editor);
 
     setupAddLink(editor)
     setupAddAnchorDialog(editor)
     const editorElement = document.querySelector(selector);
     if (editorElement) {
-        editorElement.addEventListener('click', function(e) {
+        editorElement.addEventListener('click', function (e) {
             const target = e.target;
             if (
                 target instanceof HTMLAnchorElement &&
@@ -40,6 +43,29 @@ export const initTiptapEditor = (options: TiptapEditorOptions): EditorAPI => {
                     history.replaceState(null, '', `#${anchorId}`);
                 }
             }
+        });
+        // add drag drop for images
+        editorElement.addEventListener('dragover', (event: Event) => {
+            event.preventDefault();
+        });
+
+        editorElement.addEventListener('drop', (event: Event) => {
+            event.preventDefault();
+            const dragEvent = event as DragEvent;
+
+            if (!dragEvent.dataTransfer) return;
+
+            const files = Array.from(dragEvent.dataTransfer.files);
+            files.forEach((file) => {
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = (readerEvent) => {
+                        const src = readerEvent.target?.result as string;
+                        editor.chain().focus().setImage({ src }).run();
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
         });
     }
 

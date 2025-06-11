@@ -1,20 +1,27 @@
 {
-  "name": "rich-text-editor",
+  "name": "@kunalraut/wolken-rich-text-editor",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "./index.js",
+  "types": "./index.d.ts",
   "scripts": {
     "start": "vite",
     "dev": "vite",
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
+  "keywords": [
+    "editor",
+    "tiptap",
+    "typescript"
+  ],
   "author": "Kunal Raut",
   "license": "MIT",
   "description": "Custom Rich Text Editor based on Tiptap editor",
   "dependencies": {
+    "@jaames/iro": "^5.5.2",
     "@tiptap/core": "^2.12.0",
     "@tiptap/extension-character-count": "^2.14.0",
+    "@tiptap/extension-color": "^2.14.0",
     "@tiptap/extension-highlight": "^2.12.0",
     "@tiptap/extension-image": "^2.12.0",
     "@tiptap/extension-link": "^2.12.0",
@@ -25,6 +32,7 @@
     "@tiptap/extension-task-item": "^2.14.0",
     "@tiptap/extension-task-list": "^2.14.0",
     "@tiptap/extension-text-align": "^2.12.0",
+    "@tiptap/extension-text-style": "^2.14.0",
     "@tiptap/extension-underline": "^2.12.0",
     "@tiptap/starter-kit": "^2.12.0"
   },
