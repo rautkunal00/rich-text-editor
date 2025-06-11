@@ -28,7 +28,7 @@ export const initTiptapEditor = (options: TiptapEditorOptions): EditorAPI => {
     setupAddAnchorDialog(editor)
     const editorElement = document.querySelector(selector);
     if (editorElement) {
-        editorElement.addEventListener('click', function(e) {
+        editorElement.addEventListener('click', function (e) {
             const target = e.target;
             if (
                 target instanceof HTMLAnchorElement &&
@@ -43,6 +43,29 @@ export const initTiptapEditor = (options: TiptapEditorOptions): EditorAPI => {
                     history.replaceState(null, '', `#${anchorId}`);
                 }
             }
+        });
+        // add drag drop for images
+        editorElement.addEventListener('dragover', (event: Event) => {
+            event.preventDefault();
+        });
+
+        editorElement.addEventListener('drop', (event: Event) => {
+            event.preventDefault();
+            const dragEvent = event as DragEvent;
+
+            if (!dragEvent.dataTransfer) return;
+
+            const files = Array.from(dragEvent.dataTransfer.files);
+            files.forEach((file) => {
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = (readerEvent) => {
+                        const src = readerEvent.target?.result as string;
+                        editor.chain().focus().setImage({ src }).run();
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
         });
     }
 

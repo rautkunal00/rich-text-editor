@@ -17,24 +17,26 @@ import { setupSearchReplace } from './setupSearchReplace';
 import { setupFormatPainter } from './setupFormatPainter';
 import { setupAddAnchorDialog } from './addAnchorId'
 import { setupAddLink } from './addLink';
+import { allowBase64Images } from '../extensions/images';
 
 export const initMenu = (editor: Editor) => {
-    setupFormatting(editor)
-    setupLists(editor)
-    setupAlignment(editor)
-    setupTableMenu(editor)
-    setupImageUpload(editor)
-    setupUndoRedo(editor)
-    setupClearFormatting (editor)
-    setupFontSize(editor)
-    setupFontFamily(editor)
-    setupTextColor(editor)
-    setupCapitalizationMenu(editor)
-    setupWordCount(editor)
-    setupChecklist(editor)
-    setupSpellcheckToggle()
-    setupSearchReplace(editor)
-    setupFormatPainter(editor)
-    setupAddAnchorDialog(editor)
-    setupAddLink(editor)
+    setupFormatting(editor);
+    setupLists(editor);
+    setupAlignment(editor);
+    setupTableMenu(editor);
+    setupImageUpload(editor);
+    setupUndoRedo(editor);
+    setupClearFormatting(editor);
+    setupFontSize(editor);
+    setupFontFamily(editor);
+    setupTextColor(editor);
+    setupCapitalizationMenu(editor);
+    setupWordCount(editor);
+    setupChecklist(editor);
+    setupSpellcheckToggle();
+    setupSearchReplace(editor);
+    setupFormatPainter(editor);
+    setupAddAnchorDialog(editor);
+    setupAddLink(editor);
+    allowBase64Images(editor);
 }

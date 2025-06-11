@@ -8,7 +8,7 @@ import TableRow from '@tiptap/extension-table-row';
 import TableHeader from '@tiptap/extension-table-header';
 import TableCell from '@tiptap/extension-table-cell';
 import TextAlign from '@tiptap/extension-text-align';
-import FontSize  from './extensions/fontSize';
+import FontSize from './extensions/fontSize';
 import FontFamily from './extensions/fontFamily';
 import TextColor from './extensions/textColor';
 import Capitalization from './extensions/capitalization';
@@ -27,7 +27,7 @@ export const getExtensions = () => [
     Underline,
     Highlight.configure({ multicolor: true }),
     Link,
-    Image,
+    Image.configure({ inline: false, allowBase64: true, }),
     Table.configure({ resizable: true }),
     TableRow,
     TableHeader,
@@ -39,7 +39,7 @@ export const getExtensions = () => [
     Capitalization,
     CharacterCount.configure({ limit: 10000 }),
     TaskList,
-    TaskItem.configure({nested: true,}),
+    TaskItem.configure({ nested: true, }),
     HighlightMark,
     AnchorMark
 ];
