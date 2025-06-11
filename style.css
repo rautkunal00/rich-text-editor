@@ -196,3 +196,31 @@ button i {
   stroke-width: 2;
   color: #333;
 }
+
+.toolbar select {
+  padding: 6px 12px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #fff;
+  color: #333;
+  cursor: pointer;
+  transition: border 0.3s, box-shadow 0.3s;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg width='14' height='10' viewBox='0 0 14 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l6 6 6-6' stroke='%23333' stroke-width='2' fill='none' fill-rule='evenodd'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 12px;
+  padding-right: 30px;
+}
+
+.toolbar select:hover {
+  border-color: #999;
+}
+
+.toolbar select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
