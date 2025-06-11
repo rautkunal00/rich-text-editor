@@ -64,7 +64,8 @@ export function createToolbar(editor: any): HTMLElement {
         { type: 'button', id: 'delete-table', label: 'Delete Table' },
         { type: 'button', id:'subscript', label: 'Subscript'},
         { type: 'button', id:'superscript', label: 'Superscript'},
-        { type: 'button', id:'spellCheck', label:'Spellcheck'}
+        { type: 'button', id:'spellCheck', label:'Spellcheck'},
+        { type: 'button', id:'open-search-dialog', label:'Search & Replace'}
     ];
 
     const toolbar = document.createElement('div');
