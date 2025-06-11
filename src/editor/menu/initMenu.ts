@@ -1,23 +1,24 @@
 import { Editor } from '@tiptap/core';
-import { setupFormatting } from './formatting';
-import { setupLists } from './lists';
-import { setupAlignment } from './alignment';
-import { setupTableMenu } from './tables';
-import { setupImageUpload } from './images';
-import { setupUndoRedo } from './undeRedo';
-import { setupClearFormatting } from './clearFormatting';
-import { setupFontSize } from './setupFontSize';
-import { setupFontFamily } from './setupFontFamily';
-import { setupTextColor } from './textColorSetup';
-import { setupCapitalizationMenu } from './capitalizationMenu';
-import { setupWordCount } from './wordCount';
-import { setupChecklist } from './checkList';
-import { setupSpellcheckToggle } from './spellCheck';
-import { setupSearchReplace } from './setupSearchReplace';
-import { setupFormatPainter } from './setupFormatPainter';
-import { setupAddAnchorDialog } from './addAnchorId'
-import { setupAddLink } from './addLink';
 import { allowBase64Images } from '../extensions/images';
+import { setupAddAnchorDialog } from './addAnchorId';
+import { setupAddLink } from './addLink';
+import { setupAlignment } from './alignment';
+import { setupCapitalizationMenu } from './capitalizationMenu';
+import { setupChecklist } from './checkList';
+import { setupClearFormatting } from './clearFormatting';
+import { setupFormatting } from './formatting';
+import { setupImageUpload } from './images';
+import { setupLists } from './lists';
+import { setupFontFamily } from './setupFontFamily';
+import { setupFontSize } from './setupFontSize';
+import { setupFormatPainter } from './setupFormatPainter';
+import { setupSearchReplace } from './setupSearchReplace';
+import { setupSpellcheckToggle } from './spellCheck';
+import { setupTableMenu } from './tables';
+import { setupTextColor } from './textColorSetup';
+import { setupUndoRedo } from './undeRedo';
+import { setupWordCount } from './wordCount';
+import { setupHeadingStyle } from './heading';
 
 export const initMenu = (editor: Editor) => {
     setupFormatting(editor);
@@ -39,4 +40,5 @@ export const initMenu = (editor: Editor) => {
     setupAddAnchorDialog(editor);
     setupAddLink(editor);
     allowBase64Images(editor);
+    setupHeadingStyle(editor);
 }
