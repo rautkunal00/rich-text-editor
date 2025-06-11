@@ -53,6 +53,8 @@ export function createToolbar(editor: any): HTMLElement {
         { type: 'button', id: 'capitalize-lowercase', label: 'Lowercase' },
         { type: 'button', id: 'capitalize-capitalize', label: 'Capitalize' },
         { type: 'button', id: 'capitalize-clear', label: 'Clear Capitalization' },
+        { type: 'button', id: 'add-anchor', label: 'Add Anchor' },
+        { type: 'button', id: 'add-link', label: 'Add Link' },
         { type: 'button', id: 'checklist', label: 'Checklist' },
         { type: 'button', id: 'insert-table', label: 'Insert Table' },
         { type: 'button', id: 'add-row', label: 'Add Row' },
