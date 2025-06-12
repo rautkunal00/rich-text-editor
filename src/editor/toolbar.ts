@@ -17,6 +17,7 @@ export function createToolbar(editor: any): HTMLElement {
         { type: 'button', id: 'bold', label: 'Bold', icon: 'bold' },
         { type: 'button', id: 'italic', label: 'Italic', icon: 'italic' },
         { type: 'button', id: 'underline', label: 'Underline', icon: 'underline' },
+        { type: 'button', id: 'strikethrough', label: 'Strikethrough', icon: 'strikethrough' },
         { type: 'palette', id: 'text-color', label: 'Text Color', icon: 'baseline' },
         { type: 'palette', id: 'highlight-color', label: 'Highlight Color', icon: 'highlighter' },
         { type: 'button', id: 'bullet-list', label: 'Bullet List', icon: 'list' },
@@ -31,7 +32,7 @@ export function createToolbar(editor: any): HTMLElement {
             type: 'select',
             id: 'heading-select',
             label: 'Headings',
-            options: ['paragraph', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
+            options: ['Paragraph', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
         },
         {
             type: 'select',
@@ -68,8 +69,9 @@ export function createToolbar(editor: any): HTMLElement {
         { type: 'button', id: 'delete-table', label: 'Delete Table', icon: 'grid-2x2-x' },
         { type: 'button', id: 'subscript', label: 'Subscript', icon: 'subscript' },
         { type: 'button', id: 'superscript', label: 'Superscript', icon: 'superscript' },
-        { type: 'button', id: 'spellCheck', label: 'Spellcheck', icon: 'spell-check-2' },
-        { type: 'button', id: 'open-search-dialog', label: 'Search & Replace', icon: 'search' }
+        // { type: 'button', id: 'spellCheck', label: 'Spellcheck', icon: 'spell-check-2' },
+        { type: 'button', id: 'open-search-dialog', label: 'Search & Replace', icon: 'search' },
+        { type: 'button', id: 'insert-datetime', label: 'Insert Date & Time', icon: 'calendar-days' }
     ];
 
     const toolbar = document.createElement('div');

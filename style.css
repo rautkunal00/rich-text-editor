@@ -41,8 +41,19 @@
   border-radius: 4px;
 }
 
+.toolbar {
+  margin-bottom: 4px;
+}
+
 .toolbar button {
   margin-right: 4px;
+}
+
+.toolbar select {
+  margin-right: 4px;
+  height: 36px;
+  position: relative;
+  top: -4px;
 }
 
 .search-highlight {
@@ -226,3 +237,22 @@ button i {
   box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
 }
 
+.tiptap-editor .tiptap.ProseMirror:focus {
+  outline: none;
+}
+
+
+.visual-chars-space::after {
+  content: '·';
+  color: #ccc;
+}
+
+.visual-chars-tab::after {
+  content: '→';
+  color: #ccc;
+}
+
+.visual-chars-paragraph::after {
+  content: '¶';
+  color: #ccc;
+}
