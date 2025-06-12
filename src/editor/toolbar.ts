@@ -68,7 +68,7 @@ export function createToolbar(editor: any): HTMLElement {
         { type: 'button', id: 'delete-table', label: 'Delete Table', icon: 'grid-2x2-x' },
         { type: 'button', id: 'subscript', label: 'Subscript', icon: 'subscript' },
         { type: 'button', id: 'superscript', label: 'Superscript', icon: 'superscript' },
-        { type: 'button', id: 'spellCheck', label: 'Spellcheck', icon: 'spell-check-2' },
+        // { type: 'button', id: 'spellCheck', label: 'Spellcheck', icon: 'spell-check-2' },
         { type: 'button', id: 'open-search-dialog', label: 'Search & Replace', icon: 'search' }
     ];
 
