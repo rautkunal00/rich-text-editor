@@ -31,7 +31,7 @@ export function createToolbar(editor: any): HTMLElement {
             type: 'select',
             id: 'heading-select',
             label: 'Headings',
-            options: ['paragraph', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
+            options: ['Paragraph', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
         },
         {
             type: 'select',
