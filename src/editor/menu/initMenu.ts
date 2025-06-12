@@ -16,17 +16,18 @@ import { setupSearchReplace } from './setupSearchReplace';
 import { setupSpellcheckToggle } from './spellCheck';
 import { setupTableMenu } from './tables';
 import { setupTextColor } from './textColorSetup';
-import { setupUndoRedo } from './undeRedo';
+import { setupUndoRedo } from './undoRedo';
 import { setupWordCount } from './wordCount';
 import { setupHeadingStyle } from './heading';
 import { superscriptSubscript } from './superscriptSubscript';
+import { addAdditionalButtons } from './addAdditionalButton';
 
-export const initMenu = (editor: Editor) => {
+export const initMenu = (editor: Editor, editorElement: HTMLDivElement) => {
     setupFormatting(editor);
     setupLists(editor);
     setupAlignment(editor);
     setupTableMenu(editor);
-    setupImageUpload(editor);
+    setupImageUpload(editor, editorElement);
     setupUndoRedo(editor);
     setupClearFormatting(editor);
     setupFontSize(editor);
@@ -38,9 +39,11 @@ export const initMenu = (editor: Editor) => {
     setupSpellcheckToggle();
     setupSearchReplace(editor);
     setupFormatPainter(editor);
-    setupAddAnchorDialog(editor);
+    setupAddAnchorDialog(editor, editorElement);
     setupAddLink(editor);
     allowBase64Images(editor);
     setupHeadingStyle(editor);
     superscriptSubscript(editor);
+    addAdditionalButtons(editor);
+    setupAddLink(editor);
 }

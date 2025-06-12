@@ -4,6 +4,9 @@ import Heading from '@tiptap/extension-heading';
 import Highlight from '@tiptap/extension-highlight';
 import Image from '@tiptap/extension-image';
 import Link from '@tiptap/extension-link';
+import Strike from '@tiptap/extension-strike';
+import Subscript from '@tiptap/extension-subscript';
+import Superscript from '@tiptap/extension-superscript';
 import Table from '@tiptap/extension-table';
 import TableCell from '@tiptap/extension-table-cell';
 import TableHeader from '@tiptap/extension-table-header';
@@ -19,8 +22,6 @@ import FontFamily from './extensions/fontFamily';
 import FontSize from './extensions/fontSize';
 import HighlightMark from './extensions/searchHighlight';
 import TextColor from './extensions/textColor';
-import Subscript from '@tiptap/extension-subscript';
-import Superscript from '@tiptap/extension-superscript';
 
 export const getExtensions = () => [
     StarterKit,
@@ -45,5 +46,6 @@ export const getExtensions = () => [
     HighlightMark,
     AnchorMark,
     Subscript,
-    Superscript
+    Superscript,
+    Strike
 ];

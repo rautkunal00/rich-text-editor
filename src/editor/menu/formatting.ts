@@ -10,7 +10,7 @@ export const setupFormatting = (editor: Editor) => {
     document.getElementById('underline-btn')?.addEventListener('click', () => {
         editor.chain().focus().toggleUnderline().run();
     });
-    document.getElementById('highlight-btn')?.addEventListener('click', () => {
-        editor.chain().focus().toggleHighlight().run();
+    document.getElementById('strikethrough-btn')?.addEventListener('click', () => {
+        editor.chain().focus().toggleStrike().run();
     });
 }

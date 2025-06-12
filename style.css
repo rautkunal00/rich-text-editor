@@ -240,3 +240,19 @@ button i {
 .tiptap-editor .tiptap.ProseMirror:focus {
   outline: none;
 }
+
+
+.visual-chars-space::after {
+  content: '·';
+  color: #ccc;
+}
+
+.visual-chars-tab::after {
+  content: '→';
+  color: #ccc;
+}
+
+.visual-chars-paragraph::after {
+  content: '¶';
+  color: #ccc;
+}

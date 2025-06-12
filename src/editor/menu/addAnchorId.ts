@@ -1,6 +1,6 @@
 import { Editor } from '@tiptap/core';
 
-export function setupAddAnchorDialog(editor: Editor) {
+export function setupAddAnchorDialog(editor: Editor, editorElement: HTMLDivElement) {
   const dialog = document.getElementById('custom-anchor-dialog') as HTMLDivElement;
   const form = document.getElementById('anchor-form') as HTMLFormElement;
   const input = document.getElementById('anchor-id-input') as HTMLInputElement;
@@ -52,5 +52,25 @@ export function setupAddAnchorDialog(editor: Editor) {
 
     hideDialog();
   };
+
+  if (editorElement) {
+    editorElement.addEventListener('click', function (e) {
+      const target = e.target;
+      if (
+        target instanceof HTMLAnchorElement &&
+        target.getAttribute('href') &&
+        target.getAttribute('href')!.startsWith('#')
+      ) {
+        e.preventDefault();
+        const anchorId = target.getAttribute('href')!.substring(1);
+        const anchorEl = document.getElementById(anchorId);
+        if (anchorEl) {
+          anchorEl.scrollIntoView({ behavior: 'smooth' });
+          history.replaceState(null, '', `#${anchorId}`);
+        }
+      }
+    });
+
+  }
 }
 

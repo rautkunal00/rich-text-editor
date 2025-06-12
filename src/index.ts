@@ -20,55 +20,24 @@ export interface EditorAPI {
 }
 
 export const initTiptapEditor = (options: TiptapEditorOptions): EditorAPI => {
-    const { selector, editorConfig = {} } = options
-    const editor = createEditor(options);
+    const { selector, editorConfig = {} } = options;
+    // use selector as wrapper component
+    const editorContainer = document.querySelector(selector);
+
+    // Create Editor
+    const uniqueId = 'editor-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
+    const editorId = uniqueId;
+    const editorElement: HTMLDivElement = document.createElement('div');
+    editorElement.id = editorId;
+    editorElement.className = 'tiptap-editor editor';
+    editorContainer?.appendChild(editorElement);
+    const editor = createEditor(editorElement, options);
+
+    // Create Toolbar
     const toolbar = createToolbar(editor);
-    document.body.prepend(toolbar);
-    initMenu(editor);
+    editorContainer?.prepend(toolbar);
+    initMenu(editor, editorElement);
     lucide?.createIcons();
-
-    setupAddLink(editor);
-    setupAddAnchorDialog(editor);
-    const editorElement = document.querySelector(selector);
-    if (editorElement) {
-        editorElement.addEventListener('click', function (e) {
-            const target = e.target;
-            if (
-                target instanceof HTMLAnchorElement &&
-                target.getAttribute('href') &&
-                target.getAttribute('href')!.startsWith('#')
-            ) {
-                e.preventDefault();
-                const anchorId = target.getAttribute('href')!.substring(1);
-                const anchorEl = document.getElementById(anchorId);
-                if (anchorEl) {
-                    anchorEl.scrollIntoView({ behavior: 'smooth' });
-                    history.replaceState(null, '', `#${anchorId}`);
-                }
-            }
-        });
-
-        // add drag drop for images
-        editorElement.addEventListener('dragover', (event: Event) => {
-            event.preventDefault();
-        });
-        editorElement.addEventListener('drop', (event: Event) => {
-            event.preventDefault();
-            const dragEvent = event as DragEvent;
-            if (!dragEvent.dataTransfer) return;
-            const files = Array.from(dragEvent.dataTransfer.files);
-            files.forEach((file) => {
-                if (file.type.startsWith('image/')) {
-                    const reader = new FileReader();
-                    reader.onload = (readerEvent) => {
-                        const src = readerEvent.target?.result as string;
-                        editor.chain().focus().setImage({ src }).run();
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
-        });
-    }
 
     return {
         setContent: (html: string) => editor.commands.setContent(html),
