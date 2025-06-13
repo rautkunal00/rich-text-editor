@@ -1,0 +1,258 @@
+.tiptap-editor {
+  border: 1px solid #aaa;
+  padding: 4px;
+  border-radius: 6px;
+  font-family: Arial, sans-serif;
+}
+
+.tiptap-editor .tiptap.ProseMirror {
+  min-height: 200px;
+}
+
+.tiptap-editor p {
+  margin-block-start: 4px;
+  margin-block-end: 4px;
+}
+
+.tiptap-editor .tiptap.ProseMirror table,
+.tiptap-editor .tiptap.ProseMirror table th,
+.tiptap-editor .tiptap.ProseMirror table td {
+  border: 1px dotted #000;
+}
+
+#menu {
+  margin-bottom: 10px;
+}
+
+#menu button.active {
+  background: #007bff;
+  color: white;
+  border-color: #007bff;
+  border: 2px solid #333;
+}
+
+#menu button {
+  padding: 6px 10px;
+  margin-right: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  background: white;
+  border-radius: 4px;
+}
+
+.toolbar {
+  margin-bottom: 4px;
+}
+
+.toolbar button {
+  margin-right: 4px;
+}
+
+.toolbar select {
+  margin-right: 4px;
+  height: 36px;
+  position: relative;
+  top: -4px;
+}
+
+.search-highlight {
+  background-color: yellow;
+}
+
+.search-dialog {
+  position: fixed;
+  top: 60px;
+  right: 20px;
+  width: 320px;
+  background: #1e1e1e;
+  color: white;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  padding: 12px 16px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  z-index: 1000;
+  display: none;
+  width: fit-content;
+}
+
+.search-dialog .row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.search-dialog label {
+  width: 70px;
+  font-size: 14px;
+  user-select: none;
+}
+
+.search-dialog input[type="text"] {
+  flex: 1;
+  padding: 6px 8px;
+  font-size: 14px;
+  border: none;
+  border-radius: 2px;
+  outline: none;
+}
+
+.search-dialog button {
+  margin-left: 8px;
+  padding: 6px 10px;
+  font-size: 14px;
+  background-color: #0e639c;
+  border: none;
+  border-radius: 2px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.search-dialog button:hover {
+  background-color: #1177d1;
+}
+
+.search-dialog .actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+#close-search-dialog {
+  background: transparent;
+  border: none;
+  color: #ccc;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 6px;
+  margin-left: 10px;
+  transition: color 0.2s ease;
+}
+
+#close-search-dialog:hover {
+  color: white;
+}
+
+#custom-link-dialog {
+  display: none;
+  position: fixed;
+  top: 20%;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  background: #fff;
+  padding: 16px;
+  z-index: 1000;
+  min-width: 120px;
+  max-width: 340px;
+  box-sizing: border-box;
+  border: 1px solid #aaa;
+}
+
+#custom-link-dialog h3 {
+  margin-top: 0;
+  margin-bottom: 12px;
+}
+
+#custom-link-dialog form > div {
+  margin-bottom: 10px;
+}
+
+#custom-link-dialog label {
+  display: block;
+  margin-bottom: 3px;
+}
+
+#custom-link-dialog input[type="text"],
+#custom-link-dialog select {
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 3px;
+}
+
+#custom-link-dialog input[type="checkbox"] {
+  margin-right: 6px;
+}
+
+#custom-link-dialog button[type="submit"],
+#custom-link-dialog button[type="button"] {
+  margin-right: 8px;
+  padding: 5px 14px;
+}
+
+#custom-anchor-dialog form > div:first-child {
+  margin-bottom: 16px;
+}
+
+#custom-anchor-dialog form > div:last-child {
+  display: flex;
+  gap: 10px;
+}
+
+.mat-hint {
+  font-size: 0.75rem;
+  color: rgba(0, 0, 0, 0.6);
+  margin-top: 4px;
+  font-family: "Roboto", "Helvetica Neue", sans-serif;
+  line-height: 1.25;
+  user-select: none;
+  text-align: right;
+  margin-right: 16px;
+}
+
+button i {
+  width: 20px;
+  height: 20px;
+  stroke-width: 2;
+  color: #333;
+}
+
+.toolbar select {
+  padding: 6px 12px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #fff;
+  color: #333;
+  cursor: pointer;
+  transition: border 0.3s, box-shadow 0.3s;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg width='14' height='10' viewBox='0 0 14 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l6 6 6-6' stroke='%23333' stroke-width='2' fill='none' fill-rule='evenodd'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 12px;
+  padding-right: 30px;
+}
+
+.toolbar select:hover {
+  border-color: #999;
+}
+
+.toolbar select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.tiptap-editor .tiptap.ProseMirror:focus {
+  outline: none;
+}
+
+
+.visual-chars-space::after {
+  content: '·';
+  color: #ccc;
+}
+
+.visual-chars-tab::after {
+  content: '→';
+  color: #ccc;
+}
+
+.visual-chars-paragraph::after {
+  content: '¶';
+  color: #ccc;
+}
