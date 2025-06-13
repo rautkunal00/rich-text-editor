@@ -21,7 +21,33 @@ export function createToolbar(editor: any): HTMLElement {
         { type: 'palette', id: 'text-color', label: 'Text Color', icon: 'baseline' },
         { type: 'palette', id: 'highlight-color', label: 'Highlight Color', icon: 'highlighter' },
         { type: 'button', id: 'bullet-list', label: 'Bullet List', icon: 'list' },
-        { type: 'button', id: 'ordered-list', label: 'Ordered List', icon: 'list-ordered' },
+        {
+            type: 'select',
+            id: 'ordered-list-select',
+            label: 'Ordered List',
+            options: [
+                'Decimal',
+                'Lower Alpha',
+                'Upper Alpha',
+                'Lower Roman',
+                'Upper Roman',
+                'Greek'
+            ],
+            icon: 'list-ordered'
+        },
+        {
+            type: 'select',
+            id: 'bullet-list-select',
+            label: 'Bullet List',
+            options: [
+                'Disc',
+                'Circle',
+                'Square',
+                'Dash',
+                'Checkmark'
+            ],
+            icon: 'list'
+        },
         { type: 'button', id: 'align-left', label: 'Left', icon: 'align-left' },
         { type: 'button', id: 'align-center', label: 'Center', icon: 'align-center' },
         { type: 'button', id: 'align-right', label: 'Right', icon: 'align-right' },

@@ -18,10 +18,13 @@ import TextStyle from '@tiptap/extension-text-style';
 import Underline from '@tiptap/extension-underline';
 import StarterKit from '@tiptap/starter-kit';
 import AnchorMark from './extensions/anchorMark';
+import EventLogger from './extensions/customEvents';
 import FontFamily from './extensions/fontFamily';
 import FontSize from './extensions/fontSize';
 import HighlightMark from './extensions/searchHighlight';
 import TextColor from './extensions/textColor';
+import { ExtendedOrderedList } from './extensions/ExtendedOrderedList';
+import { ExtendedBulletList } from './extensions/extendedBulletList';
 
 export const getExtensions = () => [
     StarterKit,
@@ -47,5 +50,8 @@ export const getExtensions = () => [
     AnchorMark,
     Subscript,
     Superscript,
-    Strike
+    Strike,
+    EventLogger,
+    ExtendedOrderedList,
+    ExtendedBulletList
 ];
