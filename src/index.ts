@@ -51,6 +51,25 @@ export const initTiptapEditor = (options: TiptapEditorOptions): EditorAPI => {
     createFooter(footerElement, editorConfig);
     editorContainer?.append(footerElement);
 
+    // editor Events
+    editor.on('update', ({ editor }) => {
+        console.log('Content updated:', editor.getHTML());
+    });
+
+    editor.on('selectionUpdate', ({ editor }) => {
+        console.log('Selection changed:', editor.state.selection);
+    });
+
+    editor.on('focus', () => {
+        console.log('Editor is focused');
+    });
+
+    editor.on('blur', () => {
+        console.log('Editor lost focus');
+    });
+
+
+
     return {
         setContent: (html: string) => editor.commands.setContent(html),
         getContent: () => editor.getHTML(),
