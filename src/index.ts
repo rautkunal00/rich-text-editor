@@ -1,14 +1,19 @@
-import { createEditor } from './editor/createEditor';
+import { createFooter } from './editor/footer';
+import { createEditor } from './editor/header';
 import { initMenu } from './editor/menu/initMenu';
 import { createToolbar } from './editor/toolbar';
-import { setupAddLink } from './editor/menu/addLink'
-import { setupAddAnchorDialog } from './editor/menu/addAnchorId';
 
 declare var lucide: any;
 
 export interface TiptapEditorOptions {
     selector: string
-    editorConfig?: Record<string, any>
+    editorConfig?: EditorOptions
+}
+
+export interface EditorOptions {
+    disabled?: Boolean,
+    showMenu?: Boolean,
+    showToolbar?: Boolean,
 }
 
 export interface EditorAPI {
@@ -29,15 +34,22 @@ export const initTiptapEditor = (options: TiptapEditorOptions): EditorAPI => {
     const editorId = uniqueId;
     const editorElement: HTMLDivElement = document.createElement('div');
     editorElement.id = editorId;
-    editorElement.className = 'tiptap-editor editor';
+    editorElement.className = 'tiptap-editor rich-text-editor';
     editorContainer?.appendChild(editorElement);
-    const editor = createEditor(editorElement, options);
+    const editor = createEditor(editorElement, editorConfig);
 
-    // Create Toolbar
-    const toolbar = createToolbar(editor);
-    editorContainer?.prepend(toolbar);
-    initMenu(editor, editorElement);
-    lucide?.createIcons();
+    // Create header
+    if (editorConfig?.showToolbar) {
+        const toolbar = createToolbar(editor);
+        editorContainer?.prepend(toolbar);
+        initMenu(editor, editorElement);
+        lucide?.createIcons();
+    }
+
+    // Create Footer
+    const footerElement: HTMLDivElement = document.createElement('div');
+    createFooter(footerElement, editorConfig);
+    editorContainer?.append(footerElement);
 
     return {
         setContent: (html: string) => editor.commands.setContent(html),
