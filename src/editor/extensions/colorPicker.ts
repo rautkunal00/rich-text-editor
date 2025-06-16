@@ -1,5 +1,8 @@
 import iro from '@jaames/iro';
 
+// Global state to track active color picker
+let activeColorPicker: HTMLElement | null = null;
+
 function createColorPicker(container: HTMLElement, onChange: (hex: string) => void) {
     const picker = iro.ColorPicker(container!, {
         color: '#f00',
@@ -20,21 +23,76 @@ function createColorPicker(container: HTMLElement, onChange: (hex: string) => vo
 
 export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex: string) => void, toolbar: HTMLElement) {
     let isColorpaletteOpen = false;
-    button.addEventListener('click', (event: MouseEvent) => {
-        if (isColorpaletteOpen) {
+    let colorContainer: HTMLElement | null = null;
+
+    // Function to close the color picker
+    const closeColorPicker = () => {
+        if (isColorpaletteOpen && colorContainer) {
             isColorpaletteOpen = false;
-            const colorContainer = toolbar.querySelector('#color-picker-container');
-            colorContainer?.remove();
+            colorContainer.remove();
+            colorContainer = null;
+            activeColorPicker = null;
+        }
+    };
+
+    // Function to close any active color picker
+    const closeActiveColorPicker = () => {
+        if (activeColorPicker && activeColorPicker !== colorContainer) {
+            activeColorPicker.remove();
+            activeColorPicker = null;
+        }
+    };
+
+    // Add click handler to close color picker when clicking outside
+    const handleDocumentClick = (event: MouseEvent) => {
+        if (isColorpaletteOpen && colorContainer) {
+            const target = event.target as HTMLElement;
+            // Check if the click is outside the color picker and not on the color picker button
+            if (!colorContainer.contains(target) && target !== button && !button.contains(target)) {
+                closeColorPicker();
+            }
+        }
+    };
+
+    // Add click handler to toolbar buttons
+    const handleToolbarClick = (event: MouseEvent) => {
+        const target = event.target as HTMLElement;
+        const clickedButton = target.closest('button');
+        
+        if (clickedButton) {
+            const buttonId = clickedButton.id;
+            // Close if clicking any button except the current color picker button
+            if (buttonId && (buttonId === 'text-color-btn' || buttonId === 'highlight-color-btn' || 
+                (clickedButton !== button && !button.contains(clickedButton)))) {
+                closeColorPicker();
+            }
+        }
+    };
+
+    // Add event listeners
+    document.addEventListener('click', handleDocumentClick);
+    toolbar.addEventListener('click', handleToolbarClick);
+
+    button.addEventListener('click', (event: MouseEvent) => {
+        event.stopPropagation(); // Prevent the document click handler from immediately closing
+        if (isColorpaletteOpen) {
+            closeColorPicker();
         } else {
+            // Close any other active color picker first
+            closeActiveColorPicker();
+            
             isColorpaletteOpen = true;
-            const colorContainer = document.createElement('div');
+            colorContainer = document.createElement('div');
             colorContainer.id = 'color-picker-container';
+            activeColorPicker = colorContainer;
 
             const clearcolorBtn = document.createElement('button');
             clearcolorBtn.id = 'clear-color-btn';
             clearcolorBtn.textContent = 'reset';
-            clearcolorBtn.addEventListener('click', () => {
+            clearcolorBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
                 onChange('');
+                closeColorPicker();
             });
 
             // Create palette container
@@ -61,9 +119,10 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
                 swatch.style.cursor = 'pointer';
                 swatch.style.border = '1px solid #000';
                 swatch.title = hex;
-                swatch.onclick = () => {
+                swatch.onclick = (e) => {
+                    e.stopPropagation();
                     onChange(hex);
-                    colorContainer.style.display = 'none';
+                    closeColorPicker();
                 }
                 paletteContainer.appendChild(swatch);
             });
@@ -73,21 +132,21 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
             advancedBtn.textContent = 'Advanced';
             advancedBtn.style.display = 'block';
             advancedBtn.style.marginTop = '8px';
-            paletteContainer.appendChild(advancedBtn);
-
-
-            const container = document.createElement('div');
-            let iroPickerInitialized = false;
-            advancedBtn.addEventListener('click', () => {
+            advancedBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
                 if (!iroPickerInitialized) {
                     createColorPicker(container, (hex) => {
                         onChange(hex);
+                        closeColorPicker();
                     });
                     iroPickerInitialized = true;
                 }
                 paletteContainer.style.display = 'none';
             });
+            paletteContainer.appendChild(advancedBtn);
 
+            const container = document.createElement('div');
+            let iroPickerInitialized = false;
 
             // Show palette on click
             const rect = button.getBoundingClientRect();
@@ -101,4 +160,10 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
             toolbar.appendChild(colorContainer);
         }
     });
+
+    // Cleanup function to remove event listeners
+    return () => {
+        document.removeEventListener('click', handleDocumentClick);
+        toolbar.removeEventListener('click', handleToolbarClick);
+    };
 }
