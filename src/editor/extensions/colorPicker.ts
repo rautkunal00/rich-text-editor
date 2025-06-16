@@ -181,13 +181,48 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
             const container = document.createElement('div');
             let iroPickerInitialized = false;
 
-            // Show palette on click
-            const rect = button.getBoundingClientRect();
-            colorContainer.style.top = `${rect.bottom + window.scrollY}px`;
-            colorContainer.style.left = `${rect.left + window.scrollX}px`;
+            // Position the color picker
+            const buttonRect = button.getBoundingClientRect();
+            const toolbarRect = toolbar.getBoundingClientRect();
+            const pickerWidth = 300;
+            const pickerHeight = 200;
+
+            // Calculate initial position
+            let top = buttonRect.bottom + window.scrollY;
+            let left = buttonRect.left + window.scrollX;
+
+            // Adjust position to stay within viewport
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+            const scrollY = window.scrollY;
+
+            // Check right edge
+            if (left + pickerWidth > viewportWidth) {
+                left = viewportWidth - pickerWidth - 20;
+            }
+
+            // Check left edge
+            if (left < toolbarRect.left) {
+                left = toolbarRect.left;
+            }
+
+            // Check bottom edge
+            if (top + pickerHeight > viewportHeight + scrollY) {
+                // Try to position above the button
+                top = buttonRect.top + scrollY - pickerHeight;
+                
+                // If still doesn't fit, position at the top of the viewport
+                if (top < scrollY) {
+                    top = scrollY + 20;
+                }
+            }
+
+            // Apply the calculated position
+            colorContainer.style.position = 'fixed';
+            colorContainer.style.top = `${top}px`;
+            colorContainer.style.left = `${left}px`;
+            colorContainer.style.width = `${pickerWidth}px`;
             colorContainer.style.display = 'block';
-            colorContainer.style.position = 'absolute';
-            colorContainer.style.width = '300px';
             colorContainer.appendChild(container);
             colorContainer.appendChild(clearcolorBtn);
             toolbar.appendChild(colorContainer);
