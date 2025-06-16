@@ -241,18 +241,10 @@ button i {
   outline: none;
 }
 
-
-.visual-chars-space::after {
-  content: '·';
-  color: #ccc;
+ul.custom-checkmark > li::marker {
+  content: "✓ ";
 }
 
-.visual-chars-tab::after {
-  content: '→';
-  color: #ccc;
-}
-
-.visual-chars-paragraph::after {
-  content: '¶';
-  color: #ccc;
+ul.custom-dash > li::marker {
+  content: "– ";
 }

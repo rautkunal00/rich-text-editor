@@ -1,3 +1,4 @@
+import { Editor } from '@tiptap/core';
 import { createFooter } from './editor/footer';
 import { createEditor } from './editor/header';
 import { initMenu } from './editor/menu/initMenu';
@@ -11,18 +12,29 @@ export interface TiptapEditorOptions {
 }
 
 export interface EditorOptions {
-    disabled?: Boolean,
-    showMenu?: Boolean,
-    showToolbar?: Boolean,
+    disabled?: boolean,
+    showMenu?: boolean,
+    showToolbar?: boolean,
 }
 
 export interface EditorAPI {
-    setContent: (html: string) => void
-    getContent: () => string
-    destroy: () => void
-    enable: () => void
-    disable: () => void
+    setContent: (html: string) => void;
+    getContent: () => string;
+    destroy: () => void;
+    enable: () => void;
+    disable: () => void;
+
+    onUpdate: (fn: (editor: Editor) => void) => void;
+    onSelectionUpdate: (fn: (editor: Editor) => void) => void;
+    onFocus: (fn: (editor: Editor) => void) => void;
+    onBlur: (fn: (editor: Editor) => void) => void;
+    onDestroy: (fn: (editor: Editor) => void) => void;
+    afterInit: (fn: (editor: Editor) => void) => void;
+    onPaste: (fn: (editor: Editor) => void) => void;
+    onDrop: (fn: (editor: Editor) => void) => void;
 }
+
+
 
 export const initTiptapEditor = (options: TiptapEditorOptions): EditorAPI => {
     const { selector, editorConfig = {} } = options;
@@ -51,30 +63,19 @@ export const initTiptapEditor = (options: TiptapEditorOptions): EditorAPI => {
     createFooter(footerElement, editorConfig);
     editorContainer?.append(footerElement);
 
-    // editor Events
-    editor.on('update', ({ editor }) => {
-        console.log('Content updated:', editor.getHTML());
-    });
-
-    editor.on('selectionUpdate', ({ editor }) => {
-        console.log('Selection changed:', editor.state.selection);
-    });
-
-    editor.on('focus', () => {
-        console.log('Editor is focused');
-    });
-
-    editor.on('blur', () => {
-        console.log('Editor lost focus');
-    });
-
-
-
     return {
         setContent: (html: string) => editor.commands.setContent(html),
         getContent: () => editor.getHTML(),
         destroy: () => editor.destroy(),
         enable: () => editor.setEditable(true),
         disable: () => editor.setEditable(false),
+       onUpdate: (fn: (editor: Editor) => void) => editor.on('update', () => fn(editor)),
+        onSelectionUpdate: (fn: (editor: Editor) => void) => editor.on('selectionUpdate', () => fn(editor)),
+        onFocus: (fn: (editor: Editor) => void) => editor.on('focus', () => fn(editor)),
+        onBlur: (fn: (editor: Editor) => void) => editor.on('blur', () => fn(editor)),
+        onDestroy: (fn: (editor: Editor) => void) => editor.on('destroy', () => fn(editor)),
+        afterInit: (fn: (editor: Editor) => void) => editor.on('create', () => fn(editor)),
+        onPaste: (fn: (editor: Editor) => void) => editor.on('paste', () => fn(editor)),
+        onDrop: (fn: (editor: Editor) => void) => editor.on('drop', () => fn(editor)),
     };
 }
