@@ -97,7 +97,8 @@ export function createToolbar(editor: any): HTMLElement {
         { type: 'button', id: 'superscript', label: 'Superscript', icon: 'superscript' },
         // { type: 'button', id: 'spellCheck', label: 'Spellcheck', icon: 'spell-check-2' },
         { type: 'button', id: 'open-search-dialog', label: 'Search & Replace', icon: 'search' },
-        { type: 'button', id: 'insert-datetime', label: 'Insert Date & Time', icon: 'calendar-days' }
+        { type: 'button', id: 'insert-datetime', label: 'Insert Date & Time', icon: 'calendar-days' },
+        { type: 'button', id: 'insert-emoji-char', label: 'Insert Special Characters & Emoji', icon: 'asterisk' }
     ];
 
     const toolbar = document.createElement('div');
