@@ -25,6 +25,7 @@ import HighlightMark from './extensions/searchHighlight';
 import TextColor from './extensions/textColor';
 import { ExtendedOrderedList } from './extensions/extendedOrderedList';
 import { ExtendedBulletList } from './extensions/extendedBulletList';
+import { PopupExtension } from './extensions/popup';
 
 export const getExtensions = () => [
     StarterKit,
@@ -53,5 +54,6 @@ export const getExtensions = () => [
     Strike,
     EventLogger,
     ExtendedOrderedList,
-    ExtendedBulletList
+    ExtendedBulletList,
+    PopupExtension
 ];

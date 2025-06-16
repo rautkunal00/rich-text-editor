@@ -1,7 +1,7 @@
 import { Editor } from '@tiptap/core';
 import { createFooter } from './editor/footer';
 import { createEditor } from './editor/header';
-import { initMenu } from './editor/menu/initMenu';
+import { initMenu } from './editor/initMenu';
 import { createToolbar } from './editor/toolbar';
 
 declare var lucide: any;

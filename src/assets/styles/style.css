@@ -248,3 +248,25 @@ ul.custom-checkmark > li::marker {
 ul.custom-dash > li::marker {
   content: "– ";
 }
+
+.special-char-popup button {
+  border: none;
+  background: #eee;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 4px;
+}
+.special-char-popup button:hover {
+  background: #ddd;
+}
+
+.emoji-popup button {
+  border: none;
+  background: #f5f5f5;
+  font-size: 20px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.emoji-popup button:hover {
+  background: #e0e0e0;
+}

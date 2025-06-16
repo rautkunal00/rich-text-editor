@@ -10,13 +10,22 @@ declare module '@tiptap/core' {
       setFontFamily: (font: string) => ReturnType
       unsetFontFamily: () => ReturnType
     },
-     textColor: {
+    textColor: {
       setTextColor: (color: string) => ReturnType
       unsetTextColor: () => ReturnType
     },
     capitalization: {
       setCapitalization: (type: 'uppercase' | 'lowercase' | 'capitalize') => ReturnType
       unsetCapitalization: () => ReturnType
-    }
+    },
+    popup: {
+      showPopup: (config: {
+        html: string;
+        position?: { top: number; left: number };
+        onMount?: (popup: HTMLElement) => void;
+        closeOnOutsideClick?: boolean;
+      }) => ReturnType;
+      closePopup: () => ReturnType;
+    };
   }
 }
