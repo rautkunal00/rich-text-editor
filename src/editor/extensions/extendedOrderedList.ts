@@ -1,5 +1,4 @@
 import { OrderedList } from '@tiptap/extension-ordered-list'
-import { Node } from '@tiptap/core'
 
 export const ExtendedOrderedList = OrderedList.extend({
   addAttributes() {

@@ -23,7 +23,7 @@ import FontFamily from './extensions/fontFamily';
 import FontSize from './extensions/fontSize';
 import HighlightMark from './extensions/searchHighlight';
 import TextColor from './extensions/textColor';
-import { ExtendedOrderedList } from './extensions/ExtendedOrderedList';
+import { ExtendedOrderedList } from './extensions/extendedOrderedList';
 import { ExtendedBulletList } from './extensions/extendedBulletList';
 
 export const getExtensions = () => [
