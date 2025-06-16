@@ -24,6 +24,36 @@ function createColorPicker(container: HTMLElement, onChange: (hex: string) => vo
 export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex: string) => void, toolbar: HTMLElement) {
     let isColorpaletteOpen = false;
     let colorContainer: HTMLElement | null = null;
+    let currentColor = '';
+
+    // Function to update button color
+    const updateButtonColor = (color: string) => {
+        currentColor = color;
+        if (color) {
+            button.style.backgroundColor = color;
+            button.style.color = getContrastColor(color);
+        } else {
+            button.style.backgroundColor = '';
+            button.style.color = '';
+        }
+    };
+
+    // Function to get contrasting text color
+    const getContrastColor = (hexColor: string) => {
+        // Remove the hash if it exists
+        const hex = hexColor.replace('#', '');
+        
+        // Convert to RGB
+        const r = parseInt(hex.substr(0, 2), 16);
+        const g = parseInt(hex.substr(2, 2), 16);
+        const b = parseInt(hex.substr(4, 2), 16);
+        
+        // Calculate luminance
+        const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+        
+        // Return black or white based on luminance
+        return luminance > 0.5 ? '#000000' : '#ffffff';
+    };
 
     // Function to close the color picker
     const closeColorPicker = () => {
@@ -92,6 +122,7 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
             clearcolorBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 onChange('');
+                updateButtonColor('');
                 closeColorPicker();
             });
 
@@ -122,6 +153,7 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
                 swatch.onclick = (e) => {
                     e.stopPropagation();
                     onChange(hex);
+                    updateButtonColor(hex);
                     closeColorPicker();
                 }
                 paletteContainer.appendChild(swatch);
@@ -137,6 +169,7 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
                 if (!iroPickerInitialized) {
                     createColorPicker(container, (hex) => {
                         onChange(hex);
+                        updateButtonColor(hex);
                         closeColorPicker();
                     });
                     iroPickerInitialized = true;
