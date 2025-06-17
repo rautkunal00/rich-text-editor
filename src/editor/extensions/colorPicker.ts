@@ -25,6 +25,7 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
     let isColorpaletteOpen = false;
     let colorContainer: HTMLElement | null = null;
     let currentColor = '';
+    let tempColor = '';
 
     // Function to update button color
     const updateButtonColor = (color: string) => {
@@ -116,39 +117,36 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
             colorContainer.id = 'color-picker-container';
             activeColorPicker = colorContainer;
 
-            const clearcolorBtn = document.createElement('button');
-            clearcolorBtn.id = 'clear-color-btn';
-            clearcolorBtn.textContent = 'reset';
-            clearcolorBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                onChange('');
-                updateButtonColor('');
-                closeColorPicker();
-            });
-
             // Create palette container
             const paletteContainer = document.createElement('div');
             paletteContainer.id = 'color-palette';
-            paletteContainer.style.display = 'block';
-            paletteContainer.style.position = 'absolute';
-            paletteContainer.style.background = '#fff';
-            paletteContainer.style.border = '1px solid #ccc';
-            paletteContainer.style.padding = '8px';
-            paletteContainer.style.zIndex = '1000';
-            paletteContainer.style.boxShadow = '0 2px 10px rgba(0,0,0,0.2)';
+            paletteContainer.style.cssText = `
+                display: block;
+                position: relative;
+                background: #fff;
+                border: 1px solid #e5e7eb;
+                border-radius: 8px;
+                padding: 12px;
+                z-index: 1000;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            `;
             colorContainer.appendChild(paletteContainer);
 
             // Add swatches
             const swatches = ['#ff0000', '#00ff00', '#0000ff', '#000000', '#ffffff']
             swatches.forEach((hex) => {
                 const swatch = document.createElement('div');
-                swatch.style.background = hex;
-                swatch.style.width = '24px';
-                swatch.style.height = '24px';
-                swatch.style.display = 'inline-block';
-                swatch.style.margin = '4px';
-                swatch.style.cursor = 'pointer';
-                swatch.style.border = '1px solid #000';
+                swatch.style.cssText = `
+                    background: ${hex};
+                    width: 24px;
+                    height: 24px;
+                    display: inline-block;
+                    margin: 4px;
+                    cursor: pointer;
+                    border: 1px solid #000;
+                    border-radius: 4px;
+                    transition: transform 0.2s;
+                `;
                 swatch.title = hex;
                 swatch.onclick = (e) => {
                     e.stopPropagation();
@@ -156,27 +154,240 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
                     updateButtonColor(hex);
                     closeColorPicker();
                 }
+                swatch.onmouseover = () => {
+                    swatch.style.transform = 'scale(1.1)';
+                }
+                swatch.onmouseout = () => {
+                    swatch.style.transform = 'scale(1)';
+                }
                 paletteContainer.appendChild(swatch);
             });
+
+            // Create button container
+            const buttonContainer = document.createElement('div');
+            buttonContainer.style.cssText = `
+                display: flex;
+                gap: 8px;
+                padding: 0 12px 12px;
+                margin-top: 8px;
+            `;
 
             // Advanced button
             const advancedBtn = document.createElement('button');
             advancedBtn.textContent = 'Advanced';
-            advancedBtn.style.display = 'block';
-            advancedBtn.style.marginTop = '8px';
+            advancedBtn.style.cssText = `
+                flex: 1;
+                padding: 6px 12px;
+                background: #f3f4f6;
+                border: 1px solid #d1d5db;
+                border-radius: 4px;
+                font-size: 12px;
+                cursor: pointer;
+                transition: all 0.2s;
+            `;
             advancedBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 if (!iroPickerInitialized) {
-                    createColorPicker(container, (hex) => {
-                        onChange(hex);
-                        updateButtonColor(hex);
-                        closeColorPicker();
+                    const container = document.createElement('div');
+                    container.style.cssText = `
+                        padding: 12px;
+                        background: #fff;
+                        border-radius: 8px;
+                    `;
+
+                    // Create color picker
+                    const picker = createColorPicker(container, (hex) => {
+                        tempColor = hex;
+                        hexInput.value = hex;
                     });
+
+                    // Create hex input container
+                    const hexInputContainer = document.createElement('div');
+                    hexInputContainer.style.cssText = `
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                        margin-top: 16px;
+                        padding: 0 4px;
+                    `;
+
+                    // Create hex label
+                    const hexLabel = document.createElement('span');
+                    hexLabel.textContent = 'HEX:';
+                    hexLabel.style.cssText = `
+                        font-size: 12px;
+                        color: #4b5563;
+                        font-weight: 500;
+                    `;
+
+                    // Create hex input
+                    const hexInput = document.createElement('input');
+                    hexInput.type = 'text';
+                    hexInput.value = tempColor;
+                    hexInput.style.cssText = `
+                        flex: 1;
+                        padding: 6px 8px;
+                        border: 1px solid #d1d5db;
+                        border-radius: 4px;
+                        font-size: 12px;
+                        font-family: monospace;
+                        outline: none;
+                        transition: all 0.2s;
+                        width: 100%;
+                    `;
+                    hexInput.onfocus = () => {
+                        hexInput.style.borderColor = '#2563eb';
+                        hexInput.style.boxShadow = '0 0 0 2px rgba(37, 99, 235, 0.1)';
+                    };
+                    hexInput.onblur = () => {
+                        hexInput.style.borderColor = '#d1d5db';
+                        hexInput.style.boxShadow = 'none';
+                    };
+                    hexInput.oninput = (e) => {
+                        const input = e.target as HTMLInputElement;
+                        let value = input.value;
+                        
+                        // Remove any non-hex characters
+                        value = value.replace(/[^0-9A-Fa-f]/g, '');
+                        
+                        // Ensure it starts with #
+                        if (!value.startsWith('#')) {
+                            value = '#' + value;
+                        }
+                        
+                        // Limit to 7 characters (#RRGGBB)
+                        if (value.length > 7) {
+                            value = value.slice(0, 7);
+                        }
+                        
+                        input.value = value;
+                        
+                        // Update color if valid hex
+                        if (value.length === 7) {
+                            tempColor = value;
+                            picker.color.set(value);
+                        }
+                    };
+
+                    hexInputContainer.appendChild(hexLabel);
+                    hexInputContainer.appendChild(hexInput);
+                    container.appendChild(hexInputContainer);
+
+                    // Create confirm button container
+                    const confirmContainer = document.createElement('div');
+                    confirmContainer.style.cssText = `
+                        display: flex;
+                        gap: 8px;
+                        margin-top: 16px;
+                    `;
+
+                    // Create confirm button
+                    const confirmBtn = document.createElement('button');
+                    confirmBtn.textContent = 'Apply';
+                    confirmBtn.style.cssText = `
+                        flex: 1;
+                        padding: 8px 24px;
+                        background: #2563eb;
+                        color: white;
+                        border: none;
+                        border-radius: 6px;
+                        font-size: 13px;
+                        font-weight: 500;
+                        cursor: pointer;
+                        transition: all 0.2s;
+                        box-shadow: 0 2px 4px rgba(37, 99, 235, 0.1);
+                    `;
+                    confirmBtn.onmouseover = () => {
+                        confirmBtn.style.background = '#1d4ed8';
+                        confirmBtn.style.boxShadow = '0 4px 6px rgba(37, 99, 235, 0.2)';
+                    }
+                    confirmBtn.onmouseout = () => {
+                        confirmBtn.style.background = '#2563eb';
+                        confirmBtn.style.boxShadow = '0 2px 4px rgba(37, 99, 235, 0.1)';
+                    }
+                    confirmBtn.onclick = (e) => {
+                        e.stopPropagation();
+                        onChange(tempColor);
+                        updateButtonColor(tempColor);
+                        closeColorPicker();
+                    };
+
+                    // Create reset button for advanced view
+                    const advancedResetBtn = document.createElement('button');
+                    advancedResetBtn.textContent = 'Reset';
+                    advancedResetBtn.style.cssText = `
+                        flex: 1;
+                        padding: 8px 24px;
+                        background: #f3f4f6;
+                        border: 1px solid #d1d5db;
+                        border-radius: 6px;
+                        font-size: 13px;
+                        font-weight: 500;
+                        cursor: pointer;
+                        transition: all 0.2s;
+                    `;
+                    advancedResetBtn.onmouseover = () => {
+                        advancedResetBtn.style.background = '#e5e7eb';
+                    }
+                    advancedResetBtn.onmouseout = () => {
+                        advancedResetBtn.style.background = '#f3f4f6';
+                    }
+                    advancedResetBtn.onclick = (e) => {
+                        e.stopPropagation();
+                        onChange('');
+                        updateButtonColor('');
+                        closeColorPicker();
+                    };
+
+                    confirmContainer.appendChild(confirmBtn);
+                    confirmContainer.appendChild(advancedResetBtn);
+                    container.appendChild(confirmContainer);
+
                     iroPickerInitialized = true;
+                    paletteContainer.innerHTML = '';
+                    paletteContainer.appendChild(container);
+                    
+                    // Hide the Advanced button and button container
+                    buttonContainer.style.display = 'none';
                 }
-                paletteContainer.style.display = 'none';
             });
-            paletteContainer.appendChild(advancedBtn);
+            advancedBtn.onmouseover = () => {
+                advancedBtn.style.background = '#e5e7eb';
+            }
+            advancedBtn.onmouseout = () => {
+                advancedBtn.style.background = '#f3f4f6';
+            }
+
+            // Reset button
+            const clearcolorBtn = document.createElement('button');
+            clearcolorBtn.id = 'clear-color-btn';
+            clearcolorBtn.textContent = 'Reset';
+            clearcolorBtn.style.cssText = `
+                flex: 1;
+                padding: 6px 12px;
+                background: #f3f4f6;
+                border: 1px solid #d1d5db;
+                border-radius: 4px;
+                font-size: 12px;
+                cursor: pointer;
+                transition: all 0.2s;
+            `;
+            clearcolorBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                onChange('');
+                updateButtonColor('');
+                closeColorPicker();
+            });
+            clearcolorBtn.onmouseover = () => {
+                clearcolorBtn.style.background = '#e5e7eb';
+            }
+            clearcolorBtn.onmouseout = () => {
+                clearcolorBtn.style.background = '#f3f4f6';
+            }
+
+            buttonContainer.appendChild(advancedBtn);
+            buttonContainer.appendChild(clearcolorBtn);
+            colorContainer.appendChild(buttonContainer);
 
             const container = document.createElement('div');
             let iroPickerInitialized = false;
@@ -184,7 +395,7 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
             // Position the color picker
             const buttonRect = button.getBoundingClientRect();
             const toolbarRect = toolbar.getBoundingClientRect();
-            const pickerWidth = 300;
+            const pickerWidth = 250;
             const pickerHeight = 200;
 
             // Calculate initial position
@@ -218,13 +429,18 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
             }
 
             // Apply the calculated position
-            colorContainer.style.position = 'fixed';
-            colorContainer.style.top = `${top}px`;
-            colorContainer.style.left = `${left}px`;
-            colorContainer.style.width = `${pickerWidth}px`;
-            colorContainer.style.display = 'block';
+            colorContainer.style.cssText = `
+                position: fixed;
+                top: ${top}px;
+                left: ${left}px;
+                width: ${pickerWidth}px;
+                display: block;
+                background: #fff;
+                border-radius: 8px;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+                z-index: 1000;
+            `;
             colorContainer.appendChild(container);
-            colorContainer.appendChild(clearcolorBtn);
             toolbar.appendChild(colorContainer);
         }
     });
