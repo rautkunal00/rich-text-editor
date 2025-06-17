@@ -20,7 +20,7 @@ export const PopupExtension = Extension.create<PopupExtensionOptions>({
         return {
             showPopup:
                 (config: {
-                    html: string;
+                    html: HTMLElement;
                     position?: { top: number; left: number };
                     onMount?: (popup: HTMLElement) => void;
                     closeOnOutsideClick?: boolean;
@@ -31,7 +31,7 @@ export const PopupExtension = Extension.create<PopupExtensionOptions>({
 
                         const popup = document.createElement('div');
                         popup.className = 'tiptap-popup';
-                        popup.innerHTML = config.html;
+                        popup.appendChild(config.html);
 
                         popup.style.position = 'absolute';
                         popup.style.top = `${config.position?.top || 100}px`;
@@ -71,7 +71,6 @@ export const PopupExtension = Extension.create<PopupExtensionOptions>({
                     },
         };
     },
-
     onCreate() {
         if (this.options.injectStyles) {
             const style = document.createElement('style')

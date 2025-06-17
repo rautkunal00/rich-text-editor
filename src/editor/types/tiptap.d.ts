@@ -20,7 +20,7 @@ declare module '@tiptap/core' {
     },
     popup: {
       showPopup: (config: {
-        html: string;
+        html: HTMLElement;
         position?: { top: number; left: number };
         onMount?: (popup: HTMLElement) => void;
         closeOnOutsideClick?: boolean;
