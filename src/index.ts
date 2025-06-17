@@ -66,7 +66,7 @@ export const initTiptapEditor = (options: TiptapEditorOptions): EditorAPI => {
 
     return {
         setContent: (html: string) => editor.commands.setContent(sanitizeHTML(html)),
-        getContent: () => editor.getHTML(),
+        getContent: () => sanitizeHTML(editor.getHTML()),
         destroy: () => editor.destroy(),
         enable: () => editor.setEditable(true),
         disable: () => editor.setEditable(false),
