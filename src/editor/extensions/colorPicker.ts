@@ -129,7 +129,6 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
                 padding: 12px;
                 z-index: 1000;
                 box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-                margin-bottom: 8px;
             `;
             colorContainer.appendChild(paletteContainer);
 
@@ -170,6 +169,7 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
                 display: flex;
                 gap: 8px;
                 padding: 0 12px 12px;
+                margin-top: 8px;
             `;
 
             // Advanced button
@@ -204,14 +204,15 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
                     const confirmContainer = document.createElement('div');
                     confirmContainer.style.cssText = `
                         display: flex;
-                        justify-content: center;
+                        gap: 8px;
                         margin-top: 16px;
                     `;
 
                     // Create confirm button
                     const confirmBtn = document.createElement('button');
-                    confirmBtn.textContent = 'Apply Color';
+                    confirmBtn.textContent = 'Apply';
                     confirmBtn.style.cssText = `
+                        flex: 1;
                         padding: 8px 24px;
                         background: #2563eb;
                         color: white;
@@ -238,12 +239,43 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
                         closeColorPicker();
                     };
 
+                    // Create reset button for advanced view
+                    const advancedResetBtn = document.createElement('button');
+                    advancedResetBtn.textContent = 'Reset';
+                    advancedResetBtn.style.cssText = `
+                        flex: 1;
+                        padding: 8px 24px;
+                        background: #f3f4f6;
+                        border: 1px solid #d1d5db;
+                        border-radius: 6px;
+                        font-size: 13px;
+                        font-weight: 500;
+                        cursor: pointer;
+                        transition: all 0.2s;
+                    `;
+                    advancedResetBtn.onmouseover = () => {
+                        advancedResetBtn.style.background = '#e5e7eb';
+                    }
+                    advancedResetBtn.onmouseout = () => {
+                        advancedResetBtn.style.background = '#f3f4f6';
+                    }
+                    advancedResetBtn.onclick = (e) => {
+                        e.stopPropagation();
+                        onChange('');
+                        updateButtonColor('');
+                        closeColorPicker();
+                    };
+
                     confirmContainer.appendChild(confirmBtn);
+                    confirmContainer.appendChild(advancedResetBtn);
                     container.appendChild(confirmContainer);
 
                     iroPickerInitialized = true;
                     paletteContainer.innerHTML = '';
                     paletteContainer.appendChild(container);
+                    
+                    // Hide the Advanced button and button container
+                    buttonContainer.style.display = 'none';
                 }
             });
             advancedBtn.onmouseover = () => {
@@ -290,7 +322,7 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
             // Position the color picker
             const buttonRect = button.getBoundingClientRect();
             const toolbarRect = toolbar.getBoundingClientRect();
-            const pickerWidth = 300;
+            const pickerWidth = 250;
             const pickerHeight = 200;
 
             // Calculate initial position
