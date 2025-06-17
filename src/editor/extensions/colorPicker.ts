@@ -25,6 +25,7 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
     let isColorpaletteOpen = false;
     let colorContainer: HTMLElement | null = null;
     let currentColor = '';
+    let tempColor = '';
 
     // Function to update button color
     const updateButtonColor = (color: string) => {
@@ -116,27 +117,6 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
             colorContainer.id = 'color-picker-container';
             activeColorPicker = colorContainer;
 
-            const clearcolorBtn = document.createElement('button');
-            clearcolorBtn.id = 'clear-color-btn';
-            clearcolorBtn.textContent = 'reset';
-            clearcolorBtn.style.cssText = `
-                position: absolute;
-                bottom: 8px;
-                right: 8px;
-                padding: 4px 8px;
-                background: #f3f4f6;
-                border: 1px solid #d1d5db;
-                border-radius: 4px;
-                font-size: 12px;
-                cursor: pointer;
-            `;
-            clearcolorBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                onChange('');
-                updateButtonColor('');
-                closeColorPicker();
-            });
-
             // Create palette container
             const paletteContainer = document.createElement('div');
             paletteContainer.id = 'color-palette';
@@ -149,7 +129,7 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
                 padding: 12px;
                 z-index: 1000;
                 box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-                margin-bottom: 32px;
+                margin-bottom: 8px;
             `;
             colorContainer.appendChild(paletteContainer);
 
@@ -184,19 +164,25 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
                 paletteContainer.appendChild(swatch);
             });
 
+            // Create button container
+            const buttonContainer = document.createElement('div');
+            buttonContainer.style.cssText = `
+                display: flex;
+                gap: 8px;
+                padding: 0 12px 12px;
+            `;
+
             // Advanced button
             const advancedBtn = document.createElement('button');
             advancedBtn.textContent = 'Advanced';
             advancedBtn.style.cssText = `
-                display: block;
-                margin-top: 12px;
+                flex: 1;
                 padding: 6px 12px;
                 background: #f3f4f6;
                 border: 1px solid #d1d5db;
                 border-radius: 4px;
                 font-size: 12px;
                 cursor: pointer;
-                width: 100%;
                 transition: all 0.2s;
             `;
             advancedBtn.addEventListener('click', (e) => {
@@ -208,11 +194,53 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
                         background: #fff;
                         border-radius: 8px;
                     `;
-                    createColorPicker(container, (hex) => {
-                        onChange(hex);
-                        updateButtonColor(hex);
-                        closeColorPicker();
+
+                    // Create color picker
+                    const picker = createColorPicker(container, (hex) => {
+                        tempColor = hex;
                     });
+
+                    // Create confirm button container
+                    const confirmContainer = document.createElement('div');
+                    confirmContainer.style.cssText = `
+                        display: flex;
+                        justify-content: center;
+                        margin-top: 16px;
+                    `;
+
+                    // Create confirm button
+                    const confirmBtn = document.createElement('button');
+                    confirmBtn.textContent = 'Apply Color';
+                    confirmBtn.style.cssText = `
+                        padding: 8px 24px;
+                        background: #2563eb;
+                        color: white;
+                        border: none;
+                        border-radius: 6px;
+                        font-size: 13px;
+                        font-weight: 500;
+                        cursor: pointer;
+                        transition: all 0.2s;
+                        box-shadow: 0 2px 4px rgba(37, 99, 235, 0.1);
+                    `;
+                    confirmBtn.onmouseover = () => {
+                        confirmBtn.style.background = '#1d4ed8';
+                        confirmBtn.style.boxShadow = '0 4px 6px rgba(37, 99, 235, 0.2)';
+                    }
+                    confirmBtn.onmouseout = () => {
+                        confirmBtn.style.background = '#2563eb';
+                        confirmBtn.style.boxShadow = '0 2px 4px rgba(37, 99, 235, 0.1)';
+                    }
+                    confirmBtn.onclick = (e) => {
+                        e.stopPropagation();
+                        onChange(tempColor);
+                        updateButtonColor(tempColor);
+                        closeColorPicker();
+                    };
+
+                    confirmContainer.appendChild(confirmBtn);
+                    container.appendChild(confirmContainer);
+
                     iroPickerInitialized = true;
                     paletteContainer.innerHTML = '';
                     paletteContainer.appendChild(container);
@@ -224,7 +252,37 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
             advancedBtn.onmouseout = () => {
                 advancedBtn.style.background = '#f3f4f6';
             }
-            paletteContainer.appendChild(advancedBtn);
+
+            // Reset button
+            const clearcolorBtn = document.createElement('button');
+            clearcolorBtn.id = 'clear-color-btn';
+            clearcolorBtn.textContent = 'Reset';
+            clearcolorBtn.style.cssText = `
+                flex: 1;
+                padding: 6px 12px;
+                background: #f3f4f6;
+                border: 1px solid #d1d5db;
+                border-radius: 4px;
+                font-size: 12px;
+                cursor: pointer;
+                transition: all 0.2s;
+            `;
+            clearcolorBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                onChange('');
+                updateButtonColor('');
+                closeColorPicker();
+            });
+            clearcolorBtn.onmouseover = () => {
+                clearcolorBtn.style.background = '#e5e7eb';
+            }
+            clearcolorBtn.onmouseout = () => {
+                clearcolorBtn.style.background = '#f3f4f6';
+            }
+
+            buttonContainer.appendChild(advancedBtn);
+            buttonContainer.appendChild(clearcolorBtn);
+            colorContainer.appendChild(buttonContainer);
 
             const container = document.createElement('div');
             let iroPickerInitialized = false;
@@ -278,7 +336,6 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
                 z-index: 1000;
             `;
             colorContainer.appendChild(container);
-            colorContainer.appendChild(clearcolorBtn);
             toolbar.appendChild(colorContainer);
         }
     });
