@@ -3,6 +3,7 @@ import { createFooter } from './editor/footer';
 import { createEditor } from './editor/header';
 import { initMenu } from './editor/initMenu';
 import { createToolbar } from './editor/toolbar';
+import { sanitizeHTML } from './editor/extensions/sanitizer';
 
 declare var lucide: any;
 
@@ -64,12 +65,12 @@ export const initTiptapEditor = (options: TiptapEditorOptions): EditorAPI => {
     editorContainer?.append(footerElement);
 
     return {
-        setContent: (html: string) => editor.commands.setContent(html),
+        setContent: (html: string) => editor.commands.setContent(sanitizeHTML(html)),
         getContent: () => editor.getHTML(),
         destroy: () => editor.destroy(),
         enable: () => editor.setEditable(true),
         disable: () => editor.setEditable(false),
-       onUpdate: (fn: (editor: Editor) => void) => editor.on('update', () => fn(editor)),
+        onUpdate: (fn: (editor: Editor) => void) => editor.on('update', () => fn(editor)),
         onSelectionUpdate: (fn: (editor: Editor) => void) => editor.on('selectionUpdate', () => fn(editor)),
         onFocus: (fn: (editor: Editor) => void) => editor.on('focus', () => fn(editor)),
         onBlur: (fn: (editor: Editor) => void) => editor.on('blur', () => fn(editor)),
