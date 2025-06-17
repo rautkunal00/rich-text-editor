@@ -119,6 +119,17 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
             const clearcolorBtn = document.createElement('button');
             clearcolorBtn.id = 'clear-color-btn';
             clearcolorBtn.textContent = 'reset';
+            clearcolorBtn.style.cssText = `
+                position: absolute;
+                bottom: 8px;
+                right: 8px;
+                padding: 4px 8px;
+                background: #f3f4f6;
+                border: 1px solid #d1d5db;
+                border-radius: 4px;
+                font-size: 12px;
+                cursor: pointer;
+            `;
             clearcolorBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 onChange('');
@@ -129,26 +140,34 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
             // Create palette container
             const paletteContainer = document.createElement('div');
             paletteContainer.id = 'color-palette';
-            paletteContainer.style.display = 'block';
-            paletteContainer.style.position = 'absolute';
-            paletteContainer.style.background = '#fff';
-            paletteContainer.style.border = '1px solid #ccc';
-            paletteContainer.style.padding = '8px';
-            paletteContainer.style.zIndex = '1000';
-            paletteContainer.style.boxShadow = '0 2px 10px rgba(0,0,0,0.2)';
+            paletteContainer.style.cssText = `
+                display: block;
+                position: relative;
+                background: #fff;
+                border: 1px solid #e5e7eb;
+                border-radius: 8px;
+                padding: 12px;
+                z-index: 1000;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+                margin-bottom: 32px;
+            `;
             colorContainer.appendChild(paletteContainer);
 
             // Add swatches
             const swatches = ['#ff0000', '#00ff00', '#0000ff', '#000000', '#ffffff']
             swatches.forEach((hex) => {
                 const swatch = document.createElement('div');
-                swatch.style.background = hex;
-                swatch.style.width = '24px';
-                swatch.style.height = '24px';
-                swatch.style.display = 'inline-block';
-                swatch.style.margin = '4px';
-                swatch.style.cursor = 'pointer';
-                swatch.style.border = '1px solid #000';
+                swatch.style.cssText = `
+                    background: ${hex};
+                    width: 24px;
+                    height: 24px;
+                    display: inline-block;
+                    margin: 4px;
+                    cursor: pointer;
+                    border: 1px solid #000;
+                    border-radius: 4px;
+                    transition: transform 0.2s;
+                `;
                 swatch.title = hex;
                 swatch.onclick = (e) => {
                     e.stopPropagation();
@@ -156,26 +175,55 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
                     updateButtonColor(hex);
                     closeColorPicker();
                 }
+                swatch.onmouseover = () => {
+                    swatch.style.transform = 'scale(1.1)';
+                }
+                swatch.onmouseout = () => {
+                    swatch.style.transform = 'scale(1)';
+                }
                 paletteContainer.appendChild(swatch);
             });
 
             // Advanced button
             const advancedBtn = document.createElement('button');
             advancedBtn.textContent = 'Advanced';
-            advancedBtn.style.display = 'block';
-            advancedBtn.style.marginTop = '8px';
+            advancedBtn.style.cssText = `
+                display: block;
+                margin-top: 12px;
+                padding: 6px 12px;
+                background: #f3f4f6;
+                border: 1px solid #d1d5db;
+                border-radius: 4px;
+                font-size: 12px;
+                cursor: pointer;
+                width: 100%;
+                transition: all 0.2s;
+            `;
             advancedBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 if (!iroPickerInitialized) {
+                    const container = document.createElement('div');
+                    container.style.cssText = `
+                        padding: 12px;
+                        background: #fff;
+                        border-radius: 8px;
+                    `;
                     createColorPicker(container, (hex) => {
                         onChange(hex);
                         updateButtonColor(hex);
                         closeColorPicker();
                     });
                     iroPickerInitialized = true;
+                    paletteContainer.innerHTML = '';
+                    paletteContainer.appendChild(container);
                 }
-                paletteContainer.style.display = 'none';
             });
+            advancedBtn.onmouseover = () => {
+                advancedBtn.style.background = '#e5e7eb';
+            }
+            advancedBtn.onmouseout = () => {
+                advancedBtn.style.background = '#f3f4f6';
+            }
             paletteContainer.appendChild(advancedBtn);
 
             const container = document.createElement('div');
@@ -218,11 +266,17 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
             }
 
             // Apply the calculated position
-            colorContainer.style.position = 'fixed';
-            colorContainer.style.top = `${top}px`;
-            colorContainer.style.left = `${left}px`;
-            colorContainer.style.width = `${pickerWidth}px`;
-            colorContainer.style.display = 'block';
+            colorContainer.style.cssText = `
+                position: fixed;
+                top: ${top}px;
+                left: ${left}px;
+                width: ${pickerWidth}px;
+                display: block;
+                background: #fff;
+                border-radius: 8px;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+                z-index: 1000;
+            `;
             colorContainer.appendChild(container);
             colorContainer.appendChild(clearcolorBtn);
             toolbar.appendChild(colorContainer);
