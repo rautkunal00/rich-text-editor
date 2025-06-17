@@ -198,7 +198,80 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
                     // Create color picker
                     const picker = createColorPicker(container, (hex) => {
                         tempColor = hex;
+                        hexInput.value = hex;
                     });
+
+                    // Create hex input container
+                    const hexInputContainer = document.createElement('div');
+                    hexInputContainer.style.cssText = `
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                        margin-top: 16px;
+                        padding: 0 4px;
+                    `;
+
+                    // Create hex label
+                    const hexLabel = document.createElement('span');
+                    hexLabel.textContent = 'HEX:';
+                    hexLabel.style.cssText = `
+                        font-size: 12px;
+                        color: #4b5563;
+                        font-weight: 500;
+                    `;
+
+                    // Create hex input
+                    const hexInput = document.createElement('input');
+                    hexInput.type = 'text';
+                    hexInput.value = tempColor;
+                    hexInput.style.cssText = `
+                        flex: 1;
+                        padding: 6px 8px;
+                        border: 1px solid #d1d5db;
+                        border-radius: 4px;
+                        font-size: 12px;
+                        font-family: monospace;
+                        outline: none;
+                        transition: all 0.2s;
+                        width: 100%;
+                    `;
+                    hexInput.onfocus = () => {
+                        hexInput.style.borderColor = '#2563eb';
+                        hexInput.style.boxShadow = '0 0 0 2px rgba(37, 99, 235, 0.1)';
+                    };
+                    hexInput.onblur = () => {
+                        hexInput.style.borderColor = '#d1d5db';
+                        hexInput.style.boxShadow = 'none';
+                    };
+                    hexInput.oninput = (e) => {
+                        const input = e.target as HTMLInputElement;
+                        let value = input.value;
+                        
+                        // Remove any non-hex characters
+                        value = value.replace(/[^0-9A-Fa-f]/g, '');
+                        
+                        // Ensure it starts with #
+                        if (!value.startsWith('#')) {
+                            value = '#' + value;
+                        }
+                        
+                        // Limit to 7 characters (#RRGGBB)
+                        if (value.length > 7) {
+                            value = value.slice(0, 7);
+                        }
+                        
+                        input.value = value;
+                        
+                        // Update color if valid hex
+                        if (value.length === 7) {
+                            tempColor = value;
+                            picker.color.set(value);
+                        }
+                    };
+
+                    hexInputContainer.appendChild(hexLabel);
+                    hexInputContainer.appendChild(hexInput);
+                    container.appendChild(hexInputContainer);
 
                     // Create confirm button container
                     const confirmContainer = document.createElement('div');
