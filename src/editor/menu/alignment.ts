@@ -1,16 +1,66 @@
 import { Editor } from '@tiptap/core';
 
+// Function to update button state
+const updateButtonState = (button: HTMLElement, isActive: boolean) => {
+    if (isActive) {
+        button.classList.add('active');
+    } else {
+        button.classList.remove('active');
+    }
+};
+
 export const setupAlignment = (editor: Editor) => {
-    document.getElementById('align-left-btn')?.addEventListener('click', () => {
+    const leftButton = document.getElementById('align-left-btn');
+    const centerButton = document.getElementById('align-center-btn');
+    const rightButton = document.getElementById('align-right-btn');
+    const justifyButton = document.getElementById('align-justify-btn');
+
+    // Update button states based on editor state
+    editor.on('update', () => {
+        if (leftButton) {
+            updateButtonState(leftButton, editor.isActive({ textAlign: 'left' }));
+        }
+        if (centerButton) {
+            updateButtonState(centerButton, editor.isActive({ textAlign: 'center' }));
+        }
+        if (rightButton) {
+            updateButtonState(rightButton, editor.isActive({ textAlign: 'right' }));
+        }
+        if (justifyButton) {
+            updateButtonState(justifyButton, editor.isActive({ textAlign: 'justify' }));
+        }
+    });
+
+    // Add click handlers
+    leftButton?.addEventListener('click', () => {
         editor.chain().focus().setTextAlign('left').run();
+        updateButtonState(leftButton, true);
+        updateButtonState(centerButton!, false);
+        updateButtonState(rightButton!, false);
+        updateButtonState(justifyButton!, false);
     });
-    document.getElementById('align-center-btn')?.addEventListener('click', () => {
+
+    centerButton?.addEventListener('click', () => {
         editor.chain().focus().setTextAlign('center').run();
+        updateButtonState(leftButton!, false);
+        updateButtonState(centerButton, true);
+        updateButtonState(rightButton!, false);
+        updateButtonState(justifyButton!, false);
     });
-    document.getElementById('align-right-btn')?.addEventListener('click', () => {
+
+    rightButton?.addEventListener('click', () => {
         editor.chain().focus().setTextAlign('right').run();
+        updateButtonState(leftButton!, false);
+        updateButtonState(centerButton!, false);
+        updateButtonState(rightButton, true);
+        updateButtonState(justifyButton!, false);
     });
-    document.getElementById('align-justify-btn')?.addEventListener('click', () => {
+
+    justifyButton?.addEventListener('click', () => {
         editor.chain().focus().setTextAlign('justify').run();
+        updateButtonState(leftButton!, false);
+        updateButtonState(centerButton!, false);
+        updateButtonState(rightButton!, false);
+        updateButtonState(justifyButton, true);
     });
 }
