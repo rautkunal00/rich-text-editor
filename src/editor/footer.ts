@@ -10,13 +10,17 @@ export const createFooter = (footerElement: HTMLDivElement, config: any): void =
     footerElement.style.background = '#f9f9f9';
 
     // footer message
-    const footer = document.createElement('span');
-    footer.innerText = 'Malicious content in code will be automatically removed.';
-    footerElement.appendChild(footer);
+    if (config.footerMessage) {
+        const footer = document.createElement('span');
+        footer.innerText = config.footerMessage;
+        footerElement.appendChild(footer);
+    }
 
     // add word count
-    const wordCount = document.createElement('span');
-    wordCount.id = 'word-count';
-    wordCount.innerText = 'Words: 0';
-    footerElement.appendChild(wordCount);
+    if (config.displayWordCount) {
+        const wordCount = document.createElement('span');
+        wordCount.id = 'word-count';
+        wordCount.innerText = 'Words: 0';
+        footerElement.appendChild(wordCount);
+    }
 }
