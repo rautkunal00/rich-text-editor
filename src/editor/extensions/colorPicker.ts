@@ -177,13 +177,19 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
             advancedBtn.textContent = 'Advanced';
             advancedBtn.style.cssText = `
                 flex: 1;
-                padding: 6px 12px;
-                background: #f3f4f6;
-                border: 1px solid #d1d5db;
-                border-radius: 4px;
-                font-size: 12px;
+                padding: 8px 16px;
+                background: #ffffff;
+                border: 1px solid #e2e8f0;
+                border-radius: 6px;
+                font-size: 13px;
+                font-weight: 500;
+                color: #334155;
                 cursor: pointer;
-                transition: all 0.2s;
+                transition: all 0.2s ease;
+                box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+                display: flex;
+                align-items: center;
+                justify-content: center;
             `;
             advancedBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
@@ -286,24 +292,29 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
                     confirmBtn.textContent = 'Apply';
                     confirmBtn.style.cssText = `
                         flex: 1;
-                        padding: 8px 24px;
-                        background: #2563eb;
-                        color: white;
-                        border: none;
+                        padding: 8px 16px;
+                        background: #ffffff;
+                        border: 1px solid #e2e8f0;
                         border-radius: 6px;
                         font-size: 13px;
                         font-weight: 500;
+                        color: #334155;
                         cursor: pointer;
-                        transition: all 0.2s;
-                        box-shadow: 0 2px 4px rgba(37, 99, 235, 0.1);
+                        transition: all 0.2s ease;
+                        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
                     `;
                     confirmBtn.onmouseover = () => {
-                        confirmBtn.style.background = '#1d4ed8';
-                        confirmBtn.style.boxShadow = '0 4px 6px rgba(37, 99, 235, 0.2)';
+                        confirmBtn.style.background = '#f8fafc';
+                        confirmBtn.style.borderColor = '#cbd5e1';
+                        confirmBtn.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.05)';
                     }
                     confirmBtn.onmouseout = () => {
-                        confirmBtn.style.background = '#2563eb';
-                        confirmBtn.style.boxShadow = '0 2px 4px rgba(37, 99, 235, 0.1)';
+                        confirmBtn.style.background = '#ffffff';
+                        confirmBtn.style.borderColor = '#e2e8f0';
+                        confirmBtn.style.boxShadow = '0 1px 2px rgba(0, 0, 0, 0.05)';
                     }
                     confirmBtn.onclick = (e) => {
                         e.stopPropagation();
@@ -317,20 +328,29 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
                     advancedResetBtn.textContent = 'Reset';
                     advancedResetBtn.style.cssText = `
                         flex: 1;
-                        padding: 8px 24px;
-                        background: #f3f4f6;
-                        border: 1px solid #d1d5db;
+                        padding: 8px 16px;
+                        background: #ffffff;
+                        border: 1px solid #e2e8f0;
                         border-radius: 6px;
                         font-size: 13px;
                         font-weight: 500;
+                        color: #334155;
                         cursor: pointer;
-                        transition: all 0.2s;
+                        transition: all 0.2s ease;
+                        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
                     `;
                     advancedResetBtn.onmouseover = () => {
-                        advancedResetBtn.style.background = '#e5e7eb';
+                        advancedResetBtn.style.background = '#f8fafc';
+                        advancedResetBtn.style.borderColor = '#cbd5e1';
+                        advancedResetBtn.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.05)';
                     }
                     advancedResetBtn.onmouseout = () => {
-                        advancedResetBtn.style.background = '#f3f4f6';
+                        advancedResetBtn.style.background = '#ffffff';
+                        advancedResetBtn.style.borderColor = '#e2e8f0';
+                        advancedResetBtn.style.boxShadow = '0 1px 2px rgba(0, 0, 0, 0.05)';
                     }
                     advancedResetBtn.onclick = (e) => {
                         e.stopPropagation();
@@ -352,10 +372,14 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
                 }
             });
             advancedBtn.onmouseover = () => {
-                advancedBtn.style.background = '#e5e7eb';
+                advancedBtn.style.background = '#f8fafc';
+                advancedBtn.style.borderColor = '#cbd5e1';
+                advancedBtn.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.05)';
             }
             advancedBtn.onmouseout = () => {
-                advancedBtn.style.background = '#f3f4f6';
+                advancedBtn.style.background = '#ffffff';
+                advancedBtn.style.borderColor = '#e2e8f0';
+                advancedBtn.style.boxShadow = '0 1px 2px rgba(0, 0, 0, 0.05)';
             }
 
             // Reset button
@@ -364,25 +388,29 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
             clearcolorBtn.textContent = 'Reset';
             clearcolorBtn.style.cssText = `
                 flex: 1;
-                padding: 6px 12px;
-                background: #f3f4f6;
-                border: 1px solid #d1d5db;
-                border-radius: 4px;
-                font-size: 12px;
+                padding: 8px 16px;
+                background: #ffffff;
+                border: 1px solid #e2e8f0;
+                border-radius: 6px;
+                font-size: 13px;
+                font-weight: 500;
+                color: #334155;
                 cursor: pointer;
-                transition: all 0.2s;
+                transition: all 0.2s ease;
+                box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+                display: flex;
+                align-items: center;
+                justify-content: center;
             `;
-            clearcolorBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                onChange('');
-                updateButtonColor('');
-                closeColorPicker();
-            });
             clearcolorBtn.onmouseover = () => {
-                clearcolorBtn.style.background = '#e5e7eb';
+                clearcolorBtn.style.background = '#f8fafc';
+                clearcolorBtn.style.borderColor = '#cbd5e1';
+                clearcolorBtn.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.05)';
             }
             clearcolorBtn.onmouseout = () => {
-                clearcolorBtn.style.background = '#f3f4f6';
+                clearcolorBtn.style.background = '#ffffff';
+                clearcolorBtn.style.borderColor = '#e2e8f0';
+                clearcolorBtn.style.boxShadow = '0 1px 2px rgba(0, 0, 0, 0.05)';
             }
 
             buttonContainer.appendChild(advancedBtn);
