@@ -1,6 +1,19 @@
 import { Editor } from '@tiptap/core';
 
 export const setupSearchReplace = (editor: Editor) => {
+  // Add minimal positioning styles
+  const style = document.createElement('style');
+  style.textContent = `
+    #search-dialog {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1000;
+    }
+  `;
+  document.head.appendChild(style);
+
   const searchDialog = document.getElementById('search-dialog') as HTMLElement;
   const openSearchBtn = document.getElementById('open-search-dialog-btn');
   const closeSearchBtn = document.getElementById('close-search-dialog');
