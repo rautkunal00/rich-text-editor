@@ -391,3 +391,58 @@ ul.custom-dash > li::marker {
 .emoji-popup button:hover {
   background: #e0e0e0;
 }
+
+ .editor-floating {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 10000;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  box-sizing: border-box;
+  overflow: auto;
+}
+
+.editor-floating-active {
+  overflow: hidden;
+}
+
+
+.editor-close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.preview-container {
+  position: fixed;
+  top: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80vw;
+  height: 80vh;
+  background: white;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  z-index: 10000;
+  overflow-y: auto;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.preview-close-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.75rem;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #333;
+}

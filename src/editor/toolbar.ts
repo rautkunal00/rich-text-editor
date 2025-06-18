@@ -113,7 +113,9 @@ export function createToolbar(editor: any): HTMLElement {
         // { type: 'button', id: 'spellCheck', label: 'Spellcheck', icon: 'spell-check-2' },
         { type: 'button', id: 'open-search-dialog', label: 'Search & Replace', icon: 'search' },
         { type: 'button', id: 'insert-datetime', label: 'Insert Date & Time', icon: 'calendar-days' },
-        { type: 'button', id: 'insert-emoji-char', label: 'Insert Special Characters & Emoji', icon: 'asterisk' }
+        { type: 'button', id: 'insert-emoji-char', label: 'Insert Special Characters & Emoji', icon: 'asterisk' },
+        { type: 'button', id: 'fullscreen', label: 'Fullscreen', icon: 'expand'},
+        { type: 'button', id: 'preview', label: 'Preview', icon: 'scan-eye'}
     ];
 
     const toolbar = document.createElement('div');
