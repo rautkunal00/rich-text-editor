@@ -22,6 +22,8 @@ import { setupHeadingStyle } from './menu/heading';
 import { superscriptSubscript } from './menu/superscriptSubscript';
 import { addAdditionalButtons } from './menu/addAdditionalButton';
 import { addEmojisAndCharacters } from './menu/addEmojisAndCharacters';
+import { setupFullscreenToggle } from './menu/fullScreen';
+import { showPreview } from './menu/showPreview'
 
 export const initMenu = (editor: Editor, editorElement: HTMLDivElement) => {
     setupFormatting(editor);
@@ -48,4 +50,6 @@ export const initMenu = (editor: Editor, editorElement: HTMLDivElement) => {
     addAdditionalButtons(editor);
     setupAddLink(editor);
     addEmojisAndCharacters(editor);
+    setupFullscreenToggle(editor);
+    showPreview(editor);
 }
