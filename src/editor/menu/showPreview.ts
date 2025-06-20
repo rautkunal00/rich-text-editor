@@ -1,8 +1,9 @@
 import { Editor } from "@tiptap/core";
+import { iframeDocument } from "../globalVariables";
 
 declare const lucide: any;
 export const showPreview = (editor: Editor) => {
-    const previewBtn = document.getElementById('preview-btn');
+    const previewBtn = iframeDocument.getElementById('preview-btn');
 
     if(previewBtn) {
       previewBtn.addEventListener('click',()=>{
@@ -12,12 +13,12 @@ export const showPreview = (editor: Editor) => {
 }
 
 function showPreviewOverLay(editor:Editor){
-  const existingPreview = document.getElementById('editor-preview-overlay');
+  const existingPreview = iframeDocument.getElementById('editor-preview-overlay');
   if(existingPreview) existingPreview.remove();
 
   const htmlContent = editor.getHTML();
 
-  const previewOverLay = document.createElement('div');
+  const previewOverLay = iframeDocument.createElement('div');
   previewOverLay.id = 'editor-preview-overlay';
   previewOverLay.className = 'preview-container';
 
@@ -30,14 +31,14 @@ function showPreviewOverLay(editor:Editor){
     </div>
   `
 
-  document.body.appendChild(previewOverLay);
-  document.body.style.overflow = "hidden";
+  iframeDocument.body.appendChild(previewOverLay);
+  iframeDocument.body.style.overflow = "hidden";
   lucide?.createIcons();
 
-  const closeBtn = document.getElementById('close-preview-btn');
+  const closeBtn = iframeDocument.getElementById('close-preview-btn');
   closeBtn?.addEventListener('click',()=>{
     previewOverLay.remove();
-    document.body.style.overflow = "";
+    iframeDocument.body.style.overflow = "";
   })
 
 }

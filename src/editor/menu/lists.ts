@@ -1,7 +1,8 @@
 import { Editor } from '@tiptap/core';
+import { iframeDocument } from '../globalVariables';
 
 export const setupLists = (editor: Editor) => {
-    document.getElementById('ordered-list-select')?.addEventListener('change', (e: Event) => {
+    iframeDocument.getElementById('ordered-list-select')?.addEventListener('change', (e: Event) => {
         const value = (e.target as HTMLSelectElement).value;
         const styles: Record<string, string> = {
             'Decimal': 'decimal',
@@ -14,7 +15,7 @@ export const setupLists = (editor: Editor) => {
         applyAdvancedListStyle(editor, 'ordered', styles[value]);
     });
 
-    document.getElementById('bullet-list-select')?.addEventListener('change', (e: Event) => {
+    iframeDocument.getElementById('bullet-list-select')?.addEventListener('change', (e: Event) => {
         const value = (e.target as HTMLSelectElement).value;
         const styles: Record<string, string> = {
             'Disc': 'disc',

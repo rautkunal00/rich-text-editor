@@ -1,7 +1,8 @@
 import { Editor } from "@tiptap/core";
+import { iframeDocument, iframeWindow } from "../globalVariables";
 
 export function addEmojisAndCharacters(editor: Editor) {
-    const button = document.getElementById('insert-emoji-char-btn');
+    const button = iframeDocument.getElementById('insert-emoji-char-btn');
     button?.addEventListener('click', () => {
         const popupContent = createEmojiPopupWithTabs();
         popupContent.addEventListener('emoji-select', (e: any) => {
@@ -9,8 +10,8 @@ export function addEmojisAndCharacters(editor: Editor) {
         });
         // get position for popup
         const rect = button.getBoundingClientRect();
-        const top = rect.bottom + window.scrollY;
-        const left = rect.left + window.scrollX;
+        const top = rect.bottom + iframeWindow.scrollY;
+        const left = rect.left + iframeWindow.scrollX;
 
         editor.commands.showPopup({
             html: popupContent,
@@ -27,7 +28,7 @@ function createEmojiPopupWithTabs(): HTMLDivElement {
         Math: ['+', '-', '×', '÷', '=', '≠', '<', '≥']
     };
 
-    const container = document.createElement('div');
+    const container = iframeDocument.createElement('div');
     container.style.width = '240px';
     container.style.border = '1px solid #ccc';
     container.style.borderRadius = '8px';
@@ -35,8 +36,8 @@ function createEmojiPopupWithTabs(): HTMLDivElement {
     container.style.fontFamily = 'sans-serif';
     container.style.background = '#fff';
 
-    const tabHeader = document.createElement('div');
-    const tabContent = document.createElement('div');
+    const tabHeader = iframeDocument.createElement('div');
+    const tabContent = iframeDocument.createElement('div');
     let activeTab = 'Emoji';
 
     tabHeader.style.display = 'flex';
@@ -53,7 +54,7 @@ function createEmojiPopupWithTabs(): HTMLDivElement {
         tabContent.innerHTML = '';
 
         categories[tabName].forEach((char) => {
-            const button = document.createElement('button');
+            const button = iframeDocument.createElement('button');
             button.className = 'emoji-btn';
             button.textContent = char;
             button.style.border = '1px solid #ddd';
@@ -73,7 +74,7 @@ function createEmojiPopupWithTabs(): HTMLDivElement {
     };
 
     Object.keys(categories).forEach((tabName) => {
-        const tabBtn = document.createElement('button');
+        const tabBtn = iframeDocument.createElement('button');
         tabBtn.textContent = tabName;
         tabBtn.style.flex = '1';
         tabBtn.style.padding = '6px';

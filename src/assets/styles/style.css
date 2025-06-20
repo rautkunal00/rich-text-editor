@@ -2,16 +2,14 @@ body {
   margin: 0;
   padding: 20px;
   background: #f0f2f5;
-  font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+  font-family: "Segoe UI", "Roboto", Arial, sans-serif;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-#editor {
-  width: 100%;
-  max-width: 1200px;
+body {
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
@@ -21,24 +19,22 @@ body {
   position: relative;
 }
 
-
-#editor .tiptap.ProseMirror {
-  min-height: 400px;
+body .tiptap.ProseMirror {
   background: #fff;
   border-radius: 0 0 12px 12px;
-  padding: 20px;
+  padding: 0 4px;
 }
 
-#editor p {
+body p {
   margin-block-start: 8px;
   margin-block-end: 8px;
   line-height: 1.7;
   color: #1f2937;
 }
 
-#editor .tiptap.ProseMirror table,
-#editor .tiptap.ProseMirror table th,
-#editor .tiptap.ProseMirror table td {
+body .tiptap.ProseMirror table,
+body .tiptap.ProseMirror table th,
+body .tiptap.ProseMirror table td {
   border: 1px solid #e5e7eb;
   background: #f9fafb;
   padding: 8px;
@@ -169,7 +165,7 @@ body {
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   padding: 20px;
-  font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+  font-family: "Segoe UI", "Roboto", Arial, sans-serif;
   z-index: 1000;
   display: none;
 }
@@ -343,7 +339,7 @@ body {
   font-size: 0.875rem;
   color: #6b7280;
   margin-top: 8px;
-  font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+  font-family: "Segoe UI", "Roboto", Arial, sans-serif;
   line-height: 1.5;
   user-select: none;
   text-align: right;
@@ -357,9 +353,8 @@ button i {
   color: currentColor;
 }
 
-#editor .tiptap.ProseMirror:focus {
+.tiptap.ProseMirror:focus {
   outline: none;
-  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
 }
 
 ul.custom-checkmark > li::marker {
@@ -392,7 +387,7 @@ ul.custom-dash > li::marker {
   background: #e0e0e0;
 }
 
- .editor-floating {
+.editor-floating {
   position: fixed;
   top: 0;
   left: 0;
@@ -410,7 +405,6 @@ ul.custom-dash > li::marker {
 .editor-floating-active {
   overflow: hidden;
 }
-
 
 .editor-close-btn {
   position: absolute;

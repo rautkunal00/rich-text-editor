@@ -26,8 +26,9 @@ import TextColor from './extensions/textColor';
 import { ExtendedOrderedList } from './extensions/extendedOrderedList';
 import { ExtendedBulletList } from './extensions/extendedBulletList';
 import { PopupExtension } from './extensions/popup';
+import { EditorOptions } from '../globalInterface';
 
-export const getExtensions = () => [
+export const getExtensions = (editorConfig: EditorOptions) => [
     StarterKit,
     TextStyle,
     Color,

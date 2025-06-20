@@ -1,4 +1,5 @@
 import { CommandProps, Extension } from "@tiptap/core"
+import { iframeDocument } from "../globalVariables"
 
 export interface PopupExtensionOptions {
     overlayClass?: string
@@ -26,10 +27,10 @@ export const PopupExtension = Extension.create<PopupExtensionOptions>({
                     closeOnOutsideClick?: boolean;
                 }) =>
                     (_props: CommandProps) => {
-                        const existing = document.querySelector('.tiptap-popup');
+                        const existing = iframeDocument.querySelector('.tiptap-popup');
                         if (existing) existing.remove();
 
-                        const popup = document.createElement('div');
+                        const popup = iframeDocument.createElement('div');
                         popup.className = 'tiptap-popup';
                         popup.appendChild(config.html);
 
@@ -43,7 +44,7 @@ export const PopupExtension = Extension.create<PopupExtensionOptions>({
                         popup.style.padding = '10px';
                         popup.style.borderRadius = '8px';
 
-                        document.body.appendChild(popup);
+                        iframeDocument.body.appendChild(popup);
 
                         if (config.onMount) {
                             config.onMount(popup);
@@ -53,10 +54,10 @@ export const PopupExtension = Extension.create<PopupExtensionOptions>({
                             const outsideClickHandler = (event: MouseEvent) => {
                                 if (!popup.contains(event.target as Node)) {
                                     popup.remove();
-                                    document.removeEventListener('mousedown', outsideClickHandler);
+                                    iframeDocument.removeEventListener('mousedown', outsideClickHandler);
                                 }
                             };
-                            document.addEventListener('mousedown', outsideClickHandler);
+                            iframeDocument.addEventListener('mousedown', outsideClickHandler);
                         }
 
                         return true;
@@ -65,7 +66,7 @@ export const PopupExtension = Extension.create<PopupExtensionOptions>({
             closePopup:
                 () =>
                     (_props: CommandProps) => {
-                        const existing = document.querySelector('.tiptap-popup');
+                        const existing = iframeDocument.querySelector('.tiptap-popup');
                         if (existing) existing.remove();
                         return true;
                     },
@@ -73,12 +74,12 @@ export const PopupExtension = Extension.create<PopupExtensionOptions>({
     },
     onCreate() {
         if (this.options.injectStyles) {
-            const style = document.createElement('style')
+            const style = iframeDocument.createElement('style')
             style.innerHTML = `
         .${this.options.popupClass} { transition: opacity 0.2s ease-in-out; }
         .${this.options.overlayClass} { transition: background 0.2s ease-in-out; }
       `
-            document.head.appendChild(style)
+            iframeDocument.head.appendChild(style)
         }
     },
 })

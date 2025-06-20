@@ -1,7 +1,8 @@
 import { Editor } from '@tiptap/core';
+import { iframeDocument } from '../globalVariables';
 
 export const setupImageUpload = (editor: Editor, editorElement: HTMLDivElement) => {
-    document.getElementById('image-upload-btn')?.addEventListener('click', () => {
+    iframeDocument.getElementById('image-upload-btn')?.addEventListener('click', () => {
         const url = prompt('Enter image URL:');
         if (url) {
             editor.chain().focus().setImage({ src: url }).run();

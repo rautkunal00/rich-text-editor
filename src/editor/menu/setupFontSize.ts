@@ -1,7 +1,8 @@
 import { Editor } from '@tiptap/core'
+import { iframeDocument } from '../globalVariables'
 
 export const setupFontSize = (editor: Editor) => {
-  const select = document.getElementById('font-size-select') as HTMLSelectElement | null
+  const select = iframeDocument.getElementById('font-size-select') as HTMLSelectElement | null
   if (!select) return
 
   select.addEventListener('change', () => {

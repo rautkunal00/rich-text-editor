@@ -1,7 +1,8 @@
 import { Editor } from '@tiptap/core'
+import { iframeDocument } from '../globalVariables'
 
 export const setupFontFamily = (editor: Editor) => {
-  const select = document.getElementById('font-family-select') as HTMLSelectElement | null
+  const select = iframeDocument.getElementById('font-family-select') as HTMLSelectElement | null
   if (!select) {
     console.warn('Font family dropdown not found')
     return

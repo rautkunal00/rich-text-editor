@@ -1,8 +1,9 @@
 import { Editor } from '@tiptap/core';
+import { iframeDocument } from '../globalVariables';
 
 export const superscriptSubscript = (editor: Editor) => {
 
-    document.getElementById('superscript-btn')?.addEventListener('click', () => {
+    iframeDocument.getElementById('superscript-btn')?.addEventListener('click', () => {
         
         const isActive = editor.isActive('superscript');
 
@@ -14,7 +15,7 @@ export const superscriptSubscript = (editor: Editor) => {
         }
     });
     
-    document.getElementById('subscript-btn')?.addEventListener('click', () => {
+    iframeDocument.getElementById('subscript-btn')?.addEventListener('click', () => {
         
         const isActive = editor.isActive('subscript');
 

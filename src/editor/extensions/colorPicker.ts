@@ -1,4 +1,5 @@
 import iro from '@jaames/iro';
+import { iframeDocument, iframeWindow } from '../globalVariables';
 
 // Global state to track active color picker
 let activeColorPicker: HTMLElement | null = null;
@@ -43,15 +44,15 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
     const getContrastColor = (hexColor: string) => {
         // Remove the hash if it exists
         const hex = hexColor.replace('#', '');
-        
+
         // Convert to RGB
         const r = parseInt(hex.substr(0, 2), 16);
         const g = parseInt(hex.substr(2, 2), 16);
         const b = parseInt(hex.substr(4, 2), 16);
-        
+
         // Calculate luminance
         const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-        
+
         // Return black or white based on luminance
         return luminance > 0.5 ? '#000000' : '#ffffff';
     };
@@ -89,11 +90,11 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
     const handleToolbarClick = (event: MouseEvent) => {
         const target = event.target as HTMLElement;
         const clickedButton = target.closest('button');
-        
+
         if (clickedButton) {
             const buttonId = clickedButton.id;
             // Close if clicking any button except the current color picker button
-            if (buttonId && (buttonId === 'text-color-btn' || buttonId === 'highlight-color-btn' || 
+            if (buttonId && (buttonId === 'text-color-btn' || buttonId === 'highlight-color-btn' ||
                 (clickedButton !== button && !button.contains(clickedButton)))) {
                 closeColorPicker();
             }
@@ -101,7 +102,7 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
     };
 
     // Add event listeners
-    document.addEventListener('click', handleDocumentClick);
+    iframeDocument.addEventListener('click', handleDocumentClick);
     toolbar.addEventListener('click', handleToolbarClick);
 
     button.addEventListener('click', (event: MouseEvent) => {
@@ -111,14 +112,14 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
         } else {
             // Close any other active color picker first
             closeActiveColorPicker();
-            
+
             isColorpaletteOpen = true;
-            colorContainer = document.createElement('div');
+            colorContainer = iframeDocument.createElement('div');
             colorContainer.id = 'color-picker-container';
             activeColorPicker = colorContainer;
 
             // Create palette container
-            const paletteContainer = document.createElement('div');
+            const paletteContainer = iframeDocument.createElement('div');
             paletteContainer.id = 'color-palette';
             paletteContainer.style.cssText = `
                 display: block;
@@ -135,7 +136,7 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
             // Add swatches
             const swatches = ['#ff0000', '#00ff00', '#0000ff', '#000000', '#ffffff']
             swatches.forEach((hex) => {
-                const swatch = document.createElement('div');
+                const swatch = iframeDocument.createElement('div');
                 swatch.style.cssText = `
                     background: ${hex};
                     width: 24px;
@@ -164,7 +165,7 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
             });
 
             // Create button container
-            const buttonContainer = document.createElement('div');
+            const buttonContainer = iframeDocument.createElement('div');
             buttonContainer.style.cssText = `
                 display: flex;
                 gap: 8px;
@@ -173,7 +174,7 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
             `;
 
             // Advanced button
-            const advancedBtn = document.createElement('button');
+            const advancedBtn = iframeDocument.createElement('button');
             advancedBtn.textContent = 'Advanced';
             advancedBtn.style.cssText = `
                 flex: 1;
@@ -194,7 +195,7 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
             advancedBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 if (!iroPickerInitialized) {
-                    const container = document.createElement('div');
+                    const container = iframeDocument.createElement('div');
                     container.style.cssText = `
                         padding: 12px;
                         background: #fff;
@@ -208,7 +209,7 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
                     });
 
                     // Create hex input container
-                    const hexInputContainer = document.createElement('div');
+                    const hexInputContainer = iframeDocument.createElement('div');
                     hexInputContainer.style.cssText = `
                         display: flex;
                         align-items: center;
@@ -218,7 +219,7 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
                     `;
 
                     // Create hex label
-                    const hexLabel = document.createElement('span');
+                    const hexLabel = iframeDocument.createElement('span');
                     hexLabel.textContent = 'HEX:';
                     hexLabel.style.cssText = `
                         font-size: 12px;
@@ -227,7 +228,7 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
                     `;
 
                     // Create hex input
-                    const hexInput = document.createElement('input');
+                    const hexInput = iframeDocument.createElement('input');
                     hexInput.type = 'text';
                     hexInput.value = tempColor;
                     hexInput.style.cssText = `
@@ -252,22 +253,22 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
                     hexInput.oninput = (e) => {
                         const input = e.target as HTMLInputElement;
                         let value = input.value;
-                        
+
                         // Remove any non-hex characters
                         value = value.replace(/[^0-9A-Fa-f]/g, '');
-                        
+
                         // Ensure it starts with #
                         if (!value.startsWith('#')) {
                             value = '#' + value;
                         }
-                        
+
                         // Limit to 7 characters (#RRGGBB)
                         if (value.length > 7) {
                             value = value.slice(0, 7);
                         }
-                        
+
                         input.value = value;
-                        
+
                         // Update color if valid hex
                         if (value.length === 7) {
                             tempColor = value;
@@ -280,7 +281,7 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
                     container.appendChild(hexInputContainer);
 
                     // Create confirm button container
-                    const confirmContainer = document.createElement('div');
+                    const confirmContainer = iframeDocument.createElement('div');
                     confirmContainer.style.cssText = `
                         display: flex;
                         gap: 8px;
@@ -288,7 +289,7 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
                     `;
 
                     // Create confirm button
-                    const confirmBtn = document.createElement('button');
+                    const confirmBtn = iframeDocument.createElement('button');
                     confirmBtn.textContent = 'Apply';
                     confirmBtn.style.cssText = `
                         flex: 1;
@@ -324,7 +325,7 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
                     };
 
                     // Create reset button for advanced view
-                    const advancedResetBtn = document.createElement('button');
+                    const advancedResetBtn = iframeDocument.createElement('button');
                     advancedResetBtn.textContent = 'Reset';
                     advancedResetBtn.style.cssText = `
                         flex: 1;
@@ -366,7 +367,7 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
                     iroPickerInitialized = true;
                     paletteContainer.innerHTML = '';
                     paletteContainer.appendChild(container);
-                    
+
                     // Hide the Advanced button and button container
                     buttonContainer.style.display = 'none';
                 }
@@ -383,7 +384,7 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
             }
 
             // Reset button
-            const clearcolorBtn = document.createElement('button');
+            const clearcolorBtn = iframeDocument.createElement('button');
             clearcolorBtn.id = 'clear-color-btn';
             clearcolorBtn.textContent = 'Reset';
             clearcolorBtn.style.cssText = `
@@ -417,7 +418,7 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
             buttonContainer.appendChild(clearcolorBtn);
             colorContainer.appendChild(buttonContainer);
 
-            const container = document.createElement('div');
+            const container = iframeDocument.createElement('div');
             let iroPickerInitialized = false;
 
             // Position the color picker
@@ -427,13 +428,13 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
             const pickerHeight = 200;
 
             // Calculate initial position
-            let top = buttonRect.bottom + window.scrollY;
-            let left = buttonRect.left + window.scrollX;
+            let top = buttonRect.bottom + iframeWindow.scrollY;
+            let left = buttonRect.left + iframeWindow.scrollX;
 
             // Adjust position to stay within viewport
-            const viewportWidth = window.innerWidth;
-            const viewportHeight = window.innerHeight;
-            const scrollY = window.scrollY;
+            const viewportWidth = iframeWindow.innerWidth;
+            const viewportHeight = iframeWindow.innerHeight;
+            const scrollY = iframeWindow.scrollY;
 
             // Check right edge
             if (left + pickerWidth > viewportWidth) {
@@ -449,7 +450,7 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
             if (top + pickerHeight > viewportHeight + scrollY) {
                 // Try to position above the button
                 top = buttonRect.top + scrollY - pickerHeight;
-                
+
                 // If still doesn't fit, position at the top of the viewport
                 if (top < scrollY) {
                     top = scrollY + 20;
@@ -475,7 +476,7 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
 
     // Cleanup function to remove event listeners
     return () => {
-        document.removeEventListener('click', handleDocumentClick);
+        iframeDocument.removeEventListener('click', handleDocumentClick);
         toolbar.removeEventListener('click', handleToolbarClick);
     };
 }

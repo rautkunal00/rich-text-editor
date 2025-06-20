@@ -1,4 +1,5 @@
 import { Editor } from '@tiptap/core';
+import { iframeDocument } from '../globalVariables';
 
 // Function to update button state
 const updateButtonState = (button: HTMLElement, isActive: boolean) => {
@@ -10,10 +11,10 @@ const updateButtonState = (button: HTMLElement, isActive: boolean) => {
 };
 
 export const setupAlignment = (editor: Editor) => {
-    const leftButton = document.getElementById('align-left-btn');
-    const centerButton = document.getElementById('align-center-btn');
-    const rightButton = document.getElementById('align-right-btn');
-    const justifyButton = document.getElementById('align-justify-btn');
+    const leftButton = iframeDocument.getElementById('align-left-btn');
+    const centerButton = iframeDocument.getElementById('align-center-btn');
+    const rightButton = iframeDocument.getElementById('align-right-btn');
+    const justifyButton = iframeDocument.getElementById('align-justify-btn');
 
     // Update button states based on editor state
     editor.on('update', () => {

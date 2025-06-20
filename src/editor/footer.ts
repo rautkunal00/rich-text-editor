@@ -1,3 +1,4 @@
+import { iframeDocument } from "./globalVariables";
 
 export const createFooter = (footerElement: HTMLDivElement, config: any): void => {
     // footer css
@@ -11,14 +12,14 @@ export const createFooter = (footerElement: HTMLDivElement, config: any): void =
 
     // footer message
     if (config.footerMessage) {
-        const footer = document.createElement('span');
+        const footer = iframeDocument.createElement('span');
         footer.innerText = config.footerMessage;
         footerElement.appendChild(footer);
     }
 
     // add word count
     if (config.displayWordCount) {
-        const wordCount = document.createElement('span');
+        const wordCount = iframeDocument.createElement('span');
         wordCount.id = 'word-count';
         wordCount.innerText = 'Words: 0';
         footerElement.appendChild(wordCount);

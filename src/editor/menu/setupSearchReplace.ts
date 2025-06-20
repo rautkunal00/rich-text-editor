@@ -1,8 +1,9 @@
 import { Editor } from '@tiptap/core';
+import { iframeDocument } from '../globalVariables';
 
 export const setupSearchReplace = (editor: Editor) => {
   // Add minimal positioning styles
-  const style = document.createElement('style');
+  const style = iframeDocument.createElement('style');
   style.textContent = `
     #search-dialog {
       position: fixed;
@@ -12,14 +13,14 @@ export const setupSearchReplace = (editor: Editor) => {
       z-index: 1000;
     }
   `;
-  document.head.appendChild(style);
+  iframeDocument.head.appendChild(style);
 
-  const searchDialog = document.getElementById('search-dialog') as HTMLElement;
-  const openSearchBtn = document.getElementById('open-search-dialog-btn');
-  const closeSearchBtn = document.getElementById('close-search-dialog');
+  const searchDialog = iframeDocument.getElementById('search-dialog') as HTMLElement;
+  const openSearchBtn = iframeDocument.getElementById('open-search-dialog-btn');
+  const closeSearchBtn = iframeDocument.getElementById('close-search-dialog');
 
-  const searchInput = document.getElementById('search-input') as HTMLInputElement;
-  const replaceInput = document.getElementById('replace-input') as HTMLInputElement;
+  const searchInput = iframeDocument.getElementById('search-input') as HTMLInputElement;
+  const replaceInput = iframeDocument.getElementById('replace-input') as HTMLInputElement;
 
   openSearchBtn?.addEventListener('click', () => {
     searchDialog.style.display = 'block';
@@ -70,7 +71,7 @@ export const setupSearchReplace = (editor: Editor) => {
     });
   };
 
-  document.getElementById('search-btn')?.addEventListener('click', () => {
+  iframeDocument.getElementById('search-btn')?.addEventListener('click', () => {
     const searchTerm = searchInput.value.trim();
     if (!searchTerm) return;
 
@@ -85,7 +86,7 @@ export const setupSearchReplace = (editor: Editor) => {
     highlightMatches(matches);
   });
 
-  document.getElementById('replace-btn')?.addEventListener('click', () => {
+  iframeDocument.getElementById('replace-btn')?.addEventListener('click', () => {
     const searchTerm = searchInput.value.trim();
     const replaceTerm = replaceInput.value;
     if (!searchTerm) return;
@@ -109,7 +110,7 @@ export const setupSearchReplace = (editor: Editor) => {
       .run();
   });
 
-  document.getElementById('replace-all-btn')?.addEventListener('click', () => {
+  iframeDocument.getElementById('replace-all-btn')?.addEventListener('click', () => {
     const searchTerm = searchInput.value.trim();
     const replaceTerm = replaceInput.value;
     if (!searchTerm) return;

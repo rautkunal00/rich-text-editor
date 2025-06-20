@@ -1,10 +1,11 @@
 import { Editor } from '@tiptap/core'
+import { iframeDocument } from '../globalVariables';
 
 let copiedMarks: { type: string; attrs: any }[] = []
 
 export const setupFormatPainter = (editor: Editor) => {
-  const copyBtn = document.getElementById('format-copy-btn')
-  const applyBtn = document.getElementById('format-apply-btn')
+  const copyBtn = iframeDocument.getElementById('format-copy-btn')
+  const applyBtn = iframeDocument.getElementById('format-apply-btn')
 
   copyBtn?.addEventListener('click', () => {
     const { from, to, empty } = editor.state.selection
