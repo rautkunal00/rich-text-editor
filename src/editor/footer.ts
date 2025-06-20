@@ -9,6 +9,8 @@ export const createFooter = (footerElement: HTMLDivElement, config: any): void =
     footerElement.style.fontSize = '12px';
     footerElement.style.color = '#888';
     footerElement.style.background = '#f9f9f9';
+    footerElement.style.borderTop = '1px solid #ddd';
+    footerElement.style.padding = '2px 4px 0 4px';
 
     // footer message
     if (config.footerMessage) {

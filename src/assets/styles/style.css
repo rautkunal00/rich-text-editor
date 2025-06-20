@@ -1,132 +1,68 @@
-body {
-  margin: 0;
-  padding: 20px;
-  background: #f0f2f5;
-  font-family: "Segoe UI", "Roboto", Arial, sans-serif;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+@charset "UTF-8";
+/* Validate CSS */
+.editor-container .tiptap:focus {
+  outline: none;
 }
-
-body {
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-}
-
-body .tiptap.ProseMirror {
-  background: #fff;
-  border-radius: 0 0 12px 12px;
+.editor-container .tiptap .tiptap-editor {
   padding: 0 4px;
+  display: flex;
+  flex-direction: column;
 }
-
-body p {
-  margin-block-start: 8px;
-  margin-block-end: 8px;
-  line-height: 1.7;
-  color: #1f2937;
-}
-
-body .tiptap.ProseMirror table,
-body .tiptap.ProseMirror table th,
-body .tiptap.ProseMirror table td {
+.editor-container .tiptap .tiptap-editor table {
+  padding: 0;
   border: 1px solid #e5e7eb;
-  background: #f9fafb;
+}
+.editor-container .tiptap .tiptap-editor table th,
+.editor-container .tiptap .tiptap-editor table td {
   padding: 8px;
-}
-
-#menu {
-  margin-bottom: 18px;
-  background: #f8f9fa;
-  padding: 12px;
-  border-radius: 8px;
   border: 1px solid #e5e7eb;
 }
-
-#menu button.active {
+.editor-container .tiptap .tiptap-editor ul.custom-checkmark > li::marker {
+  content: "✓ ";
+}
+.editor-container .tiptap .tiptap-editor ul.custom-dash > li::marker {
+  content: "– ";
+}
+.editor-container .toolbar {
+  padding-bottom: 4px;
+  display: flex;
+  flex-wrap: wrap;
+  border-bottom: 1px solid #ddd;
+}
+.editor-container .toolbar button {
+  border: none;
+  background: transparent;
+  color: #374151;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+.editor-container .toolbar button:hover {
+  background: #f3f4f6;
+  border-color: #2563eb;
+  color: #2563eb;
+  transform: translateY(-1px);
+}
+.editor-container .toolbar button.active {
   background: #2563eb;
   color: white;
   border-color: #2563eb;
   border: 2px solid #2563eb;
   box-shadow: 0 2px 6px rgba(37, 99, 235, 0.08);
 }
-
-#menu button {
-  padding: 8px 16px;
-  margin-right: 8px;
-  font-size: 14px;
-  cursor: pointer;
-  border: 1px solid #d1d5db;
-  background: #fff;
-  border-radius: 6px;
-  color: #374151;
-  transition: all 0.2s ease;
-}
-
-#menu button:hover {
-  background: #f3f4f6;
-  border-color: #2563eb;
-  color: #2563eb;
-  transform: translateY(-1px);
-}
-
-.toolbar {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-  background: #f8f9fa;
-  padding: 12px;
-  border-radius: 8px;
-  border: 1px solid #e5e7eb;
-}
-
-.toolbar button {
-  margin-right: 0;
-  padding: 8px 12px;
-  border-radius: 6px;
-  border: 1px solid #d1d5db;
-  background: #fff;
-  color: #374151;
-  font-size: 14px;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.toolbar button:hover {
-  background: #f3f4f6;
-  border-color: #2563eb;
-  color: #2563eb;
-  transform: translateY(-1px);
-}
-
-.toolbar button.active {
-  background: #2563eb;
-  color: white;
-  border-color: #2563eb;
-  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.2);
-}
-
-.toolbar button.active:hover {
+.editor-container .toolbar button.active:hover {
   background: #1d4ed8;
   color: white;
   border-color: #1d4ed8;
 }
-
-.toolbar select {
-  margin-right: 0;
+.editor-container .toolbar select {
+  border: none;
   height: 36px;
-  padding: 6px 32px 6px 12px;
+  min-width: 100px;
+  padding: 0 24px 0 0;
   font-size: 14px;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
   background-color: #fff;
   color: #374151;
   cursor: pointer;
@@ -137,18 +73,37 @@ body .tiptap.ProseMirror table td {
   background-position: right 10px center;
   background-size: 12px;
 }
-
-.toolbar select:hover {
-  border-color: #2563eb;
+.editor-container .toolbar select:hover {
+  color: #2563eb;
   transform: translateY(-1px);
 }
-
-.toolbar select:focus {
+.editor-container .toolbar select:focus {
   outline: none;
   border-color: #2563eb;
   box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
 }
+.editor-container .tiptap-popup .special-char-popup button {
+  border: none;
+  background: #eee;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 4px;
+}
+.editor-container .tiptap-popup .special-char-popup button:hover {
+  background: #ddd;
+}
+.editor-container .tiptap-popup .emoji-popup button {
+  border: none;
+  background: #f5f5f5;
+  font-size: 20px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.editor-container .tiptap-popup .emoji-popup button:hover {
+  background: #e0e0e0;
+}
 
+/* Yet to validate */
 .search-highlight {
   background-color: #fef08a;
   border-radius: 2px;
@@ -183,7 +138,7 @@ body .tiptap.ProseMirror table td {
   color: #e5e7eb;
 }
 
-.search-dialog input[type="text"] {
+.search-dialog input[type=text] {
   flex: 1;
   padding: 8px 12px;
   font-size: 14px;
@@ -195,7 +150,7 @@ body .tiptap.ProseMirror table td {
   transition: all 0.2s ease;
 }
 
-.search-dialog input[type="text"]:focus {
+.search-dialog input[type=text]:focus {
   border-color: #2563eb;
   box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
 }
@@ -282,7 +237,7 @@ body .tiptap.ProseMirror table td {
   font-weight: 500;
 }
 
-#custom-link-dialog input[type="text"],
+#custom-link-dialog input[type=text],
 #custom-link-dialog select {
   width: 100%;
   box-sizing: border-box;
@@ -296,18 +251,18 @@ body .tiptap.ProseMirror table td {
   transition: all 0.2s ease;
 }
 
-#custom-link-dialog input[type="text"]:focus,
+#custom-link-dialog input[type=text]:focus,
 #custom-link-dialog select:focus {
   border-color: #2563eb;
   box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
 }
 
-#custom-link-dialog input[type="checkbox"] {
+#custom-link-dialog input[type=checkbox] {
   margin-right: 8px;
 }
 
-#custom-link-dialog button[type="submit"],
-#custom-link-dialog button[type="button"] {
+#custom-link-dialog button[type=submit],
+#custom-link-dialog button[type=button] {
   margin-right: 10px;
   padding: 8px 16px;
   border-radius: 6px;
@@ -319,8 +274,8 @@ body .tiptap.ProseMirror table td {
   transition: all 0.2s ease;
 }
 
-#custom-link-dialog button[type="submit"]:hover,
-#custom-link-dialog button[type="button"]:hover {
+#custom-link-dialog button[type=submit]:hover,
+#custom-link-dialog button[type=button]:hover {
   background: #1d4ed8;
   border-color: #1d4ed8;
   transform: translateY(-1px);
@@ -351,40 +306,6 @@ button i {
   height: 18px;
   stroke-width: 2;
   color: currentColor;
-}
-
-.tiptap.ProseMirror:focus {
-  outline: none;
-}
-
-ul.custom-checkmark > li::marker {
-  content: "✓ ";
-}
-
-ul.custom-dash > li::marker {
-  content: "– ";
-}
-
-.special-char-popup button {
-  border: none;
-  background: #eee;
-  cursor: pointer;
-  font-size: 16px;
-  border-radius: 4px;
-}
-.special-char-popup button:hover {
-  background: #ddd;
-}
-
-.emoji-popup button {
-  border: none;
-  background: #f5f5f5;
-  font-size: 20px;
-  cursor: pointer;
-  border-radius: 4px;
-}
-.emoji-popup button:hover {
-  background: #e0e0e0;
 }
 
 .editor-floating {
@@ -440,3 +361,5 @@ ul.custom-dash > li::marker {
   cursor: pointer;
   color: #333;
 }
+
+/*# sourceMappingURL=style.css.map */
