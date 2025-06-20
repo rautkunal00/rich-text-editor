@@ -1,15 +1,88 @@
 /* Validate CSS */
 
+$text-color: #888;
+$background-color: #f9f9f9;
+$active-color: #000;
+$hover-color: #444;
+
 .editor-container {
-    .tiptap {
-        &:focus {
-            outline: none;
+    margin: 0;
+    box-sizing: border-box;
+    overflow: hidden;
+
+    .toolbar {
+        padding: 4px;
+        display: flex;
+        flex-wrap: wrap;
+        border-bottom: 1px solid #ddd;
+
+        button {
+            border: none;
+            background: transparent;
+            color: $text-color;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+
+            &:hover {
+                background: $background-color;
+                color: $hover-color;
+                transform: translateY(-1px);
+            }
+
+            &.active {
+                background: $background-color;
+                color: $active-color;
+                border-color: $active-color;
+                box-shadow: 0 2px 6px rgba(37, 99, 235, 0.08);
+
+                &:hover {
+                    background: $background-color;
+                    color: $hover-color;
+                }
+            }
         }
 
-        .tiptap-editor {
-            padding: 0 4px;
-            display: flex;
-            flex-direction: column;
+        select {
+            border: none;
+            height: 36px;
+            min-width: 100px;
+            padding: 0 24px 0 0;
+            font-size: 14px;
+            background-color: $background-color;
+            color: $text-color;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg width='14' height='10' viewBox='0 0 14 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l6 6 6-6' stroke='%23374151' stroke-width='2' fill='none' fill-rule='evenodd'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 12px;
+
+            &:hover {
+                color: $hover-color;
+                transform: translateY(-1px);
+            }
+
+            &:focus {
+                outline: none;
+                border-color: $active-color;
+                box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+            }
+        }
+    }
+
+    .tiptap-editor {
+        padding: 0 4px;
+        display: flex;
+        flex-direction: column;
+
+        .tiptap {
+            &:focus {
+                outline: none;
+            }
 
             table {
                 padding: 0;
@@ -32,74 +105,18 @@
                 }
             }
         }
-
     }
 
-    .toolbar {
-        padding-bottom: 4px;
+    .footer {
+        color: $text-color;
+        background-color: $background-color;
         display: flex;
-        flex-wrap: wrap;
-        border-bottom: 1px solid #ddd;
-
-        button {
-            border: none;
-            background: transparent;
-            color: #374151;
-            font-size: 14px;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-
-            &:hover {
-                background: #f3f4f6;
-                border-color: #2563eb;
-                color: #2563eb;
-                transform: translateY(-1px);
-            }
-
-            &.active {
-                background: #2563eb;
-                color: white;
-                border-color: #2563eb;
-                border: 2px solid #2563eb;
-                box-shadow: 0 2px 6px rgba(37, 99, 235, 0.08);
-
-                &:hover {
-                    background: #1d4ed8;
-                    color: white;
-                    border-color: #1d4ed8;
-                }
-            }
-        }
-
-        select {
-            border: none;
-            height: 36px;
-            min-width: 100px;
-            padding: 0 24px 0 0;
-            font-size: 14px;
-            background-color: #fff;
-            color: #374151;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            appearance: none;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg width='14' height='10' viewBox='0 0 14 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l6 6 6-6' stroke='%23374151' stroke-width='2' fill='none' fill-rule='evenodd'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 10px center;
-            background-size: 12px;
-
-            &:hover {
-                color: #2563eb;
-                transform: translateY(-1px);
-            }
-
-            &:focus {
-                outline: none;
-                border-color: #2563eb;
-                box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
-            }
-        }
+        flex-direction: row;
+        justify-content: space-between;
+        margin: 2px;
+        font-size: 12px;
+        border-top: 1px solid #ddd;
+        padding: 2px 4px 0 4px;
     }
 
     .tiptap-popup {

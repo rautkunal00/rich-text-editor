@@ -1,30 +1,12 @@
 @charset "UTF-8";
 /* Validate CSS */
-.editor-container .tiptap:focus {
-  outline: none;
-}
-.editor-container .tiptap .tiptap-editor {
-  padding: 0 4px;
-  display: flex;
-  flex-direction: column;
-}
-.editor-container .tiptap .tiptap-editor table {
-  padding: 0;
-  border: 1px solid #e5e7eb;
-}
-.editor-container .tiptap .tiptap-editor table th,
-.editor-container .tiptap .tiptap-editor table td {
-  padding: 8px;
-  border: 1px solid #e5e7eb;
-}
-.editor-container .tiptap .tiptap-editor ul.custom-checkmark > li::marker {
-  content: "✓ ";
-}
-.editor-container .tiptap .tiptap-editor ul.custom-dash > li::marker {
-  content: "– ";
+.editor-container {
+  margin: 0;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 .editor-container .toolbar {
-  padding-bottom: 4px;
+  padding: 4px;
   display: flex;
   flex-wrap: wrap;
   border-bottom: 1px solid #ddd;
@@ -32,7 +14,7 @@
 .editor-container .toolbar button {
   border: none;
   background: transparent;
-  color: #374151;
+  color: #888;
   font-size: 14px;
   transition: all 0.2s ease;
   display: flex;
@@ -40,22 +22,19 @@
   cursor: pointer;
 }
 .editor-container .toolbar button:hover {
-  background: #f3f4f6;
-  border-color: #2563eb;
-  color: #2563eb;
+  background: #f9f9f9;
+  color: #444;
   transform: translateY(-1px);
 }
 .editor-container .toolbar button.active {
-  background: #2563eb;
-  color: white;
-  border-color: #2563eb;
-  border: 2px solid #2563eb;
+  background: #f9f9f9;
+  color: #000;
+  border-color: #000;
   box-shadow: 0 2px 6px rgba(37, 99, 235, 0.08);
 }
 .editor-container .toolbar button.active:hover {
-  background: #1d4ed8;
-  color: white;
-  border-color: #1d4ed8;
+  background: #f9f9f9;
+  color: #444;
 }
 .editor-container .toolbar select {
   border: none;
@@ -63,8 +42,8 @@
   min-width: 100px;
   padding: 0 24px 0 0;
   font-size: 14px;
-  background-color: #fff;
-  color: #374151;
+  background-color: #f9f9f9;
+  color: #888;
   cursor: pointer;
   transition: all 0.2s ease;
   appearance: none;
@@ -74,13 +53,47 @@
   background-size: 12px;
 }
 .editor-container .toolbar select:hover {
-  color: #2563eb;
+  color: #444;
   transform: translateY(-1px);
 }
 .editor-container .toolbar select:focus {
   outline: none;
-  border-color: #2563eb;
+  border-color: #000;
   box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+}
+.editor-container .tiptap-editor {
+  padding: 0 4px;
+  display: flex;
+  flex-direction: column;
+}
+.editor-container .tiptap-editor .tiptap:focus {
+  outline: none;
+}
+.editor-container .tiptap-editor .tiptap table {
+  padding: 0;
+  border: 1px solid #e5e7eb;
+}
+.editor-container .tiptap-editor .tiptap table th,
+.editor-container .tiptap-editor .tiptap table td {
+  padding: 8px;
+  border: 1px solid #e5e7eb;
+}
+.editor-container .tiptap-editor .tiptap ul.custom-checkmark > li::marker {
+  content: "✓ ";
+}
+.editor-container .tiptap-editor .tiptap ul.custom-dash > li::marker {
+  content: "– ";
+}
+.editor-container .footer {
+  color: #888;
+  background-color: #f9f9f9;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 2px;
+  font-size: 12px;
+  border-top: 1px solid #ddd;
+  padding: 2px 4px 0 4px;
 }
 .editor-container .tiptap-popup .special-char-popup button {
   border: none;

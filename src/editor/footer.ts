@@ -1,17 +1,8 @@
 import { iframeDocument } from "./globalVariables";
 
 export const createFooter = (footerElement: HTMLDivElement, config: any): void => {
-    // footer css
-    footerElement.style.display = 'flex';
-    footerElement.style.flexDirection = 'row';
-    footerElement.style.justifyContent = 'space-between';
-    footerElement.style.margin = '2px';
-    footerElement.style.fontSize = '12px';
-    footerElement.style.color = '#888';
-    footerElement.style.background = '#f9f9f9';
-    footerElement.style.borderTop = '1px solid #ddd';
-    footerElement.style.padding = '2px 4px 0 4px';
 
+    footerElement.classList.add('footer');
     // footer message
     if (config.footerMessage) {
         const footer = iframeDocument.createElement('span');

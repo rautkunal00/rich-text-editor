@@ -34,9 +34,6 @@ export const initTiptapEditor = (options: TiptapEditorOptions): EditorAPI => {
             const editorContainer = editorDocument.body;
 
             editorContainer.classList.add('editor-container');
-            editorContainer.style.margin = '0';
-            editorContainer.style.boxSizing = 'border-box';
-            editorContainer.style.overflow = 'hidden';
 
             setIframeContext(editorWindow, editorDocument);
 
@@ -57,7 +54,7 @@ export const initTiptapEditor = (options: TiptapEditorOptions): EditorAPI => {
                 .then(() => editorWindow.lucide?.createIcons())
                 .catch(console.error);
 
-            loadCSS('./src/assets/styles/style.css', editorDocument);
+            loadCSS('./src/assets/styles/style.scss', editorDocument);
 
             if (editorConfig?.showToolbar) {
                 const toolbar = createToolbar(editorInstance);
