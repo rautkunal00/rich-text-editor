@@ -1,4 +1,5 @@
 import { Editor } from '@tiptap/core';
+import { iframeDocument } from '../globalVariables';
 
 // Function to update button state
 const updateButtonState = (button: HTMLElement, isActive: boolean) => {
@@ -10,10 +11,10 @@ const updateButtonState = (button: HTMLElement, isActive: boolean) => {
 };
 
 export const setupFormatting = (editor: Editor) => {
-    const boldButton = document.getElementById('bold-btn');
-    const italicButton = document.getElementById('italic-btn');
-    const underlineButton = document.getElementById('underline-btn');
-    const strikethroughButton = document.getElementById('strikethrough-btn');
+    const boldButton = iframeDocument.getElementById('bold-btn');
+    const italicButton = iframeDocument.getElementById('italic-btn');
+    const underlineButton = iframeDocument.getElementById('underline-btn');
+    const strikethroughButton = iframeDocument.getElementById('strikethrough-btn');
 
     // Update button states based on editor state
     editor.on('update', () => {

@@ -1,3 +1,4 @@
+import { iframeDocument } from "./globalVariables";
 import { highlightInit } from "./menu/highlight";
 import { textColorInit } from "./menu/textColor";
 
@@ -20,7 +21,6 @@ export function createToolbar(editor: any): HTMLElement {
         { type: 'button', id: 'strikethrough', label: 'Strikethrough', icon: 'strikethrough' },
         { type: 'palette', id: 'text-color', label: 'Text Color', icon: 'baseline' },
         { type: 'palette', id: 'highlight-color', label: 'Highlight Color', icon: 'highlighter' },
-        { type: 'button', id: 'bullet-list', label: 'Bullet List', icon: 'list' },
         {
             type: 'select',
             id: 'ordered-list-select',
@@ -110,7 +110,7 @@ export function createToolbar(editor: any): HTMLElement {
         { type: 'button', id: 'delete-table', label: 'Delete Table', icon: 'grid-2x2-x' },
         { type: 'button', id: 'subscript', label: 'Subscript', icon: 'subscript' },
         { type: 'button', id: 'superscript', label: 'Superscript', icon: 'superscript' },
-        // { type: 'button', id: 'spellCheck', label: 'Spellcheck', icon: 'spell-check-2' },
+        { type: 'button', id: 'spellCheck', label: 'Spellcheck', icon: 'spell-check-2' },
         { type: 'button', id: 'open-search-dialog', label: 'Search & Replace', icon: 'search' },
         { type: 'button', id: 'insert-datetime', label: 'Insert Date & Time', icon: 'calendar-days' },
         { type: 'button', id: 'insert-emoji-char', label: 'Insert Special Characters & Emoji', icon: 'asterisk' },
@@ -118,14 +118,14 @@ export function createToolbar(editor: any): HTMLElement {
         { type: 'button', id: 'preview', label: 'Preview', icon: 'scan-eye'}
     ];
 
-    const toolbar = document.createElement('div');
+    const toolbar = iframeDocument.createElement('div');
     toolbar.className = 'toolbar';
 
     toolbarConfig.forEach((item) => {
         const { type, id, label, icon, options } = item;
 
         if (type === 'button') {
-            const button = document.createElement('button');
+            const button = iframeDocument.createElement('button');
             button.id = `${id}-btn`;
             button.title = label;
             if (icon) {
@@ -135,16 +135,16 @@ export function createToolbar(editor: any): HTMLElement {
             }
             toolbar.appendChild(button);
         } else if (type === 'select' && options) {
-            const select = document.createElement('select');
+            const select = iframeDocument.createElement('select');
             select.id = id;
 
-            const defaultOption = document.createElement('option');
+            const defaultOption = iframeDocument.createElement('option');
             defaultOption.value = '';
             defaultOption.textContent = label;
             select.appendChild(defaultOption);
 
             options.forEach((opt) => {
-                const option = document.createElement('option');
+                const option = iframeDocument.createElement('option');
                 option.value = opt;
                 option.textContent = opt.replace(/['"]+/g, '');
                 select.appendChild(option);
@@ -152,7 +152,7 @@ export function createToolbar(editor: any): HTMLElement {
 
             toolbar.appendChild(select);
         } else if (type === 'palette') {
-            const button = document.createElement('button');
+            const button = iframeDocument.createElement('button');
             button.id = `${id}-btn`;
             button.title = label;
             if (icon) {

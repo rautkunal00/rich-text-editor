@@ -1,138 +1,49 @@
-body {
+@charset "UTF-8";
+/* Validate CSS */
+.editor-container {
   margin: 0;
-  padding: 20px;
-  background: #f0f2f5;
-  font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-#editor {
-  width: 100%;
-  max-width: 1200px;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  box-sizing: border-box;
   overflow: hidden;
+}
+.editor-container .toolbar {
+  padding: 4px;
   display: flex;
-  flex-direction: column;
-  position: relative;
+  flex-wrap: wrap;
+  border-bottom: 1px solid #ddd;
 }
-
-
-#editor .tiptap.ProseMirror {
-  min-height: 400px;
-  background: #fff;
-  border-radius: 0 0 12px 12px;
-  padding: 20px;
+.editor-container .toolbar button {
+  border: none;
+  background: transparent;
+  color: #888;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
 }
-
-#editor p {
-  margin-block-start: 8px;
-  margin-block-end: 8px;
-  line-height: 1.7;
-  color: #1f2937;
+.editor-container .toolbar button:hover {
+  background: #f9f9f9;
+  color: #444;
+  transform: translateY(-1px);
 }
-
-#editor .tiptap.ProseMirror table,
-#editor .tiptap.ProseMirror table th,
-#editor .tiptap.ProseMirror table td {
-  border: 1px solid #e5e7eb;
-  background: #f9fafb;
-  padding: 8px;
-}
-
-#menu {
-  margin-bottom: 18px;
-  background: #f8f9fa;
-  padding: 12px;
-  border-radius: 8px;
-  border: 1px solid #e5e7eb;
-}
-
-#menu button.active {
-  background: #2563eb;
-  color: white;
-  border-color: #2563eb;
-  border: 2px solid #2563eb;
+.editor-container .toolbar button.active {
+  background: #f9f9f9;
+  color: #000;
+  border-color: #000;
   box-shadow: 0 2px 6px rgba(37, 99, 235, 0.08);
 }
-
-#menu button {
-  padding: 8px 16px;
-  margin-right: 8px;
-  font-size: 14px;
-  cursor: pointer;
-  border: 1px solid #d1d5db;
-  background: #fff;
-  border-radius: 6px;
-  color: #374151;
-  transition: all 0.2s ease;
+.editor-container .toolbar button.active:hover {
+  background: #f9f9f9;
+  color: #444;
 }
-
-#menu button:hover {
-  background: #f3f4f6;
-  border-color: #2563eb;
-  color: #2563eb;
-  transform: translateY(-1px);
-}
-
-.toolbar {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-  background: #f8f9fa;
-  padding: 12px;
-  border-radius: 8px;
-  border: 1px solid #e5e7eb;
-}
-
-.toolbar button {
-  margin-right: 0;
-  padding: 8px 12px;
-  border-radius: 6px;
-  border: 1px solid #d1d5db;
-  background: #fff;
-  color: #374151;
-  font-size: 14px;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.toolbar button:hover {
-  background: #f3f4f6;
-  border-color: #2563eb;
-  color: #2563eb;
-  transform: translateY(-1px);
-}
-
-.toolbar button.active {
-  background: #2563eb;
-  color: white;
-  border-color: #2563eb;
-  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.2);
-}
-
-.toolbar button.active:hover {
-  background: #1d4ed8;
-  color: white;
-  border-color: #1d4ed8;
-}
-
-.toolbar select {
-  margin-right: 0;
+.editor-container .toolbar select {
+  border: none;
   height: 36px;
-  padding: 6px 32px 6px 12px;
+  min-width: 100px;
+  padding: 0 24px 0 0;
   font-size: 14px;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  background-color: #fff;
-  color: #374151;
+  background-color: #f9f9f9;
+  color: #888;
   cursor: pointer;
   transition: all 0.2s ease;
   appearance: none;
@@ -141,18 +52,71 @@ body {
   background-position: right 10px center;
   background-size: 12px;
 }
-
-.toolbar select:hover {
-  border-color: #2563eb;
+.editor-container .toolbar select:hover {
+  color: #444;
   transform: translateY(-1px);
 }
-
-.toolbar select:focus {
+.editor-container .toolbar select:focus {
   outline: none;
-  border-color: #2563eb;
+  border-color: #000;
   box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
 }
+.editor-container .tiptap-editor {
+  padding: 0 4px;
+  display: flex;
+  flex-direction: column;
+}
+.editor-container .tiptap-editor .tiptap:focus {
+  outline: none;
+}
+.editor-container .tiptap-editor .tiptap table {
+  padding: 0;
+  border: 1px solid #e5e7eb;
+}
+.editor-container .tiptap-editor .tiptap table th,
+.editor-container .tiptap-editor .tiptap table td {
+  padding: 8px;
+  border: 1px solid #e5e7eb;
+}
+.editor-container .tiptap-editor .tiptap ul.custom-checkmark > li::marker {
+  content: "✓ ";
+}
+.editor-container .tiptap-editor .tiptap ul.custom-dash > li::marker {
+  content: "– ";
+}
+.editor-container .footer {
+  color: #888;
+  background-color: #f9f9f9;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 2px;
+  font-size: 12px;
+  border-top: 1px solid #ddd;
+  padding: 2px 4px 0 4px;
+}
+.editor-container .tiptap-popup .special-char-popup button {
+  border: none;
+  background: #eee;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 4px;
+}
+.editor-container .tiptap-popup .special-char-popup button:hover {
+  background: #ddd;
+}
+.editor-container .tiptap-popup .emoji-popup button {
+  border: none;
+  background: #f5f5f5;
+  font-size: 20px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.editor-container .tiptap-popup .emoji-popup button:hover {
+  background: #e0e0e0;
+}
 
+/* Yet to validate */
 .search-highlight {
   background-color: #fef08a;
   border-radius: 2px;
@@ -169,7 +133,7 @@ body {
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   padding: 20px;
-  font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+  font-family: "Segoe UI", "Roboto", Arial, sans-serif;
   z-index: 1000;
   display: none;
 }
@@ -187,7 +151,7 @@ body {
   color: #e5e7eb;
 }
 
-.search-dialog input[type="text"] {
+.search-dialog input[type=text] {
   flex: 1;
   padding: 8px 12px;
   font-size: 14px;
@@ -199,7 +163,7 @@ body {
   transition: all 0.2s ease;
 }
 
-.search-dialog input[type="text"]:focus {
+.search-dialog input[type=text]:focus {
   border-color: #2563eb;
   box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
 }
@@ -286,7 +250,7 @@ body {
   font-weight: 500;
 }
 
-#custom-link-dialog input[type="text"],
+#custom-link-dialog input[type=text],
 #custom-link-dialog select {
   width: 100%;
   box-sizing: border-box;
@@ -300,18 +264,18 @@ body {
   transition: all 0.2s ease;
 }
 
-#custom-link-dialog input[type="text"]:focus,
+#custom-link-dialog input[type=text]:focus,
 #custom-link-dialog select:focus {
   border-color: #2563eb;
   box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
 }
 
-#custom-link-dialog input[type="checkbox"] {
+#custom-link-dialog input[type=checkbox] {
   margin-right: 8px;
 }
 
-#custom-link-dialog button[type="submit"],
-#custom-link-dialog button[type="button"] {
+#custom-link-dialog button[type=submit],
+#custom-link-dialog button[type=button] {
   margin-right: 10px;
   padding: 8px 16px;
   border-radius: 6px;
@@ -323,8 +287,8 @@ body {
   transition: all 0.2s ease;
 }
 
-#custom-link-dialog button[type="submit"]:hover,
-#custom-link-dialog button[type="button"]:hover {
+#custom-link-dialog button[type=submit]:hover,
+#custom-link-dialog button[type=button]:hover {
   background: #1d4ed8;
   border-color: #1d4ed8;
   transform: translateY(-1px);
@@ -343,7 +307,7 @@ body {
   font-size: 0.875rem;
   color: #6b7280;
   margin-top: 8px;
-  font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+  font-family: "Segoe UI", "Roboto", Arial, sans-serif;
   line-height: 1.5;
   user-select: none;
   text-align: right;
@@ -357,42 +321,7 @@ button i {
   color: currentColor;
 }
 
-#editor .tiptap.ProseMirror:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
-}
-
-ul.custom-checkmark > li::marker {
-  content: "✓ ";
-}
-
-ul.custom-dash > li::marker {
-  content: "– ";
-}
-
-.special-char-popup button {
-  border: none;
-  background: #eee;
-  cursor: pointer;
-  font-size: 16px;
-  border-radius: 4px;
-}
-.special-char-popup button:hover {
-  background: #ddd;
-}
-
-.emoji-popup button {
-  border: none;
-  background: #f5f5f5;
-  font-size: 20px;
-  cursor: pointer;
-  border-radius: 4px;
-}
-.emoji-popup button:hover {
-  background: #e0e0e0;
-}
-
- .editor-floating {
+.editor-floating {
   position: fixed;
   top: 0;
   left: 0;
@@ -410,7 +339,6 @@ ul.custom-dash > li::marker {
 .editor-floating-active {
   overflow: hidden;
 }
-
 
 .editor-close-btn {
   position: absolute;
@@ -446,3 +374,5 @@ ul.custom-dash > li::marker {
   cursor: pointer;
   color: #333;
 }
+
+/*# sourceMappingURL=style.css.map */

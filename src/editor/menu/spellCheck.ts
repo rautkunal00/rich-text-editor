@@ -1,8 +1,10 @@
+import { iframeDocument } from "../globalVariables";
+
 export const setupSpellcheckToggle = () => {
-  const toggleBtn = document.getElementById('spellCheck-btn'); // Use your toolbar ID
+  const toggleBtn = iframeDocument.getElementById('spellCheck-btn'); // Use your toolbar ID
 
   const getEditorEl = () =>
-    document.querySelector('.tiptap [contenteditable="true"]') as HTMLElement;
+    iframeDocument.querySelector('.tiptap [contenteditable="true"]') as HTMLElement;
 
   if (!toggleBtn) return;
 

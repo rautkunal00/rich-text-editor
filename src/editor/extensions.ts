@@ -17,17 +17,18 @@ import TextAlign from '@tiptap/extension-text-align';
 import TextStyle from '@tiptap/extension-text-style';
 import Underline from '@tiptap/extension-underline';
 import StarterKit from '@tiptap/starter-kit';
+import { EditorOptions } from '../globalInterface';
 import AnchorMark from './extensions/anchorMark';
 import EventLogger from './extensions/customEvents';
+import { ExtendedBulletList } from './extensions/extendedBulletList';
+import { ExtendedOrderedList } from './extensions/extendedOrderedList';
 import FontFamily from './extensions/fontFamily';
 import FontSize from './extensions/fontSize';
+import { PopupExtension } from './extensions/popup';
 import HighlightMark from './extensions/searchHighlight';
 import TextColor from './extensions/textColor';
-import { ExtendedOrderedList } from './extensions/extendedOrderedList';
-import { ExtendedBulletList } from './extensions/extendedBulletList';
-import { PopupExtension } from './extensions/popup';
 
-export const getExtensions = () => [
+export const getExtensions = (editorConfig: EditorOptions) => [
     StarterKit,
     TextStyle,
     Color,
@@ -55,5 +56,5 @@ export const getExtensions = () => [
     EventLogger,
     ExtendedOrderedList,
     ExtendedBulletList,
-    PopupExtension
+    PopupExtension,
 ];

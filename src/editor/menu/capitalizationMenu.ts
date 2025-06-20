@@ -1,7 +1,8 @@
 import { Editor } from '@tiptap/core'
+import { iframeDocument } from '../globalVariables';
 
 export const setupCapitalizationMenu = (editor: Editor) => {
-  const capitalizeSelect = document.getElementById('capitalize-select') as HTMLSelectElement;
+  const capitalizeSelect = iframeDocument.getElementById('capitalize-select') as HTMLSelectElement;
 
   capitalizeSelect?.addEventListener('change', () => {
     const value = capitalizeSelect.value;

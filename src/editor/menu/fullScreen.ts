@@ -1,7 +1,8 @@
 import { Editor } from "@tiptap/core";
+import { iframeDocument } from "../globalVariables";
 
 export const setupFullscreenToggle = (editor:Editor) => {
-  const toggleBtn = document.getElementById('fullscreen-btn');
+  const toggleBtn = iframeDocument.getElementById('fullscreen-btn');
   const editorEle = editor.options.element;
   const wrapperEle = editorEle?.parentElement;
 
@@ -14,10 +15,10 @@ export const setupFullscreenToggle = (editor:Editor) => {
 
     if (isFloating) {
       wrapperEle.classList.add('editor-floating');
-      document.body.classList.add('editor-floating-active');
+      iframeDocument.body.classList.add('editor-floating-active');
     } else {
       wrapperEle.classList.remove('editor-floating');
-      document.body.classList.remove('editor-floating-active');
+      iframeDocument.body.classList.remove('editor-floating-active');
     }
   };
 

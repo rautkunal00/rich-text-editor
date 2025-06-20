@@ -5,7 +5,7 @@ export const createEditor = (editorElement: HTMLDivElement, editorConfig: any): 
 
     return new Editor({
         element: editorElement,
-        extensions: getExtensions(),
+        extensions: getExtensions(editorConfig),
         editable: editorConfig.editable,
         content: '',
     });

@@ -1,8 +1,9 @@
 import { Editor } from '@tiptap/core'
+import { iframeDocument } from '../globalVariables';
 type Level = 1 | 2 | 3 | 4 | 5 | 6;
 
 export const setupHeadingStyle = (editor: Editor) => {
-    const select = document.getElementById('heading-select') as HTMLSelectElement | null;
+    const select = iframeDocument.getElementById('heading-select') as HTMLSelectElement | null;
     if (!select) return;
     select.addEventListener('change', () => {
         const value = select.value;
