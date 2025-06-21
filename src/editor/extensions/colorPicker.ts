@@ -5,21 +5,36 @@ import { iframeDocument, iframeWindow } from '../globalVariables';
 let activeColorPicker: HTMLElement | null = null;
 
 function createColorPicker(container: HTMLElement, onChange: (hex: string) => void) {
-    const picker = iro.ColorPicker(container!, {
-        color: '#f00',
-        width: 200,
-        layout: [
-            {
-                component: iro.ui.Wheel,
-            }
-        ]
-    });
+    try {
+        // Get iro from the iframe window context
+        const iro = (iframeWindow as any).iro;
+        
+        // Check if iro is available
+        if (typeof iro === 'undefined' || !iro.ColorPicker) {
+            throw new Error('iro library is not properly loaded in iframe');
+        }
+        
+        console.log('iro library is available in iframe:', typeof iro);
+        
+        const picker = iro.ColorPicker(container!, {
+            color: '#f00',
+            width: 200,
+            layout: [
+                {
+                    component: iro.ui.Wheel,
+                }
+            ]
+        });
 
-    picker.on('color:change', (color: { hexString: string }) => {
-        onChange(color.hexString);
-    });
+        picker.on('color:change', (color: { hexString: string }) => {
+            onChange(color.hexString);
+        });
 
-    return picker;
+        return picker;
+    } catch (error) {
+        console.error('Error creating color picker:', error);
+        throw error;
+    }
 }
 
 export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex: string) => void, toolbar: HTMLElement) {
@@ -27,6 +42,7 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
     let colorContainer: HTMLElement | null = null;
     let currentColor = '';
     let tempColor = '';
+    let iroPickerInitialized = false;
 
     // Function to update button color
     const updateButtonColor = (color: string) => {
@@ -64,6 +80,8 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
             colorContainer.remove();
             colorContainer = null;
             activeColorPicker = null;
+            // Reset the iro picker initialization flag so Advanced button works again
+            iroPickerInitialized = false;
         }
     };
 
@@ -194,182 +212,190 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
             `;
             advancedBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
+                console.log('Advanced button clicked, iroPickerInitialized:', iroPickerInitialized);
                 if (!iroPickerInitialized) {
-                    const container = iframeDocument.createElement('div');
-                    container.style.cssText = `
-                        padding: 12px;
-                        background: #fff;
-                        border-radius: 8px;
-                    `;
+                    try {
+                        console.log('Creating advanced color picker...');
+                        const container = iframeDocument.createElement('div');
+                        container.style.cssText = `
+                            padding: 12px;
+                            background: #fff;
+                            border-radius: 8px;
+                        `;
 
-                    // Create color picker
-                    const picker = createColorPicker(container, (hex) => {
-                        tempColor = hex;
-                        hexInput.value = hex;
-                    });
+                        // Create color picker
+                        const picker = createColorPicker(container, (hex) => {
+                            tempColor = hex;
+                            hexInput.value = hex;
+                        });
 
-                    // Create hex input container
-                    const hexInputContainer = iframeDocument.createElement('div');
-                    hexInputContainer.style.cssText = `
-                        display: flex;
-                        align-items: center;
-                        gap: 8px;
-                        margin-top: 16px;
-                        padding: 0 4px;
-                    `;
+                        // Create hex input container
+                        const hexInputContainer = iframeDocument.createElement('div');
+                        hexInputContainer.style.cssText = `
+                            display: flex;
+                            align-items: center;
+                            gap: 8px;
+                            margin-top: 16px;
+                            padding: 0 4px;
+                        `;
 
-                    // Create hex label
-                    const hexLabel = iframeDocument.createElement('span');
-                    hexLabel.textContent = 'HEX:';
-                    hexLabel.style.cssText = `
-                        font-size: 12px;
-                        color: #4b5563;
-                        font-weight: 500;
-                    `;
+                        // Create hex label
+                        const hexLabel = iframeDocument.createElement('span');
+                        hexLabel.textContent = 'HEX:';
+                        hexLabel.style.cssText = `
+                            font-size: 12px;
+                            color: #4b5563;
+                            font-weight: 500;
+                        `;
 
-                    // Create hex input
-                    const hexInput = iframeDocument.createElement('input');
-                    hexInput.type = 'text';
-                    hexInput.value = tempColor;
-                    hexInput.style.cssText = `
-                        flex: 1;
-                        padding: 6px 8px;
-                        border: 1px solid #d1d5db;
-                        border-radius: 4px;
-                        font-size: 12px;
-                        font-family: monospace;
-                        outline: none;
-                        transition: all 0.2s;
-                        width: 100%;
-                    `;
-                    hexInput.onfocus = () => {
-                        hexInput.style.borderColor = '#2563eb';
-                        hexInput.style.boxShadow = '0 0 0 2px rgba(37, 99, 235, 0.1)';
-                    };
-                    hexInput.onblur = () => {
-                        hexInput.style.borderColor = '#d1d5db';
-                        hexInput.style.boxShadow = 'none';
-                    };
-                    hexInput.oninput = (e) => {
-                        const input = e.target as HTMLInputElement;
-                        let value = input.value;
+                        // Create hex input
+                        const hexInput = iframeDocument.createElement('input');
+                        hexInput.type = 'text';
+                        hexInput.value = tempColor;
+                        hexInput.style.cssText = `
+                            flex: 1;
+                            padding: 6px 8px;
+                            border: 1px solid #d1d5db;
+                            border-radius: 4px;
+                            font-size: 12px;
+                            font-family: monospace;
+                            outline: none;
+                            transition: all 0.2s;
+                            width: 100%;
+                        `;
+                        hexInput.onfocus = () => {
+                            hexInput.style.borderColor = '#2563eb';
+                            hexInput.style.boxShadow = '0 0 0 2px rgba(37, 99, 235, 0.1)';
+                        };
+                        hexInput.onblur = () => {
+                            hexInput.style.borderColor = '#d1d5db';
+                            hexInput.style.boxShadow = 'none';
+                        };
+                        hexInput.oninput = (e) => {
+                            const input = e.target as HTMLInputElement;
+                            let value = input.value;
 
-                        // Remove any non-hex characters
-                        value = value.replace(/[^0-9A-Fa-f]/g, '');
+                            // Remove any non-hex characters
+                            value = value.replace(/[^0-9A-Fa-f]/g, '');
 
-                        // Ensure it starts with #
-                        if (!value.startsWith('#')) {
-                            value = '#' + value;
+                            // Ensure it starts with #
+                            if (!value.startsWith('#')) {
+                                value = '#' + value;
+                            }
+
+                            // Limit to 7 characters (#RRGGBB)
+                            if (value.length > 7) {
+                                value = value.slice(0, 7);
+                            }
+
+                            input.value = value;
+
+                            // Update color if valid hex
+                            if (value.length === 7) {
+                                tempColor = value;
+                                picker.color.set(value);
+                            }
+                        };
+
+                        hexInputContainer.appendChild(hexLabel);
+                        hexInputContainer.appendChild(hexInput);
+                        container.appendChild(hexInputContainer);
+
+                        // Create confirm button container
+                        const confirmContainer = iframeDocument.createElement('div');
+                        confirmContainer.style.cssText = `
+                            display: flex;
+                            gap: 8px;
+                            margin-top: 16px;
+                        `;
+
+                        // Create confirm button
+                        const confirmBtn = iframeDocument.createElement('button');
+                        confirmBtn.textContent = 'Apply';
+                        confirmBtn.style.cssText = `
+                            flex: 1;
+                            padding: 8px 16px;
+                            background: #ffffff;
+                            border: 1px solid #e2e8f0;
+                            border-radius: 6px;
+                            font-size: 13px;
+                            font-weight: 500;
+                            color: #334155;
+                            cursor: pointer;
+                            transition: all 0.2s ease;
+                            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                        `;
+                        confirmBtn.onmouseover = () => {
+                            confirmBtn.style.background = '#f8fafc';
+                            confirmBtn.style.borderColor = '#cbd5e1';
+                            confirmBtn.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.05)';
                         }
-
-                        // Limit to 7 characters (#RRGGBB)
-                        if (value.length > 7) {
-                            value = value.slice(0, 7);
+                        confirmBtn.onmouseout = () => {
+                            confirmBtn.style.background = '#ffffff';
+                            confirmBtn.style.borderColor = '#e2e8f0';
+                            confirmBtn.style.boxShadow = '0 1px 2px rgba(0, 0, 0, 0.05)';
                         }
+                        confirmBtn.onclick = (e) => {
+                            e.stopPropagation();
+                            onChange(tempColor);
+                            updateButtonColor(tempColor);
+                            closeColorPicker();
+                        };
 
-                        input.value = value;
-
-                        // Update color if valid hex
-                        if (value.length === 7) {
-                            tempColor = value;
-                            picker.color.set(value);
+                        // Create reset button for advanced view
+                        const advancedResetBtn = iframeDocument.createElement('button');
+                        advancedResetBtn.textContent = 'Reset';
+                        advancedResetBtn.style.cssText = `
+                            flex: 1;
+                            padding: 8px 16px;
+                            background: #ffffff;
+                            border: 1px solid #e2e8f0;
+                            border-radius: 6px;
+                            font-size: 13px;
+                            font-weight: 500;
+                            color: #334155;
+                            cursor: pointer;
+                            transition: all 0.2s ease;
+                            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                        `;
+                        advancedResetBtn.onmouseover = () => {
+                            advancedResetBtn.style.background = '#f8fafc';
+                            advancedResetBtn.style.borderColor = '#cbd5e1';
+                            advancedResetBtn.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.05)';
                         }
-                    };
+                        advancedResetBtn.onmouseout = () => {
+                            advancedResetBtn.style.background = '#ffffff';
+                            advancedResetBtn.style.borderColor = '#e2e8f0';
+                            advancedResetBtn.style.boxShadow = '0 1px 2px rgba(0, 0, 0, 0.05)';
+                        }
+                        advancedResetBtn.onclick = (e) => {
+                            e.stopPropagation();
+                            onChange('');
+                            updateButtonColor('');
+                            closeColorPicker();
+                        };
 
-                    hexInputContainer.appendChild(hexLabel);
-                    hexInputContainer.appendChild(hexInput);
-                    container.appendChild(hexInputContainer);
+                        confirmContainer.appendChild(confirmBtn);
+                        confirmContainer.appendChild(advancedResetBtn);
+                        container.appendChild(confirmContainer);
 
-                    // Create confirm button container
-                    const confirmContainer = iframeDocument.createElement('div');
-                    confirmContainer.style.cssText = `
-                        display: flex;
-                        gap: 8px;
-                        margin-top: 16px;
-                    `;
+                        iroPickerInitialized = true;
+                        paletteContainer.innerHTML = '';
+                        paletteContainer.appendChild(container);
 
-                    // Create confirm button
-                    const confirmBtn = iframeDocument.createElement('button');
-                    confirmBtn.textContent = 'Apply';
-                    confirmBtn.style.cssText = `
-                        flex: 1;
-                        padding: 8px 16px;
-                        background: #ffffff;
-                        border: 1px solid #e2e8f0;
-                        border-radius: 6px;
-                        font-size: 13px;
-                        font-weight: 500;
-                        color: #334155;
-                        cursor: pointer;
-                        transition: all 0.2s ease;
-                        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                    `;
-                    confirmBtn.onmouseover = () => {
-                        confirmBtn.style.background = '#f8fafc';
-                        confirmBtn.style.borderColor = '#cbd5e1';
-                        confirmBtn.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.05)';
+                        // Hide the Advanced button and button container
+                        buttonContainer.style.display = 'none';
+                        console.log('Advanced color picker created successfully');
+                    } catch (error) {
+                        console.error('Error creating advanced color picker:', error);
+                        alert('Error creating advanced color picker. Please try again.');
                     }
-                    confirmBtn.onmouseout = () => {
-                        confirmBtn.style.background = '#ffffff';
-                        confirmBtn.style.borderColor = '#e2e8f0';
-                        confirmBtn.style.boxShadow = '0 1px 2px rgba(0, 0, 0, 0.05)';
-                    }
-                    confirmBtn.onclick = (e) => {
-                        e.stopPropagation();
-                        onChange(tempColor);
-                        updateButtonColor(tempColor);
-                        closeColorPicker();
-                    };
-
-                    // Create reset button for advanced view
-                    const advancedResetBtn = iframeDocument.createElement('button');
-                    advancedResetBtn.textContent = 'Reset';
-                    advancedResetBtn.style.cssText = `
-                        flex: 1;
-                        padding: 8px 16px;
-                        background: #ffffff;
-                        border: 1px solid #e2e8f0;
-                        border-radius: 6px;
-                        font-size: 13px;
-                        font-weight: 500;
-                        color: #334155;
-                        cursor: pointer;
-                        transition: all 0.2s ease;
-                        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                    `;
-                    advancedResetBtn.onmouseover = () => {
-                        advancedResetBtn.style.background = '#f8fafc';
-                        advancedResetBtn.style.borderColor = '#cbd5e1';
-                        advancedResetBtn.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.05)';
-                    }
-                    advancedResetBtn.onmouseout = () => {
-                        advancedResetBtn.style.background = '#ffffff';
-                        advancedResetBtn.style.borderColor = '#e2e8f0';
-                        advancedResetBtn.style.boxShadow = '0 1px 2px rgba(0, 0, 0, 0.05)';
-                    }
-                    advancedResetBtn.onclick = (e) => {
-                        e.stopPropagation();
-                        onChange('');
-                        updateButtonColor('');
-                        closeColorPicker();
-                    };
-
-                    confirmContainer.appendChild(confirmBtn);
-                    confirmContainer.appendChild(advancedResetBtn);
-                    container.appendChild(confirmContainer);
-
-                    iroPickerInitialized = true;
-                    paletteContainer.innerHTML = '';
-                    paletteContainer.appendChild(container);
-
-                    // Hide the Advanced button and button container
-                    buttonContainer.style.display = 'none';
                 }
             });
             advancedBtn.onmouseover = () => {
@@ -419,7 +445,6 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
             colorContainer.appendChild(buttonContainer);
 
             const container = iframeDocument.createElement('div');
-            let iroPickerInitialized = false;
 
             // Position the color picker
             const buttonRect = button.getBoundingClientRect();
