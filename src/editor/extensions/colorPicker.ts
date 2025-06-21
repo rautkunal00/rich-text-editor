@@ -48,8 +48,6 @@ async function createColorPicker(container: HTMLElement, onChange: (hex: string)
             throw new Error('iro library is not properly loaded');
         }
         
-        console.log('iro library is available:', typeof iro, iro);
-        
         const picker = iro.ColorPicker(container!, {
             color: '#f00',
             width: 150,
@@ -247,11 +245,8 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
             `;
             advancedBtn.addEventListener('click', async (e) => {
                 e.stopPropagation();
-                console.log('Advanced button clicked, iroPickerInitialized:', iroPickerInitialized);
                 if (!iroPickerInitialized) {
                     try {
-                        console.log('Creating advanced color picker...');
-                        
                         // iro is available, proceed with creation
                         const container = iframeDocument.createElement('div');
                         container.style.cssText = `
@@ -433,7 +428,6 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
 
                         // Hide the Advanced button and button container
                         buttonContainer.style.display = 'none';
-                        console.log('Advanced color picker created successfully');
                         
                     } catch (error) {
                         console.error('Error creating advanced color picker:', error);
@@ -482,6 +476,12 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
                 clearcolorBtn.style.borderColor = '#e2e8f0';
                 clearcolorBtn.style.boxShadow = '0 1px 2px rgba(0, 0, 0, 0.05)';
             }
+            clearcolorBtn.onclick = (e) => {
+                e.stopPropagation();
+                onChange('');
+                updateButtonColor('');
+                closeColorPicker();
+            };
 
             buttonContainer.appendChild(advancedBtn);
             buttonContainer.appendChild(clearcolorBtn);
