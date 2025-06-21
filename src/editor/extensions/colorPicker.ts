@@ -1,24 +1,58 @@
-import iro from '@jaames/iro';
 import { iframeDocument, iframeWindow } from '../globalVariables';
+import { loadScript } from '../dynamicFunctions';
+
+// Extend Window interface to include iro
+declare global {
+    interface Window {
+        iro?: any;
+    }
+}
 
 // Global state to track active color picker
 let activeColorPicker: HTMLElement | null = null;
+let iroLoaded = false;
 
-function createColorPicker(container: HTMLElement, onChange: (hex: string) => void) {
+async function ensureIroLoaded(): Promise<any> {
+    if (iroLoaded && iframeWindow.iro) {
+        return iframeWindow.iro;
+    }
+
     try {
-        // Get iro from the iframe window context
-        const iro = (iframeWindow as any).iro;
+        // Load iro from CDN in the iframe context
+        await loadScript('https://cdn.jsdelivr.net/npm/@jaames/iro@5', iframeDocument);
         
-        // Check if iro is available
+        // Wait a bit for the script to initialize
+        await new Promise(resolve => setTimeout(resolve, 100));
+        
+        if (iframeWindow.iro) {
+            iroLoaded = true;
+            return iframeWindow.iro;
+        } else {
+            throw new Error('iro library failed to load properly');
+        }
+    } catch (error) {
+        console.error('Failed to load iro library:', error);
+        throw new Error('Failed to load color picker library');
+    }
+}
+
+async function createColorPicker(container: HTMLElement, onChange: (hex: string) => void): Promise<any> {
+    try {
+        const iro = await ensureIroLoaded();
+        
         if (typeof iro === 'undefined' || !iro.ColorPicker) {
-            throw new Error('iro library is not properly loaded in iframe');
+            console.error('iro library not found:', {
+                iro: typeof iro,
+                hasColorPicker: iro && typeof iro.ColorPicker
+            });
+            throw new Error('iro library is not properly loaded');
         }
         
-        console.log('iro library is available in iframe:', typeof iro);
+        console.log('iro library is available:', typeof iro, iro);
         
         const picker = iro.ColorPicker(container!, {
             color: '#f00',
-            width: 200,
+            width: 150,
             layout: [
                 {
                     component: iro.ui.Wheel,
@@ -33,6 +67,7 @@ function createColorPicker(container: HTMLElement, onChange: (hex: string) => vo
         return picker;
     } catch (error) {
         console.error('Error creating color picker:', error);
+        console.error('Container element:', container);
         throw error;
     }
 }
@@ -145,7 +180,7 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
                 background: #fff;
                 border: 1px solid #e5e7eb;
                 border-radius: 8px;
-                padding: 12px;
+                padding: 8px;
                 z-index: 1000;
                 box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             `;
@@ -158,9 +193,9 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
                 swatch.style.cssText = `
                     background: ${hex};
                     width: 24px;
-                    height: 24px;
+                    height: 18px;
                     display: inline-block;
-                    margin: 4px;
+                    margin: 2px;
                     cursor: pointer;
                     border: 1px solid #000;
                     border-radius: 4px;
@@ -186,9 +221,9 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
             const buttonContainer = iframeDocument.createElement('div');
             buttonContainer.style.cssText = `
                 display: flex;
-                gap: 8px;
-                padding: 0 12px 12px;
-                margin-top: 8px;
+                gap: 6px;
+                padding: 0 8px 8px;
+                margin-top: 6px;
             `;
 
             // Advanced button
@@ -196,11 +231,11 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
             advancedBtn.textContent = 'Advanced';
             advancedBtn.style.cssText = `
                 flex: 1;
-                padding: 8px 16px;
+                padding: 6px 12px;
                 background: #ffffff;
                 border: 1px solid #e2e8f0;
                 border-radius: 6px;
-                font-size: 13px;
+                font-size: 12px;
                 font-weight: 500;
                 color: #334155;
                 cursor: pointer;
@@ -210,21 +245,26 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
                 align-items: center;
                 justify-content: center;
             `;
-            advancedBtn.addEventListener('click', (e) => {
+            advancedBtn.addEventListener('click', async (e) => {
                 e.stopPropagation();
                 console.log('Advanced button clicked, iroPickerInitialized:', iroPickerInitialized);
                 if (!iroPickerInitialized) {
                     try {
                         console.log('Creating advanced color picker...');
+                        
+                        // iro is available, proceed with creation
                         const container = iframeDocument.createElement('div');
                         container.style.cssText = `
-                            padding: 12px;
+                            padding: 10px;
                             background: #fff;
                             border-radius: 8px;
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
                         `;
 
-                        // Create color picker
-                        const picker = createColorPicker(container, (hex) => {
+                        // Create color picker - now properly awaited
+                        const picker = await createColorPicker(container, (hex) => {
                             tempColor = hex;
                             hexInput.value = hex;
                         });
@@ -234,16 +274,16 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
                         hexInputContainer.style.cssText = `
                             display: flex;
                             align-items: center;
-                            gap: 8px;
-                            margin-top: 16px;
-                            padding: 0 4px;
+                            gap: 6px;
+                            margin-top: 12px;
+                            padding: 0 2px;
                         `;
 
                         // Create hex label
                         const hexLabel = iframeDocument.createElement('span');
                         hexLabel.textContent = 'HEX:';
                         hexLabel.style.cssText = `
-                            font-size: 12px;
+                            font-size: 11px;
                             color: #4b5563;
                             font-weight: 500;
                         `;
@@ -254,10 +294,10 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
                         hexInput.value = tempColor;
                         hexInput.style.cssText = `
                             flex: 1;
-                            padding: 6px 8px;
+                            padding: 4px 6px;
                             border: 1px solid #d1d5db;
                             border-radius: 4px;
-                            font-size: 12px;
+                            font-size: 11px;
                             font-family: monospace;
                             outline: none;
                             transition: all 0.2s;
@@ -305,8 +345,8 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
                         const confirmContainer = iframeDocument.createElement('div');
                         confirmContainer.style.cssText = `
                             display: flex;
-                            gap: 8px;
-                            margin-top: 16px;
+                            gap: 6px;
+                            margin-top: 12px;
                         `;
 
                         // Create confirm button
@@ -318,7 +358,7 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
                             background: #ffffff;
                             border: 1px solid #e2e8f0;
                             border-radius: 6px;
-                            font-size: 13px;
+                            font-size: 12px;
                             font-weight: 500;
                             color: #334155;
                             cursor: pointer;
@@ -327,6 +367,7 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
                             display: flex;
                             align-items: center;
                             justify-content: center;
+                            min-width: 80px;
                         `;
                         confirmBtn.onmouseover = () => {
                             confirmBtn.style.background = '#f8fafc';
@@ -354,7 +395,7 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
                             background: #ffffff;
                             border: 1px solid #e2e8f0;
                             border-radius: 6px;
-                            font-size: 13px;
+                            font-size: 12px;
                             font-weight: 500;
                             color: #334155;
                             cursor: pointer;
@@ -363,6 +404,7 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
                             display: flex;
                             align-items: center;
                             justify-content: center;
+                            min-width: 80px;
                         `;
                         advancedResetBtn.onmouseover = () => {
                             advancedResetBtn.style.background = '#f8fafc';
@@ -392,6 +434,7 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
                         // Hide the Advanced button and button container
                         buttonContainer.style.display = 'none';
                         console.log('Advanced color picker created successfully');
+                        
                     } catch (error) {
                         console.error('Error creating advanced color picker:', error);
                         alert('Error creating advanced color picker. Please try again.');
@@ -415,11 +458,11 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
             clearcolorBtn.textContent = 'Reset';
             clearcolorBtn.style.cssText = `
                 flex: 1;
-                padding: 8px 16px;
+                padding: 6px 12px;
                 background: #ffffff;
                 border: 1px solid #e2e8f0;
                 border-radius: 6px;
-                font-size: 13px;
+                font-size: 12px;
                 font-weight: 500;
                 color: #334155;
                 cursor: pointer;
@@ -449,8 +492,8 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
             // Position the color picker
             const buttonRect = button.getBoundingClientRect();
             const toolbarRect = toolbar.getBoundingClientRect();
-            const pickerWidth = 250;
-            const pickerHeight = 200;
+            const pickerWidth = 220;
+            const pickerHeight = 180;
 
             // Calculate initial position
             let top = buttonRect.bottom + iframeWindow.scrollY;
