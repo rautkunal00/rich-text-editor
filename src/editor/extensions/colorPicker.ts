@@ -1,25 +1,75 @@
-import iro from '@jaames/iro';
 import { iframeDocument, iframeWindow } from '../globalVariables';
+import { loadScript } from '../dynamicFunctions';
+
+// Extend Window interface to include iro
+declare global {
+    interface Window {
+        iro?: any;
+    }
+}
 
 // Global state to track active color picker
 let activeColorPicker: HTMLElement | null = null;
+let iroLoaded = false;
 
-function createColorPicker(container: HTMLElement, onChange: (hex: string) => void) {
-    const picker = iro.ColorPicker(container!, {
-        color: '#f00',
-        width: 200,
-        layout: [
-            {
-                component: iro.ui.Wheel,
-            }
-        ]
-    });
+async function ensureIroLoaded(): Promise<any> {
+    if (iroLoaded && iframeWindow.iro) {
+        return iframeWindow.iro;
+    }
 
-    picker.on('color:change', (color: { hexString: string }) => {
-        onChange(color.hexString);
-    });
+    try {
+        // Load iro from CDN in the iframe context
+        await loadScript('https://cdn.jsdelivr.net/npm/@jaames/iro@5', iframeDocument);
+        
+        // Wait a bit for the script to initialize
+        await new Promise(resolve => setTimeout(resolve, 100));
+        
+        if (iframeWindow.iro) {
+            iroLoaded = true;
+            return iframeWindow.iro;
+        } else {
+            throw new Error('iro library failed to load properly');
+        }
+    } catch (error) {
+        console.error('Failed to load iro library:', error);
+        throw new Error('Failed to load color picker library');
+    }
+}
 
-    return picker;
+async function createColorPicker(container: HTMLElement, onChange: (hex: string) => void): Promise<any> {
+    try {
+        const iro = await ensureIroLoaded();
+        
+        if (typeof iro === 'undefined' || !iro.ColorPicker) {
+            console.error('iro library not found:', {
+                iro: typeof iro,
+                hasColorPicker: iro && typeof iro.ColorPicker
+            });
+            throw new Error('iro library is not properly loaded');
+        }
+        
+        console.log('iro library is available:', typeof iro, iro);
+        
+        const picker = iro.ColorPicker(container!, {
+            color: '#f00',
+            width: 150,
+            layout: [
+                {
+                    component: iro.ui.Wheel,
+                }
+            ]
+        });
+
+        picker.on('color:change', (color: { hexString: string }) => {
+            onChange(color.hexString);
+        });
+
+        return picker;
+    } catch (error) {
+        console.error('Error creating color picker:', error);
+        console.error('Container element:', container);
+        throw error;
+    }
 }
 
 export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex: string) => void, toolbar: HTMLElement) {
@@ -27,6 +77,7 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
     let colorContainer: HTMLElement | null = null;
     let currentColor = '';
     let tempColor = '';
+    let iroPickerInitialized = false;
 
     // Function to update button color
     const updateButtonColor = (color: string) => {
@@ -64,6 +115,8 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
             colorContainer.remove();
             colorContainer = null;
             activeColorPicker = null;
+            // Reset the iro picker initialization flag so Advanced button works again
+            iroPickerInitialized = false;
         }
     };
 
@@ -127,7 +180,7 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
                 background: #fff;
                 border: 1px solid #e5e7eb;
                 border-radius: 8px;
-                padding: 12px;
+                padding: 8px;
                 z-index: 1000;
                 box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             `;
@@ -140,9 +193,9 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
                 swatch.style.cssText = `
                     background: ${hex};
                     width: 24px;
-                    height: 24px;
+                    height: 18px;
                     display: inline-block;
-                    margin: 4px;
+                    margin: 2px;
                     cursor: pointer;
                     border: 1px solid #000;
                     border-radius: 4px;
@@ -168,9 +221,9 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
             const buttonContainer = iframeDocument.createElement('div');
             buttonContainer.style.cssText = `
                 display: flex;
-                gap: 8px;
-                padding: 0 12px 12px;
-                margin-top: 8px;
+                gap: 6px;
+                padding: 0 8px 8px;
+                margin-top: 6px;
             `;
 
             // Advanced button
@@ -178,11 +231,11 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
             advancedBtn.textContent = 'Advanced';
             advancedBtn.style.cssText = `
                 flex: 1;
-                padding: 8px 16px;
+                padding: 6px 12px;
                 background: #ffffff;
                 border: 1px solid #e2e8f0;
                 border-radius: 6px;
-                font-size: 13px;
+                font-size: 12px;
                 font-weight: 500;
                 color: #334155;
                 cursor: pointer;
@@ -192,184 +245,200 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
                 align-items: center;
                 justify-content: center;
             `;
-            advancedBtn.addEventListener('click', (e) => {
+            advancedBtn.addEventListener('click', async (e) => {
                 e.stopPropagation();
+                console.log('Advanced button clicked, iroPickerInitialized:', iroPickerInitialized);
                 if (!iroPickerInitialized) {
-                    const container = iframeDocument.createElement('div');
-                    container.style.cssText = `
-                        padding: 12px;
-                        background: #fff;
-                        border-radius: 8px;
-                    `;
+                    try {
+                        console.log('Creating advanced color picker...');
+                        
+                        // iro is available, proceed with creation
+                        const container = iframeDocument.createElement('div');
+                        container.style.cssText = `
+                            padding: 10px;
+                            background: #fff;
+                            border-radius: 8px;
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                        `;
 
-                    // Create color picker
-                    const picker = createColorPicker(container, (hex) => {
-                        tempColor = hex;
-                        hexInput.value = hex;
-                    });
+                        // Create color picker - now properly awaited
+                        const picker = await createColorPicker(container, (hex) => {
+                            tempColor = hex;
+                            hexInput.value = hex;
+                        });
 
-                    // Create hex input container
-                    const hexInputContainer = iframeDocument.createElement('div');
-                    hexInputContainer.style.cssText = `
-                        display: flex;
-                        align-items: center;
-                        gap: 8px;
-                        margin-top: 16px;
-                        padding: 0 4px;
-                    `;
+                        // Create hex input container
+                        const hexInputContainer = iframeDocument.createElement('div');
+                        hexInputContainer.style.cssText = `
+                            display: flex;
+                            align-items: center;
+                            gap: 6px;
+                            margin-top: 12px;
+                            padding: 0 2px;
+                        `;
 
-                    // Create hex label
-                    const hexLabel = iframeDocument.createElement('span');
-                    hexLabel.textContent = 'HEX:';
-                    hexLabel.style.cssText = `
-                        font-size: 12px;
-                        color: #4b5563;
-                        font-weight: 500;
-                    `;
+                        // Create hex label
+                        const hexLabel = iframeDocument.createElement('span');
+                        hexLabel.textContent = 'HEX:';
+                        hexLabel.style.cssText = `
+                            font-size: 11px;
+                            color: #4b5563;
+                            font-weight: 500;
+                        `;
 
-                    // Create hex input
-                    const hexInput = iframeDocument.createElement('input');
-                    hexInput.type = 'text';
-                    hexInput.value = tempColor;
-                    hexInput.style.cssText = `
-                        flex: 1;
-                        padding: 6px 8px;
-                        border: 1px solid #d1d5db;
-                        border-radius: 4px;
-                        font-size: 12px;
-                        font-family: monospace;
-                        outline: none;
-                        transition: all 0.2s;
-                        width: 100%;
-                    `;
-                    hexInput.onfocus = () => {
-                        hexInput.style.borderColor = '#2563eb';
-                        hexInput.style.boxShadow = '0 0 0 2px rgba(37, 99, 235, 0.1)';
-                    };
-                    hexInput.onblur = () => {
-                        hexInput.style.borderColor = '#d1d5db';
-                        hexInput.style.boxShadow = 'none';
-                    };
-                    hexInput.oninput = (e) => {
-                        const input = e.target as HTMLInputElement;
-                        let value = input.value;
+                        // Create hex input
+                        const hexInput = iframeDocument.createElement('input');
+                        hexInput.type = 'text';
+                        hexInput.value = tempColor;
+                        hexInput.style.cssText = `
+                            flex: 1;
+                            padding: 4px 6px;
+                            border: 1px solid #d1d5db;
+                            border-radius: 4px;
+                            font-size: 11px;
+                            font-family: monospace;
+                            outline: none;
+                            transition: all 0.2s;
+                            width: 100%;
+                        `;
+                        hexInput.onfocus = () => {
+                            hexInput.style.borderColor = '#2563eb';
+                            hexInput.style.boxShadow = '0 0 0 2px rgba(37, 99, 235, 0.1)';
+                        };
+                        hexInput.onblur = () => {
+                            hexInput.style.borderColor = '#d1d5db';
+                            hexInput.style.boxShadow = 'none';
+                        };
+                        hexInput.oninput = (e) => {
+                            const input = e.target as HTMLInputElement;
+                            let value = input.value;
 
-                        // Remove any non-hex characters
-                        value = value.replace(/[^0-9A-Fa-f]/g, '');
+                            // Remove any non-hex characters
+                            value = value.replace(/[^0-9A-Fa-f]/g, '');
 
-                        // Ensure it starts with #
-                        if (!value.startsWith('#')) {
-                            value = '#' + value;
+                            // Ensure it starts with #
+                            if (!value.startsWith('#')) {
+                                value = '#' + value;
+                            }
+
+                            // Limit to 7 characters (#RRGGBB)
+                            if (value.length > 7) {
+                                value = value.slice(0, 7);
+                            }
+
+                            input.value = value;
+
+                            // Update color if valid hex
+                            if (value.length === 7) {
+                                tempColor = value;
+                                picker.color.set(value);
+                            }
+                        };
+
+                        hexInputContainer.appendChild(hexLabel);
+                        hexInputContainer.appendChild(hexInput);
+                        container.appendChild(hexInputContainer);
+
+                        // Create confirm button container
+                        const confirmContainer = iframeDocument.createElement('div');
+                        confirmContainer.style.cssText = `
+                            display: flex;
+                            gap: 6px;
+                            margin-top: 12px;
+                        `;
+
+                        // Create confirm button
+                        const confirmBtn = iframeDocument.createElement('button');
+                        confirmBtn.textContent = 'Apply';
+                        confirmBtn.style.cssText = `
+                            flex: 1;
+                            padding: 8px 16px;
+                            background: #ffffff;
+                            border: 1px solid #e2e8f0;
+                            border-radius: 6px;
+                            font-size: 12px;
+                            font-weight: 500;
+                            color: #334155;
+                            cursor: pointer;
+                            transition: all 0.2s ease;
+                            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            min-width: 80px;
+                        `;
+                        confirmBtn.onmouseover = () => {
+                            confirmBtn.style.background = '#f8fafc';
+                            confirmBtn.style.borderColor = '#cbd5e1';
+                            confirmBtn.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.05)';
                         }
-
-                        // Limit to 7 characters (#RRGGBB)
-                        if (value.length > 7) {
-                            value = value.slice(0, 7);
+                        confirmBtn.onmouseout = () => {
+                            confirmBtn.style.background = '#ffffff';
+                            confirmBtn.style.borderColor = '#e2e8f0';
+                            confirmBtn.style.boxShadow = '0 1px 2px rgba(0, 0, 0, 0.05)';
                         }
+                        confirmBtn.onclick = (e) => {
+                            e.stopPropagation();
+                            onChange(tempColor);
+                            updateButtonColor(tempColor);
+                            closeColorPicker();
+                        };
 
-                        input.value = value;
-
-                        // Update color if valid hex
-                        if (value.length === 7) {
-                            tempColor = value;
-                            picker.color.set(value);
+                        // Create reset button for advanced view
+                        const advancedResetBtn = iframeDocument.createElement('button');
+                        advancedResetBtn.textContent = 'Reset';
+                        advancedResetBtn.style.cssText = `
+                            flex: 1;
+                            padding: 8px 16px;
+                            background: #ffffff;
+                            border: 1px solid #e2e8f0;
+                            border-radius: 6px;
+                            font-size: 12px;
+                            font-weight: 500;
+                            color: #334155;
+                            cursor: pointer;
+                            transition: all 0.2s ease;
+                            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            min-width: 80px;
+                        `;
+                        advancedResetBtn.onmouseover = () => {
+                            advancedResetBtn.style.background = '#f8fafc';
+                            advancedResetBtn.style.borderColor = '#cbd5e1';
+                            advancedResetBtn.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.05)';
                         }
-                    };
+                        advancedResetBtn.onmouseout = () => {
+                            advancedResetBtn.style.background = '#ffffff';
+                            advancedResetBtn.style.borderColor = '#e2e8f0';
+                            advancedResetBtn.style.boxShadow = '0 1px 2px rgba(0, 0, 0, 0.05)';
+                        }
+                        advancedResetBtn.onclick = (e) => {
+                            e.stopPropagation();
+                            onChange('');
+                            updateButtonColor('');
+                            closeColorPicker();
+                        };
 
-                    hexInputContainer.appendChild(hexLabel);
-                    hexInputContainer.appendChild(hexInput);
-                    container.appendChild(hexInputContainer);
+                        confirmContainer.appendChild(confirmBtn);
+                        confirmContainer.appendChild(advancedResetBtn);
+                        container.appendChild(confirmContainer);
 
-                    // Create confirm button container
-                    const confirmContainer = iframeDocument.createElement('div');
-                    confirmContainer.style.cssText = `
-                        display: flex;
-                        gap: 8px;
-                        margin-top: 16px;
-                    `;
+                        iroPickerInitialized = true;
+                        paletteContainer.innerHTML = '';
+                        paletteContainer.appendChild(container);
 
-                    // Create confirm button
-                    const confirmBtn = iframeDocument.createElement('button');
-                    confirmBtn.textContent = 'Apply';
-                    confirmBtn.style.cssText = `
-                        flex: 1;
-                        padding: 8px 16px;
-                        background: #ffffff;
-                        border: 1px solid #e2e8f0;
-                        border-radius: 6px;
-                        font-size: 13px;
-                        font-weight: 500;
-                        color: #334155;
-                        cursor: pointer;
-                        transition: all 0.2s ease;
-                        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                    `;
-                    confirmBtn.onmouseover = () => {
-                        confirmBtn.style.background = '#f8fafc';
-                        confirmBtn.style.borderColor = '#cbd5e1';
-                        confirmBtn.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.05)';
+                        // Hide the Advanced button and button container
+                        buttonContainer.style.display = 'none';
+                        console.log('Advanced color picker created successfully');
+                        
+                    } catch (error) {
+                        console.error('Error creating advanced color picker:', error);
+                        alert('Error creating advanced color picker. Please try again.');
                     }
-                    confirmBtn.onmouseout = () => {
-                        confirmBtn.style.background = '#ffffff';
-                        confirmBtn.style.borderColor = '#e2e8f0';
-                        confirmBtn.style.boxShadow = '0 1px 2px rgba(0, 0, 0, 0.05)';
-                    }
-                    confirmBtn.onclick = (e) => {
-                        e.stopPropagation();
-                        onChange(tempColor);
-                        updateButtonColor(tempColor);
-                        closeColorPicker();
-                    };
-
-                    // Create reset button for advanced view
-                    const advancedResetBtn = iframeDocument.createElement('button');
-                    advancedResetBtn.textContent = 'Reset';
-                    advancedResetBtn.style.cssText = `
-                        flex: 1;
-                        padding: 8px 16px;
-                        background: #ffffff;
-                        border: 1px solid #e2e8f0;
-                        border-radius: 6px;
-                        font-size: 13px;
-                        font-weight: 500;
-                        color: #334155;
-                        cursor: pointer;
-                        transition: all 0.2s ease;
-                        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                    `;
-                    advancedResetBtn.onmouseover = () => {
-                        advancedResetBtn.style.background = '#f8fafc';
-                        advancedResetBtn.style.borderColor = '#cbd5e1';
-                        advancedResetBtn.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.05)';
-                    }
-                    advancedResetBtn.onmouseout = () => {
-                        advancedResetBtn.style.background = '#ffffff';
-                        advancedResetBtn.style.borderColor = '#e2e8f0';
-                        advancedResetBtn.style.boxShadow = '0 1px 2px rgba(0, 0, 0, 0.05)';
-                    }
-                    advancedResetBtn.onclick = (e) => {
-                        e.stopPropagation();
-                        onChange('');
-                        updateButtonColor('');
-                        closeColorPicker();
-                    };
-
-                    confirmContainer.appendChild(confirmBtn);
-                    confirmContainer.appendChild(advancedResetBtn);
-                    container.appendChild(confirmContainer);
-
-                    iroPickerInitialized = true;
-                    paletteContainer.innerHTML = '';
-                    paletteContainer.appendChild(container);
-
-                    // Hide the Advanced button and button container
-                    buttonContainer.style.display = 'none';
                 }
             });
             advancedBtn.onmouseover = () => {
@@ -389,11 +458,11 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
             clearcolorBtn.textContent = 'Reset';
             clearcolorBtn.style.cssText = `
                 flex: 1;
-                padding: 8px 16px;
+                padding: 6px 12px;
                 background: #ffffff;
                 border: 1px solid #e2e8f0;
                 border-radius: 6px;
-                font-size: 13px;
+                font-size: 12px;
                 font-weight: 500;
                 color: #334155;
                 cursor: pointer;
@@ -419,13 +488,12 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
             colorContainer.appendChild(buttonContainer);
 
             const container = iframeDocument.createElement('div');
-            let iroPickerInitialized = false;
 
             // Position the color picker
             const buttonRect = button.getBoundingClientRect();
             const toolbarRect = toolbar.getBoundingClientRect();
-            const pickerWidth = 250;
-            const pickerHeight = 200;
+            const pickerWidth = 220;
+            const pickerHeight = 180;
 
             // Calculate initial position
             let top = buttonRect.bottom + iframeWindow.scrollY;
