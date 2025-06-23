@@ -8,6 +8,15 @@ import { initMenu } from './editor/initMenu';
 import { createToolbar } from './editor/toolbar';
 import { EditorAPI, TiptapEditorOptions } from './globalInterface';
 
+// Extend Window interface to include lucide
+declare global {
+    interface Window {
+        lucide?: {
+            createIcons: () => void;
+        };
+    }
+}
+
 export const initTiptapEditor = (options: TiptapEditorOptions): EditorAPI => {
     const { selector, editorConfig = {} } = options;
     const editorParentContainer = document.querySelector(selector) as HTMLElement;
