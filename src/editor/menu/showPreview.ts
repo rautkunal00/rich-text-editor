@@ -1,7 +1,6 @@
 import { Editor } from "@tiptap/core";
-import { iframeDocument } from "../globalVariables";
+import { iframeDocument, iframeWindow } from "../globalVariables";
 
-declare const lucide: any;
 export const showPreview = (editor: Editor) => {
     const previewBtn = iframeDocument.getElementById('preview-btn');
 
@@ -33,7 +32,7 @@ function showPreviewOverLay(editor:Editor){
 
   iframeDocument.body.appendChild(previewOverLay);
   iframeDocument.body.style.overflow = "hidden";
-  lucide?.createIcons();
+  (iframeWindow as any).lucide?.createIcons();
 
   const closeBtn = iframeDocument.getElementById('close-preview-btn');
   closeBtn?.addEventListener('click',()=>{
