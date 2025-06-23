@@ -1,6 +1,6 @@
 declare global {
   interface Window {
-    lucide: {
+    lucide?: {
       createIcons: (options?: Record<string, any>) => void;
     };
   }
