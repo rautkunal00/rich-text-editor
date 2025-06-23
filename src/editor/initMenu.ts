@@ -24,6 +24,8 @@ import { addAdditionalButtons } from './menu/addAdditionalButton';
 import { addEmojisAndCharacters } from './menu/addEmojisAndCharacters';
 import { setupFullscreenToggle } from './menu/fullScreen';
 import { showPreview } from './menu/showPreview'
+import { setupHorizontalRule } from './menu/setupHorizontal';
+import { textDirectionMenu } from './menu/textDirection';
 
 export const initMenu = (editor: Editor, editorElement: HTMLDivElement) => {
     setupFormatting(editor);
@@ -42,7 +44,7 @@ export const initMenu = (editor: Editor, editorElement: HTMLDivElement) => {
     setupSpellcheckToggle();
     setupSearchReplace(editor);
     setupFormatPainter(editor);
-    setupAddAnchorDialog(editor, editorElement);
+    setupAddAnchorDialog(editor);
     setupAddLink(editor);
     allowBase64Images(editor);
     setupHeadingStyle(editor);
@@ -52,4 +54,6 @@ export const initMenu = (editor: Editor, editorElement: HTMLDivElement) => {
     addEmojisAndCharacters(editor);
     setupFullscreenToggle(editor);
     showPreview(editor);
+    setupHorizontalRule(editor);
+    textDirectionMenu(editor);
 }

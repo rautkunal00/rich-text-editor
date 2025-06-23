@@ -1,37 +1,72 @@
 import { Editor } from '@tiptap/core';
-import { iframeDocument } from '../globalVariables';
+import { iframeDocument, iframeWindow } from '../globalVariables';
 
 export const setupSearchReplace = (editor: Editor) => {
-  // Add minimal positioning styles
-  const style = iframeDocument.createElement('style');
-  style.textContent = `
-    #search-dialog {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 1000;
-    }
-  `;
-  iframeDocument.head.appendChild(style);
+  const button = iframeDocument.getElementById('open-search-dialog-btn');
+  if (!button) return;
 
-  const searchDialog = iframeDocument.getElementById('search-dialog') as HTMLElement;
-  const openSearchBtn = iframeDocument.getElementById('open-search-dialog-btn');
-  const closeSearchBtn = iframeDocument.getElementById('close-search-dialog');
+  button.addEventListener('click', () => {
+    const popupContent = createSearchReplacePopup(editor);
+    const rect = button.getBoundingClientRect();
+    const top = rect.bottom + iframeWindow.screenY;
+    const left = rect.left + iframeWindow.screenX;
 
-  const searchInput = iframeDocument.getElementById('search-input') as HTMLInputElement;
-  const replaceInput = iframeDocument.getElementById('replace-input') as HTMLInputElement;
-
-  openSearchBtn?.addEventListener('click', () => {
-    searchDialog.style.display = 'block';
-    searchInput.focus();
+    editor.commands.showPopup({
+      html: popupContent,
+      position: { top, left },
+      closeOnOutsideClick: true,
+    });
   });
+};
 
-  closeSearchBtn?.addEventListener('click', () => {
-    searchDialog.style.display = 'none';
-    clearHighlights();
-  });
+function createSearchReplacePopup(editor: Editor): HTMLDivElement {
+  const container = iframeDocument.createElement('div');
+  container.style.width = '300px';
+  container.style.padding = '12px';
+  container.style.fontFamily = 'sans-serif';
+  container.style.background = '#fff';
 
+  // Creating inputs and buttons
+  const searchInput = iframeDocument.createElement('input');
+  searchInput.placeholder = 'Search...';
+  searchInput.style.width = '100%';
+  searchInput.style.marginBottom = '8px';
+  searchInput.style.padding = '6px';
+
+  const replaceInput = iframeDocument.createElement('input');
+  replaceInput.placeholder = 'Replace with...';
+  replaceInput.style.width = '100%';
+  replaceInput.style.marginBottom = '8px';
+  replaceInput.style.padding = '6px';
+
+  const searchBtn = iframeDocument.createElement('button');
+  searchBtn.textContent = 'Search';
+  searchBtn.style.marginRight = '6px';
+
+  const replaceBtn = iframeDocument.createElement('button');
+  replaceBtn.textContent = 'Replace';
+
+  const replaceAllBtn = iframeDocument.createElement('button');
+  replaceAllBtn.textContent = 'Replace All';
+  replaceAllBtn.style.marginLeft = '6px';
+
+  const actions = iframeDocument.createElement('div');
+  actions.style.marginTop = '8px';
+  actions.appendChild(searchBtn);
+  actions.appendChild(replaceBtn);
+  actions.appendChild(replaceAllBtn);
+
+  const resultMsg = iframeDocument.createElement('div');
+  resultMsg.style.marginTop = '8px';
+  resultMsg.style.fontSize = '12px';
+  resultMsg.style.color = '#555';
+
+  container.appendChild(searchInput);
+  container.appendChild(replaceInput);
+  container.appendChild(actions);
+  container.appendChild(resultMsg);
+
+  
   const clearHighlights = () => {
     editor.chain().focus().unsetMark('highlight').run();
   };
@@ -71,22 +106,23 @@ export const setupSearchReplace = (editor: Editor) => {
     });
   };
 
-  iframeDocument.getElementById('search-btn')?.addEventListener('click', () => {
+  searchBtn.addEventListener('click', () => {
     const searchTerm = searchInput.value.trim();
     if (!searchTerm) return;
 
     const matches = findMatches(searchTerm);
 
     if (matches.length === 0) {
-      alert('No matches found.');
+      resultMsg.textContent = 'No matches found.';
       clearHighlights();
       return;
     }
 
     highlightMatches(matches);
+    resultMsg.textContent = `Found ${matches.length} match${matches.length > 1 ? 'es' : ''}.`;
   });
 
-  iframeDocument.getElementById('replace-btn')?.addEventListener('click', () => {
+  replaceBtn.addEventListener('click', () => {
     const searchTerm = searchInput.value.trim();
     const replaceTerm = replaceInput.value;
     if (!searchTerm) return;
@@ -94,9 +130,8 @@ export const setupSearchReplace = (editor: Editor) => {
     clearHighlights();
 
     const matches = findMatches(searchTerm);
-
     if (matches.length === 0) {
-      alert('No match found to replace.');
+      resultMsg.textContent = 'No match found to replace.';
       return;
     }
 
@@ -108,9 +143,11 @@ export const setupSearchReplace = (editor: Editor) => {
       .deleteRange({ from: firstMatch.from + 1, to: firstMatch.to + 1 })
       .insertContentAt(firstMatch.from + 1, replaceTerm)
       .run();
+
+    resultMsg.textContent = 'Replaced first match.';
   });
 
-  iframeDocument.getElementById('replace-all-btn')?.addEventListener('click', () => {
+  replaceAllBtn.addEventListener('click', () => {
     const searchTerm = searchInput.value.trim();
     const replaceTerm = replaceInput.value;
     if (!searchTerm) return;
@@ -122,5 +159,8 @@ export const setupSearchReplace = (editor: Editor) => {
     const replacedText = docText.replace(regex, replaceTerm);
 
     editor.commands.setContent(replacedText, false);
+    resultMsg.textContent = 'Replaced all matches.';
   });
-};
+
+  return container;
+}

@@ -26,6 +26,10 @@ declare module '@tiptap/core' {
         closeOnOutsideClick?: boolean;
       }) => ReturnType;
       closePopup: () => ReturnType;
-    };
+    },
+     textDirection: {
+      setLTR: () => ReturnType;
+      setRTL: () => ReturnType;
+    }
   }
 }
