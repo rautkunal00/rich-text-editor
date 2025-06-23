@@ -27,6 +27,8 @@ import FontSize from './extensions/fontSize';
 import { PopupExtension } from './extensions/popup';
 import HighlightMark from './extensions/searchHighlight';
 import TextColor from './extensions/textColor';
+import { CustomHorizontalRule } from './extensions/horizontalLine';  
+import { TextDirection } from './extensions/textDirection';
 
 export const getExtensions = (editorConfig: EditorOptions) => [
     StarterKit,
@@ -57,4 +59,6 @@ export const getExtensions = (editorConfig: EditorOptions) => [
     ExtendedOrderedList,
     ExtendedBulletList,
     PopupExtension,
+    CustomHorizontalRule,
+    TextDirection
 ];

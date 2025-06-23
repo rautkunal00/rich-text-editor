@@ -115,7 +115,10 @@ export function createToolbar(editor: any): HTMLElement {
         { type: 'button', id: 'insert-datetime', label: 'Insert Date & Time', icon: 'calendar-days' },
         { type: 'button', id: 'insert-emoji-char', label: 'Insert Special Characters & Emoji', icon: 'asterisk' },
         { type: 'button', id: 'fullscreen', label: 'Fullscreen', icon: 'expand'},
-        { type: 'button', id: 'preview', label: 'Preview', icon: 'scan-eye'}
+        { type: 'button', id: 'preview', label: 'Preview', icon: 'scan-eye'},
+        { type: 'button', id: 'horizontal', label: 'Horizontal Line', icon: 'move-horizontal'},
+        { type: 'button', id: 'left-to-Right', label: 'Left to Right', icon: 'move-right'},
+        { type: 'button', id: 'Right-to-Left', label: 'Right to Left', icon: 'move-left'}
     ];
 
     const toolbar = iframeDocument.createElement('div');
