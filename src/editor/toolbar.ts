@@ -119,7 +119,9 @@ export function createToolbar(editor: any): HTMLElement {
         { type: 'button', id: 'source-code', label: 'Source Code', icon: 'code' },
         { type: 'button', id: 'horizontal', label: 'Horizontal Line', icon: 'move-horizontal'},
         { type: 'button', id: 'left-to-Right', label: 'Left to Right', icon: 'move-right'},
-        { type: 'button', id: 'Right-to-Left', label: 'Right to Left', icon: 'move-left'}
+        { type: 'button', id: 'Right-to-Left', label: 'Right to Left', icon: 'move-left'},
+        { type: 'button', id: 'visual-block', label: 'Visual Blocks', icon: 'layout-panel-top'},
+        { type: 'button', id: 'visual-chars', label: 'Visual Characters', icon: 'pilcrow'},
     ];
 
     const toolbar = iframeDocument.createElement('div');

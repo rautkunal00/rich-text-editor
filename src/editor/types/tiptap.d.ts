@@ -29,9 +29,15 @@ declare module '@tiptap/core' {
       }) => ReturnType;
       closePopup: () => ReturnType;
     },
-     textDirection: {
+    textDirection: {
       setLTR: () => ReturnType;
       setRTL: () => ReturnType;
+    },
+    visualBlocks: {
+      toggleVisualBlocks: () => ReturnType
+    },
+    visualCharacters: {
+      toggleVisualCharacters: () => ReturnType
     }
   }
 }

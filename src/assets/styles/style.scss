@@ -82,6 +82,59 @@ $hover-color: #444;
         display: flex;
         flex-direction: column;
 
+        &.tiptap-visual-blocks {
+            .tiptap {
+
+                p,
+                h1,
+                h2,
+                h3,
+                blockquote,
+                pre,
+                li,
+                div {
+                    outline: 1px dashed #ccc;
+                    position: relative;
+                }
+
+                p::before,
+                h1::before,
+                h2::before,
+                h3::before,
+                blockquote::before,
+                pre::before,
+                li::before,
+                div::before {
+                    content: attr(data-type);
+                    position: absolute;
+                    top: -1.2em;
+                    left: 0;
+                    font-size: 10px;
+                    background: #f8f9fa;
+                    color: #999;
+                    padding: 2px 4px;
+                    border-radius: 4px;
+                }
+            }
+        }
+
+        &.tiptap-visual-characters {
+            p::after {
+                content: "¶";
+                color: #999;
+                font-size: 0.75rem;
+                margin-left: 4px;
+
+                // div.visualChars::after {
+                //     content: "↵";
+                //     color: #ccc;
+                //     font-size: 0.8em;
+                // }
+            }
+
+
+        }
+
         .tiptap {
             &:focus {
                 outline: none;
@@ -152,7 +205,7 @@ $hover-color: #444;
             border-radius: 2px;
             padding: 0 2px;
         }
-        
+
         .search-dialog {
             position: fixed;
             top: 60px;
@@ -167,20 +220,20 @@ $hover-color: #444;
             z-index: 1000;
             display: none;
         }
-        
+
         .search-dialog .row {
             display: flex;
             align-items: center;
             margin-bottom: 12px;
         }
-        
+
         .search-dialog label {
             width: 80px;
             font-size: 14px;
             user-select: none;
             color: #e5e7eb;
         }
-        
+
         .search-dialog input[type="text"] {
             flex: 1;
             padding: 8px 12px;
@@ -192,12 +245,12 @@ $hover-color: #444;
             color: #fff;
             transition: all 0.2s ease;
         }
-        
+
         .search-dialog input[type="text"]:focus {
             border-color: #2563eb;
             box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
         }
-        
+
         .search-dialog button {
             margin-left: 10px;
             padding: 8px 16px;
@@ -210,19 +263,19 @@ $hover-color: #444;
             transition: all 0.2s ease;
             box-shadow: 0 1px 3px rgba(37, 99, 235, 0.08);
         }
-        
+
         .search-dialog button:hover {
             background-color: #1d4ed8;
             transform: translateY(-1px);
         }
-        
+
         .search-dialog .actions {
             display: flex;
             justify-content: flex-end;
             align-items: center;
             margin-top: 16px;
         }
-        
+
         #close-search-dialog {
             background: transparent;
             border: none;
@@ -235,7 +288,7 @@ $hover-color: #444;
             transition: all 0.2s ease;
             border-radius: 4px;
         }
-        
+
         #close-search-dialog:hover {
             color: #fff;
             background: rgba(255, 255, 255, 0.1);
