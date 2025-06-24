@@ -1,3 +1,4 @@
+/// <reference path="./editor/types/lucide.d.ts" />
 import { Editor } from '@tiptap/core';
 import { loadCSS, loadScript } from './editor/dynamicFunctions';
 import { sanitizeHTML } from './editor/extensions/sanitizer';
@@ -8,15 +9,6 @@ import { initMenu } from './editor/initMenu';
 import { initAceInIframe } from './editor/plugin/aceEditor';
 import { createToolbar } from './editor/toolbar';
 import { EditorAPI, TiptapEditorOptions } from './globalInterface';
-
-// Extend Window interface to include lucide
-declare global {
-    interface Window {
-        lucide?: {
-            createIcons: () => void;
-        };
-    }
-}
 
 export const initTiptapEditor = (options: TiptapEditorOptions): EditorAPI => {
     const { selector, editorConfig = {} } = options;
@@ -66,7 +58,8 @@ export const initTiptapEditor = (options: TiptapEditorOptions): EditorAPI => {
                 loadScript(scriptUrl, editorDocument)
                     .then(() => {
                         if (scriptUrl.includes('lucide')) {
-                            editorWindow.lucide?.createIcons();
+                            const windowWithLucide = editorWindow as Window & { lucide?: { createIcons: () => void } };
+                            windowWithLucide.lucide?.createIcons();
                         }
                     })
                     .catch(console.error);
