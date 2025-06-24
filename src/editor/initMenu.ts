@@ -24,6 +24,7 @@ import { addAdditionalButtons } from './menu/addAdditionalButton';
 import { addEmojisAndCharacters } from './menu/addEmojisAndCharacters';
 import { setupFullscreenToggle } from './menu/fullScreen';
 import { showPreview } from './menu/showPreview'
+import { addEditSource } from './menu/editSource';
 
 export const initMenu = (editor: Editor, editorElement: HTMLDivElement) => {
     setupFormatting(editor);
@@ -52,4 +53,5 @@ export const initMenu = (editor: Editor, editorElement: HTMLDivElement) => {
     addEmojisAndCharacters(editor);
     setupFullscreenToggle(editor);
     showPreview(editor);
+    addEditSource(editor);
 }

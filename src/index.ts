@@ -5,6 +5,7 @@ import { createFooter } from './editor/footer';
 import { setIframeContext } from './editor/globalVariables';
 import { createEditor } from './editor/header';
 import { initMenu } from './editor/initMenu';
+import { initAceInIframe } from './editor/plugin/aceEditor';
 import { createToolbar } from './editor/toolbar';
 import { EditorAPI, TiptapEditorOptions } from './globalInterface';
 
@@ -59,9 +60,17 @@ export const initTiptapEditor = (options: TiptapEditorOptions): EditorAPI => {
 
             editorInstance = createEditor(editorElement, editorConfig);
 
-            loadScript('https://unpkg.com/lucide@latest', editorDocument)
-                .then(() => editorWindow.lucide?.createIcons())
-                .catch(console.error);
+            // add scripts
+            const scripts = ['https://unpkg.com/lucide@latest', 'https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.3/ace.js', 'https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.3/ext-language_tools.min.js'];
+            scripts.forEach(scriptUrl => {
+                loadScript(scriptUrl, editorDocument)
+                    .then(() => {
+                        if (scriptUrl.includes('lucide')) {
+                            editorWindow.lucide?.createIcons();
+                        }
+                    })
+                    .catch(console.error);
+            });
 
             loadCSS('./src/assets/styles/style.scss', editorDocument);
 

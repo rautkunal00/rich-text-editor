@@ -22,6 +22,8 @@ declare module '@tiptap/core' {
       showPopup: (config: {
         html: HTMLElement;
         position?: { top: number; left: number };
+        width?: string;
+        height?: string;
         onMount?: (popup: HTMLElement) => void;
         closeOnOutsideClick?: boolean;
       }) => ReturnType;
