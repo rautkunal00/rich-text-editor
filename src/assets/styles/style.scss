@@ -8,7 +8,10 @@ $hover-color: #444;
 .editor-container {
     margin: 0;
     box-sizing: border-box;
-    overflow: hidden;
+    resize: vertical;
+    overflow: auto;
+    min-height: 200px;
+    width: 100%;
 
     .toolbar {
         padding: 4px;
@@ -136,6 +139,14 @@ $hover-color: #444;
         }
 
         .tiptap {
+            code {
+                background: #f4f4f4;
+                color: #d63384;
+                padding: 2px 4px;
+                border-radius: 4px;
+                font-family: monospace;
+            }
+
             &:focus {
                 outline: none;
             }

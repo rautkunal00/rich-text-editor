@@ -122,6 +122,7 @@ export function createToolbar(editor: any): HTMLElement {
         { type: 'button', id: 'Right-to-Left', label: 'Right to Left', icon: 'move-left'},
         { type: 'button', id: 'visual-block', label: 'Visual Blocks', icon: 'layout-panel-top'},
         { type: 'button', id: 'visual-chars', label: 'Visual Characters', icon: 'pilcrow'},
+        { type: 'button', id: 'toggle-code', label: 'Toggle Code', icon: 'braces'},
     ];
 
     const toolbar = iframeDocument.createElement('div');

@@ -13,5 +13,8 @@ export const addAdditionalButtons = (editor: Editor) => {
     iframeDocument.getElementById('visual-chars-btn')?.addEventListener('click', () => {
         editor.commands.toggleVisualCharacters();
     });
+    iframeDocument.getElementById('toggle-code-btn')?.addEventListener('click', () => {
+        editor.chain().focus().toggleCode().run();
+    });
 
 }

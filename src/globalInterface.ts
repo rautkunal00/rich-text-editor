@@ -10,7 +10,8 @@ export interface EditorOptions {
     showMenu?: boolean,
     showToolbar?: boolean,
     height?: string,
-    width?: string
+    width?: string,
+    cssFiles?: string
 }
 
 export interface EditorAPI {

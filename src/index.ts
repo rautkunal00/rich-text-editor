@@ -6,7 +6,6 @@ import { createFooter } from './editor/footer';
 import { setIframeContext } from './editor/globalVariables';
 import { createEditor } from './editor/header';
 import { initMenu } from './editor/initMenu';
-import { initAceInIframe } from './editor/plugin/aceEditor';
 import { createToolbar } from './editor/toolbar';
 import { EditorAPI, TiptapEditorOptions } from './globalInterface';
 
@@ -65,7 +64,13 @@ export const initTiptapEditor = (options: TiptapEditorOptions): EditorAPI => {
                     .catch(console.error);
             });
 
-            loadCSS('./src/assets/styles/style.scss', editorDocument);
+            // add CSS files
+            const styles = ['./src/assets/styles/style.scss'];
+            if (editorConfig?.cssFiles) {
+                const cssList = editorConfig.cssFiles.split(',');
+                styles.push(...cssList);
+            }
+            styles.forEach(styleUrl => loadCSS(styleUrl, editorDocument));
 
             if (editorConfig?.showToolbar) {
                 const toolbar = createToolbar(editorInstance);

@@ -1,11 +1,12 @@
 {
-  "name": "@kunalraut/wolken-rich-text-editor",
-  "version": "1.1.0",
+  "name": "tiptap-enhanced-editor",
+  "version": "0.0.1",
   "main": "./lib/src/index.js",
   "types": "./lib/src/index.d.ts",
   "scripts": {
     "start": "vite",
     "dev": "vite",
+    "build:sass": "sass src/assets/styles/styles.scss src/assets/styles/styles.min.css --style=compressed",
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

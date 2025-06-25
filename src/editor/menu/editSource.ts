@@ -39,17 +39,19 @@ function openSourceEditorPopup(editor: Editor, button: HTMLElement) {
             aceEditorScript.type = 'text/javascript';
             aceEditorScript.innerText = popupScript;
             // Once executed, remove it from the DOM
-            setTimeout(()=>aceEditorScript.remove(),1000);
+            setTimeout(() => aceEditorScript.remove(), 1000);
             aceEditorScript.onload = () => aceEditorScript.remove();
 
             iframeDocument.body.appendChild(aceEditorScript);
-            iframeWindow.aceEditor.setValue(editor.getHTML(), 1);
+            const windowWithAce = iframeWindow as Window & { aceEditor?: { setValue: (html: any, value: any) => void, getValue: () => any } };
+
+            windowWithAce?.aceEditor?.setValue(editor.getHTML(), 1);
 
             cancelBtn.addEventListener('click', () => {
                 editor.commands.closePopup();
             });
             saveBtn.addEventListener('click', () => {
-                const newHTML = sanitizeHTML(iframeWindow.aceEditor.getValue());
+                const newHTML = sanitizeHTML(windowWithAce?.aceEditor?.getValue());
                 editor.commands.setContent(newHTML, false);
                 editor.commands.closePopup();
             });
