@@ -1,13 +1,13 @@
 {
   "name": "tiptap-enhanced-editor",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "./dist/src/index.js",
   "types": "./dist/src/index.d.ts",
   "scripts": {
     "start": "vite",
     "dev": "vite",
-    "build:sass": "sass src/assets/styles/styles.scss src/assets/styles/styles.min.css --style=compressed",
-    "build": "tsc",
+    "build:sass": "sass src/assets/styles/style.scss dist/src/assets/styles/style.min.css --style=compressed",
+    "build": "npm run build:sass && tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [

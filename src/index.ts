@@ -68,7 +68,10 @@ export const initTiptapEditor = (options: TiptapEditorOptions): Promise<EditorAP
                     .catch(console.error);
             });
 
-            const styles = ['./src/assets/styles/style.scss'];
+            const styles = import.meta.env.PROD
+                ? ['./src/assets/styles/style.min.css']
+                : ['./src/assets/styles/style.scss'];
+
             if (editorConfig?.cssFiles) {
                 styles.push(...editorConfig.cssFiles.split(','));
             }
