@@ -1,8 +1,8 @@
 {
   "name": "tiptap-enhanced-editor",
   "version": "0.0.1",
-  "main": "./lib/src/index.js",
-  "types": "./lib/src/index.d.ts",
+  "main": "./dist/src/index.js",
+  "types": "./dist/src/index.d.ts",
   "scripts": {
     "start": "vite",
     "dev": "vite",
