@@ -33,6 +33,9 @@ declare module '@tiptap/core' {
       setLTR: () => ReturnType;
       setRTL: () => ReturnType;
     },
+    pageBreak: {
+      insertPageBreak: () => ReturnType;
+      },
     visualBlocks: {
       toggleVisualBlocks: () => ReturnType
     },

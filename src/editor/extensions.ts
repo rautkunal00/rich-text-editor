@@ -29,6 +29,7 @@ import HighlightMark from './extensions/searchHighlight';
 import TextColor from './extensions/textColor';
 import { CustomHorizontalRule } from './extensions/horizontalLine';
 import { TextDirection } from './extensions/textDirection';
+import { PageBreak } from './extensions/pageBreak';
 import { VisualBlocks } from './extensions/visualBlocks';
 import { VisualCharacters } from './extensions/visualCharacters';
 
@@ -63,6 +64,7 @@ export const getExtensions = (editorConfig: EditorOptions) => [
     PopupExtension,
     CustomHorizontalRule,
     TextDirection,
+    PageBreak,
     VisualBlocks,
     VisualCharacters
 ];

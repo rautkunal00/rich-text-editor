@@ -90,7 +90,6 @@ export function setupAddAnchorDialog(editor: Editor) {
 
   // Opening the popup
   const addAnchorBtn = iframeDocument.getElementById('add-anchor-btn');
-  console.log("add",addAnchorBtn)
   addAnchorBtn?.addEventListener('click', () => {
     
     if(editor.state.selection.empty){
