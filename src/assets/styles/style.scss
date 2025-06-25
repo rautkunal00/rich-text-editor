@@ -107,6 +107,13 @@ $hover-color: #444;
                     content: "– ";
                 }
             }
+
+            .page-break {
+                page-break-after:always;
+                height: 10px;
+                border: 2px dashed #999;
+                margin: 1rem 0;
+            }
         }
     }
 

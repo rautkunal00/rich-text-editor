@@ -29,6 +29,7 @@ import HighlightMark from './extensions/searchHighlight';
 import TextColor from './extensions/textColor';
 import { CustomHorizontalRule } from './extensions/horizontalLine';  
 import { TextDirection } from './extensions/textDirection';
+import { PageBreak } from './extensions/pageBreak';
 
 export const getExtensions = (editorConfig: EditorOptions) => [
     StarterKit,
@@ -60,5 +61,6 @@ export const getExtensions = (editorConfig: EditorOptions) => [
     ExtendedBulletList,
     PopupExtension,
     CustomHorizontalRule,
-    TextDirection
+    TextDirection,
+    PageBreak
 ];

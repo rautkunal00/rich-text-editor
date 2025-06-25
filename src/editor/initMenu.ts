@@ -26,6 +26,7 @@ import { setupFullscreenToggle } from './menu/fullScreen';
 import { showPreview } from './menu/showPreview'
 import { setupHorizontalRule } from './menu/setupHorizontal';
 import { textDirectionMenu } from './menu/textDirection';
+import { pageBreakMenu } from './menu/pageBreakMenu';
 
 export const initMenu = (editor: Editor, editorElement: HTMLDivElement) => {
     setupFormatting(editor);
@@ -56,4 +57,5 @@ export const initMenu = (editor: Editor, editorElement: HTMLDivElement) => {
     showPreview(editor);
     setupHorizontalRule(editor);
     textDirectionMenu(editor);
+    pageBreakMenu(editor);
 }

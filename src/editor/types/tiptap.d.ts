@@ -30,6 +30,9 @@ declare module '@tiptap/core' {
      textDirection: {
       setLTR: () => ReturnType;
       setRTL: () => ReturnType;
+    },
+    pageBreak: {
+      insertPageBreak: () => ReturnType;
     }
   }
 }
