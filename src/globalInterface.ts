@@ -11,7 +11,8 @@ export interface EditorOptions {
     showToolbar?: boolean,
     height?: string,
     width?: string,
-    cssFiles?: string
+    cssFiles?: string,
+    resize?: boolean,
 }
 
 export interface EditorAPI {

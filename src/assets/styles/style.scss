@@ -9,7 +9,7 @@ $hover-color: #444;
     margin: 0;
     box-sizing: border-box;
     resize: vertical;
-    overflow: auto;
+    overflow: hidden;
     min-height: 200px;
     width: 100%;
 
@@ -175,15 +175,28 @@ $hover-color: #444;
     }
 
     .footer {
-        color: $text-color;
-        background-color: $background-color;
         display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        margin: 2px;
-        font-size: 12px;
         border-top: 1px solid #ddd;
-        padding: 2px 4px 0 4px;
+        justify-content: space-between;
+        flex-direction: row;
+
+        .footer-container {
+            color: $text-color;
+            background-color: $background-color;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            font-size: 12px;
+            padding: 2px 4px 0 4px;
+        }
+
+        .resize-drag-handle {
+            background: transparent;
+            border-top: 1px solid #ccc;
+            height: 10px;
+            cursor: ns-resize;
+            user-select: none;
+        }
     }
 
     .tiptap-popup {

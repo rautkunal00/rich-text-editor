@@ -79,20 +79,11 @@ export const initTiptapEditor = (options: TiptapEditorOptions): EditorAPI => {
             }
 
             const footerElement = editorDocument.createElement('div');
-            createFooter(footerElement, editorConfig);
+            createFooter(editorElement, footerElement, editorConfig);
             editorContainer.append(footerElement);
 
             // Optional: Auto-resize iframe based on content
-            const resizeObserver = new ResizeObserver(() => {
-                editoriframe.style.height = editorContainer.scrollHeight + 'px';
-            });
-            resizeObserver.observe(editorContainer);
-
-            const resizeIframe = () => {
-                const newHeight = editorContainer.scrollHeight;
-                editoriframe.style.height = newHeight + 'px';
-            };
-            resizeIframe();
+            resizeIframe(editoriframe, editorContainer);
         };
 
         return {
@@ -112,4 +103,17 @@ export const initTiptapEditor = (options: TiptapEditorOptions): EditorAPI => {
         };
     }
 };
+
+function resizeIframe(editoriframe: HTMLIFrameElement, editorContainer: HTMLElement) {
+    const resizeObserver = new ResizeObserver(() => {
+        editoriframe.style.height = editorContainer.scrollHeight + 'px';
+    });
+    resizeObserver.observe(editorContainer);
+
+    const resizeframe = () => {
+        const newHeight = editorContainer.scrollHeight;
+        editoriframe.style.height = newHeight + 'px';
+    };
+    resizeframe();
+}
 
