@@ -116,11 +116,15 @@ export function createToolbar(editor: any): HTMLElement {
         { type: 'button', id: 'insert-emoji-char', label: 'Insert Special Characters & Emoji', icon: 'asterisk' },
         { type: 'button', id: 'fullscreen', label: 'Fullscreen', icon: 'expand'},
         { type: 'button', id: 'preview', label: 'Preview', icon: 'scan-eye'},
+        { type: 'button', id: 'source-code', label: 'Source Code', icon: 'code' },
         { type: 'button', id: 'horizontal', label: 'Horizontal Line', icon: 'move-horizontal'},
         { type: 'button', id: 'left-to-right', label: 'Left to Right', icon: 'move-right'},
         { type: 'button', id: 'right-to-left', label: 'Right to Left', icon: 'move-left'},
         { type: 'button', id: 'format-painter', label: 'Format Painter', icon: 'paint-roller'},
-        { type: 'button', id: 'page-break', label: 'Page Break', icon: 'table-rows-split'}
+        { type: 'button', id: 'page-break', label: 'Page Break', icon: 'table-rows-split'},
+        { type: 'button', id: 'visual-block', label: 'Visual Blocks', icon: 'layout-panel-top'},
+        { type: 'button', id: 'visual-chars', label: 'Visual Characters', icon: 'pilcrow'},
+        { type: 'button', id: 'toggle-code', label: 'Toggle Code', icon: 'braces'},
     ];
 
     const toolbar = iframeDocument.createElement('div');

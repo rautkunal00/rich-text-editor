@@ -23,6 +23,8 @@ export const PopupExtension = Extension.create<PopupExtensionOptions>({
                 (config: {
                     html: HTMLElement;
                     position?: { top: number; left: number };
+                    height?: string;
+                    width?: string;
                     onMount?: (popup: HTMLElement) => void;
                     closeOnOutsideClick?: boolean;
                 }) =>
@@ -35,8 +37,10 @@ export const PopupExtension = Extension.create<PopupExtensionOptions>({
                         popup.appendChild(config.html);
 
                         popup.style.position = 'absolute';
-                        popup.style.top = `${config.position?.top || 100}px`;
-                        popup.style.left = `${config.position?.left || 100}px`;
+                        popup.style.top = `${config.position?.top || 0}px`;
+                        popup.style.left = `${config.position?.left || 0}px`;
+                        popup.style.width = `${config.width}`;
+                        popup.style.height = `${config.height}`;
                         popup.style.zIndex = '9999';
                         popup.style.background = 'white';
                         popup.style.border = '1px solid #ccc';

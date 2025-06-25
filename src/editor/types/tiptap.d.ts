@@ -22,17 +22,25 @@ declare module '@tiptap/core' {
       showPopup: (config: {
         html: HTMLElement;
         position?: { top: number; left: number };
+        width?: string;
+        height?: string;
         onMount?: (popup: HTMLElement) => void;
         closeOnOutsideClick?: boolean;
       }) => ReturnType;
       closePopup: () => ReturnType;
     },
-     textDirection: {
+    textDirection: {
       setLTR: () => ReturnType;
       setRTL: () => ReturnType;
     },
     pageBreak: {
       insertPageBreak: () => ReturnType;
+      },
+    visualBlocks: {
+      toggleVisualBlocks: () => ReturnType
+    },
+    visualCharacters: {
+      toggleVisualCharacters: () => ReturnType
     }
   }
 }
