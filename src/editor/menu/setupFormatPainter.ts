@@ -31,11 +31,11 @@ export const setupFormatPainter = (editor: Editor) => {
     });
 
     if (copiedMarks.length === 0) {
-      alert('No formatting found in the selected text.');
+      // alert('No formatting found in the selected text.');
     } else {
       isPainterActive = true;
       painterBtn.classList.add('active');
-      alert('Formatting copied. Now select text to apply it.');
+      // alert('Formatting copied. Now select text to apply it.');
     }
   });
 
@@ -57,7 +57,7 @@ export const setupFormatPainter = (editor: Editor) => {
     isPainterActive = false;
     copiedMarks = [];
     painterBtn?.classList.remove('active');
-    alert('Formatting applied.');
+    // alert('Formatting applied.');
   };
 
   // Listening for user finalizing selection
