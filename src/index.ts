@@ -1,5 +1,3 @@
-/// <reference path="./editor/types/lucide.d.ts" />
-import { Editor } from '@tiptap/core';
 import { loadCSS, loadScript } from './editor/dynamicFunctions';
 import { sanitizeHTML } from './editor/extensions/sanitizer';
 import { createFooter } from './editor/footer';
@@ -9,7 +7,7 @@ import { initMenu } from './editor/initMenu';
 import { createToolbar } from './editor/toolbar';
 import { EditorAPI, TiptapEditorOptions } from './globalInterface';
 
-export const initTiptapEditor = (options: TiptapEditorOptions): Promise<EditorAPI> => {
+const coreInit = (options: TiptapEditorOptions): Promise<EditorAPI> => {
     return new Promise((resolve, reject) => {
         const { selector, editorConfig = {} } = options;
         const editorParentContainer = document.querySelector(selector) as HTMLElement;
@@ -69,7 +67,7 @@ export const initTiptapEditor = (options: TiptapEditorOptions): Promise<EditorAP
             });
 
             const styles = import.meta.env.PROD
-                ? ['./src/assets/styles/style.min.css']
+                ? ['/dist/styles/style.min.css']
                 : ['./src/assets/styles/style.scss'];
 
             if (editorConfig?.cssFiles) {
@@ -120,5 +118,11 @@ function resizeIframe(editoriframe: HTMLIFrameElement, editorContainer: HTMLElem
         editoriframe.style.height = newHeight + 'px';
     };
     resizeframe();
+};
+
+export function initRichTextEditor(config: any) {
+    return coreInit(config);
 }
+
+(window as any).initRichTextEditor = initRichTextEditor;
 
