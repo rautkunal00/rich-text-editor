@@ -1,14 +1,14 @@
 {
-  "name": "tiptap-enhanced-editor",
+  "name": "rich-text-enhanced-editor",
   "version": "0.0.1",
   "description": "A powerful, extensible iframe-based custom rich text editor built on Tiptap v2.",
-  "main": "dist/tiptap-enhanced-editor.umd.min.js",
-  "module": "dist/tiptap-enhanced-editor.es.min.js",
+  "main": "dist/rich-text-enhanced-editor.umd.min.js",
+  "module": "dist/rich-text-enhanced-editor.es.min.js",
   "types": "dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/tiptap-enhanced-editor.es.min.js",
-      "require": "./dist/tiptap-enhanced-editor.umd.min.js"
+      "import": "./dist/rich-text-enhanced-editor.es.min.js",
+      "require": "./dist/rich-text-enhanced-editor.umd.min.js"
     }
   },
   "files": [

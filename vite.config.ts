@@ -5,9 +5,9 @@ export default defineConfig({
   build: {
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
-      name: 'TiptapEnhancedEditor',
+      name: 'RichTextEnhancedEditor',
       formats: ['es', 'umd'],
-      fileName: (format) => `tiptap-enhanced-editor.${format}.min.js`,
+      fileName: (format) => `rich-text-enhanced-editor.${format}.min.js`,
     },
     rollupOptions: {
       external: [],
