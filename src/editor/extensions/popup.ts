@@ -89,7 +89,7 @@ export const PopupExtension = Extension.create<PopupExtensionOptions>({
                         const existing = iframeDocument.querySelector('.tiptap-popup');
                         const overlay = iframeDocument.querySelector('.tiptap-popup-overlay');
                         if (existing){
-                            const escHandler = (existing as any)._escHandler;
+                            const escHandler = (existing as any).escHandler;
                             if(escHandler) {
                                 iframeDocument.removeEventListener('keydown',escHandler);
                             }
