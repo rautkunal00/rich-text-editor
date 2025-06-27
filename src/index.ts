@@ -6,7 +6,7 @@ import { createEditor } from './editor/header';
 import { initMenu } from './editor/initMenu';
 import { createToolbar } from './editor/toolbar';
 import { EditorAPI, TiptapEditorOptions } from './globalInterface';
-import styleContent from './assets/styles/style.min.css?raw';
+import styleContent from './assets/styles/style.css?raw';
 
 const coreInit = (options: TiptapEditorOptions): Promise<EditorAPI> => {
     return new Promise((resolve, reject) => {
@@ -39,7 +39,7 @@ const coreInit = (options: TiptapEditorOptions): Promise<EditorAPI> => {
             z-index: 1000;
             border-radius: 8px;
         `;
-        
+
         const spinnerStyles = `
             .editor-loading-spinner {
                 text-align: center;
@@ -59,7 +59,7 @@ const coreInit = (options: TiptapEditorOptions): Promise<EditorAPI> => {
                 100% { transform: rotate(360deg); }
             }
         `;
-        
+
         const styleSheet = document.createElement('style');
         styleSheet.textContent = spinnerStyles;
         document.head.appendChild(styleSheet);
@@ -75,7 +75,7 @@ const coreInit = (options: TiptapEditorOptions): Promise<EditorAPI> => {
         editoriframe.style.width = editorConfig.width || '100%';
         editoriframe.style.border = 'none';
         editoriframe.style.opacity = '0';
-        editoriframe.srcdoc = `<html><head><style>${styleContent}</style></head><body></body></html>`;
+        editoriframe.srcdoc = `<!DOCTYPE html><html><head></head><body></body></html>`;
         editoriframe.style.transition = 'opacity 0.3s ease-in-out';
 
         editorParentContainer.appendChild(editoriframe);
@@ -84,6 +84,11 @@ const coreInit = (options: TiptapEditorOptions): Promise<EditorAPI> => {
             const editorWindow = editoriframe.contentWindow as Window;
             const editorDocument = editorWindow.document as Document;
             const editorContainer = editorDocument.body;
+
+            // add css from css file
+            const styleTag = editorDocument.createElement('style');
+            styleTag.innerHTML = styleContent;
+            editorDocument.head.appendChild(styleTag);
 
             editorContainer.classList.add('editor-container');
             setIframeContext(editorWindow, editorDocument);
@@ -94,9 +99,6 @@ const coreInit = (options: TiptapEditorOptions): Promise<EditorAPI> => {
             editorElement.id = uniqueId;
             editorElement.className = 'tiptap-editor rich-text-editor';
             editorElement.style.height = editorConfig.height || '250px';
-            editorElement.style.width = '100%';
-            editorElement.style.boxSizing = 'border-box';
-            editorElement.style.overflowY = 'auto';
             editorContainer.appendChild(editorElement);
 
             const editorInstance = createEditor(editorElement, editorConfig);
@@ -118,7 +120,7 @@ const coreInit = (options: TiptapEditorOptions): Promise<EditorAPI> => {
                             const win = editorWindow as Window & { lucide?: { createIcons: () => void } };
                             win.lucide?.createIcons();
                         }
-                        
+
                         // Check if all scripts are loaded
                         if (loadedScripts === totalScripts) {
                             finishLoading();
@@ -149,7 +151,7 @@ const coreInit = (options: TiptapEditorOptions): Promise<EditorAPI> => {
             function finishLoading() {
                 // Fade in the iframe
                 editoriframe.style.opacity = '1';
-                
+
                 // Remove loader after a short delay to ensure smooth transition
                 setTimeout(() => {
                     if (loader.parentNode) {

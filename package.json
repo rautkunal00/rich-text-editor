@@ -16,8 +16,8 @@
   ],
   "scripts": {
     "start": "vite",
-    "dev": "vite",
-    "build:sass": "sass src/assets/styles/style.scss src/assets/styles/style.min.css --no-source-map --style=compressed",
+    "dev": "npm run build:sass && vite",
+    "build:sass": "sass src/assets/styles/style.scss src/assets/styles/style.css --no-source-map",
     "build": "npm run build:sass && tsc",
     "prod-build": "npm run build:sass && vite build",
     "test": "echo \"Error: no test specified\" && exit 1"

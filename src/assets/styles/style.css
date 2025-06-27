@@ -1,0 +1,424 @@
+@charset "UTF-8";
+.editor-container {
+  margin: 0;
+  box-sizing: border-box;
+  resize: vertical;
+  overflow: hidden;
+  min-height: 200px;
+}
+.editor-container .toolbar {
+  padding: 4px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  border-bottom: 1px solid #ddd;
+}
+.editor-container .toolbar button {
+  border: none;
+  background: transparent;
+  color: #888;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+.editor-container .toolbar button:hover {
+  background: #f9f9f9;
+  color: #444;
+  transform: translateY(-1px);
+}
+.editor-container .toolbar button.active {
+  background: #f9f9f9;
+  color: #000;
+  border-color: #000;
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.08);
+}
+.editor-container .toolbar button.active:hover {
+  background: #f9f9f9;
+  color: #444;
+}
+.editor-container .toolbar select {
+  border: none;
+  height: 36px;
+  min-width: 100px;
+  padding: 8px 24px 8px 12px;
+  font-size: 14px;
+  background-color: #f9f9f9;
+  color: #888;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg width='14' height='10' viewBox='0 0 14 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l6 6 6-6' stroke='%23374151' stroke-width='2' fill='none' fill-rule='evenodd'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 12px;
+  border-radius: 4px;
+  margin: 2px 0;
+}
+.editor-container .toolbar select:hover {
+  color: #444;
+  transform: translateY(-1px);
+}
+.editor-container .toolbar select:focus {
+  outline: none;
+  border-color: #000;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+}
+.editor-container .tiptap-editor {
+  padding: 0 4px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  overflow-y: auto;
+  width: 100%;
+}
+.editor-container .tiptap-editor.tiptap-visual-blocks .tiptap p,
+.editor-container .tiptap-editor.tiptap-visual-blocks .tiptap h1,
+.editor-container .tiptap-editor.tiptap-visual-blocks .tiptap h2,
+.editor-container .tiptap-editor.tiptap-visual-blocks .tiptap h3,
+.editor-container .tiptap-editor.tiptap-visual-blocks .tiptap blockquote,
+.editor-container .tiptap-editor.tiptap-visual-blocks .tiptap pre,
+.editor-container .tiptap-editor.tiptap-visual-blocks .tiptap li,
+.editor-container .tiptap-editor.tiptap-visual-blocks .tiptap div {
+  outline: 1px dashed #ccc;
+  position: relative;
+}
+.editor-container .tiptap-editor.tiptap-visual-blocks .tiptap p::before,
+.editor-container .tiptap-editor.tiptap-visual-blocks .tiptap h1::before,
+.editor-container .tiptap-editor.tiptap-visual-blocks .tiptap h2::before,
+.editor-container .tiptap-editor.tiptap-visual-blocks .tiptap h3::before,
+.editor-container .tiptap-editor.tiptap-visual-blocks .tiptap blockquote::before,
+.editor-container .tiptap-editor.tiptap-visual-blocks .tiptap pre::before,
+.editor-container .tiptap-editor.tiptap-visual-blocks .tiptap li::before,
+.editor-container .tiptap-editor.tiptap-visual-blocks .tiptap div::before {
+  content: attr(data-type);
+  position: absolute;
+  top: -1.2em;
+  left: 0;
+  font-size: 10px;
+  background: #f8f9fa;
+  color: #999;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+.editor-container .tiptap-editor.tiptap-visual-characters p::after {
+  content: "¶";
+  color: #999;
+  font-size: 0.75rem;
+  margin-left: 4px;
+}
+.editor-container .tiptap-editor .tiptap code {
+  background: #f4f4f4;
+  color: #d63384;
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-family: monospace;
+}
+.editor-container .tiptap-editor .tiptap:focus {
+  outline: none;
+}
+.editor-container .tiptap-editor .tiptap table {
+  padding: 0;
+  border: 1px solid #e5e7eb;
+}
+.editor-container .tiptap-editor .tiptap table th,
+.editor-container .tiptap-editor .tiptap table td {
+  padding: 8px;
+  border: 1px solid #e5e7eb;
+}
+.editor-container .tiptap-editor .tiptap ul.custom-checkmark > li::marker {
+  content: "✓ ";
+}
+.editor-container .tiptap-editor .tiptap ul.custom-dash > li::marker {
+  content: "– ";
+}
+.editor-container .tiptap-editor .tiptap .page-break {
+  page-break-after: always;
+  height: 10px;
+  border: 2px dashed #999;
+  margin: 1rem 0;
+}
+.editor-container .footer {
+  display: flex;
+  border-top: 1px solid #ddd;
+  justify-content: space-between;
+  flex-direction: row;
+}
+.editor-container .footer .footer-container {
+  color: #888;
+  background-color: #f9f9f9;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-size: 12px;
+  padding: 2px 4px 0 4px;
+}
+.editor-container .footer .resize-drag-handle {
+  background: transparent;
+  border-top: 1px solid #ccc;
+  height: 10px;
+  cursor: ns-resize;
+  user-select: none;
+}
+.editor-container .tiptap-popup .special-char-popup button {
+  border: none;
+  background: #eee;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 4px;
+}
+.editor-container .tiptap-popup .special-char-popup button:hover {
+  background: #ddd;
+}
+.editor-container .tiptap-popup .emoji-popup button {
+  border: none;
+  background: #f5f5f5;
+  font-size: 20px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.editor-container .tiptap-popup .emoji-popup button:hover {
+  background: #e0e0e0;
+}
+.editor-container .tiptap-popup .search-highlight {
+  background-color: #fef08a;
+  border-radius: 2px;
+  padding: 0 2px;
+}
+.editor-container .tiptap-popup .search-dialog {
+  position: fixed;
+  top: 60px;
+  right: 20px;
+  width: 340px;
+  background: #1f2937;
+  color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  padding: 20px;
+  font-family: "Segoe UI", "Roboto", Arial, sans-serif;
+  z-index: 1000;
+  display: none;
+}
+.editor-container .tiptap-popup .search-dialog .row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.editor-container .tiptap-popup .search-dialog label {
+  width: 80px;
+  font-size: 14px;
+  user-select: none;
+  color: #e5e7eb;
+}
+.editor-container .tiptap-popup .search-dialog input[type=text] {
+  flex: 1;
+  padding: 8px 12px;
+  font-size: 14px;
+  border: 1px solid #374151;
+  border-radius: 6px;
+  outline: none;
+  background: #374151;
+  color: #fff;
+  transition: all 0.2s ease;
+}
+.editor-container .tiptap-popup .search-dialog input[type=text]:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+}
+.editor-container .tiptap-popup .search-dialog button {
+  margin-left: 10px;
+  padding: 8px 16px;
+  font-size: 14px;
+  background-color: #2563eb;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(37, 99, 235, 0.08);
+}
+.editor-container .tiptap-popup .search-dialog button:hover {
+  background-color: #1d4ed8;
+  transform: translateY(-1px);
+}
+.editor-container .tiptap-popup .search-dialog .actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 16px;
+}
+.editor-container .tiptap-popup #close-search-dialog {
+  background: transparent;
+  border: none;
+  color: #9ca3af;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 4px;
+  margin-left: 12px;
+  transition: all 0.2s ease;
+  border-radius: 4px;
+}
+.editor-container .tiptap-popup #close-search-dialog:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+}
+.editor-container .tiptap-popup #custom-link-dialog {
+  display: none;
+  position: fixed;
+  top: 20%;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  background: #fff;
+  padding: 24px;
+  z-index: 1000;
+  min-width: 140px;
+  max-width: 360px;
+  box-sizing: border-box;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+.editor-container .tiptap-popup #custom-link-dialog h3 {
+  margin-top: 0;
+  margin-bottom: 16px;
+  font-size: 18px;
+  color: #1f2937;
+  font-weight: 600;
+}
+.editor-container .tiptap-popup #custom-link-dialog form > div {
+  margin-bottom: 16px;
+}
+.editor-container .tiptap-popup #custom-link-dialog label {
+  display: block;
+  margin-bottom: 6px;
+  color: #4b5563;
+  font-size: 14px;
+  font-weight: 500;
+}
+.editor-container .tiptap-popup #custom-link-dialog input[type=text],
+.editor-container .tiptap-popup #custom-link-dialog select {
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 4px;
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 14px;
+  background: #fff;
+  color: #1f2937;
+  transition: all 0.2s ease;
+}
+.editor-container .tiptap-popup #custom-link-dialog input[type=text]:focus,
+.editor-container .tiptap-popup #custom-link-dialog select:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+}
+.editor-container .tiptap-popup #custom-link-dialog input[type=checkbox] {
+  margin-right: 8px;
+}
+.editor-container .tiptap-popup #custom-link-dialog button[type=submit],
+.editor-container .tiptap-popup #custom-link-dialog button[type=button] {
+  margin-right: 10px;
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: 1px solid #2563eb;
+  background: #2563eb;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.editor-container .tiptap-popup #custom-link-dialog button[type=submit]:hover,
+.editor-container .tiptap-popup #custom-link-dialog button[type=button]:hover {
+  background: #1d4ed8;
+  border-color: #1d4ed8;
+  transform: translateY(-1px);
+}
+.editor-container .tiptap-popup #custom-anchor-dialog form > div:first-child {
+  margin-bottom: 18px;
+}
+.editor-container .tiptap-popup #custom-anchor-dialog form > div:last-child {
+  display: flex;
+  gap: 12px;
+}
+.editor-container .tiptap-popup .mat-hint {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-top: 8px;
+  font-family: "Segoe UI", "Roboto", Arial, sans-serif;
+  line-height: 1.5;
+  user-select: none;
+  text-align: right;
+  margin-right: 18px;
+}
+.editor-container .tiptap-popup button i {
+  width: 18px;
+  height: 18px;
+  stroke-width: 2;
+  color: currentColor;
+}
+.editor-container .tiptap-popup .editor-floating {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 10000;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  box-sizing: border-box;
+  overflow: auto;
+}
+.editor-container .tiptap-popup .editor-floating-active {
+  overflow: hidden;
+}
+.editor-container .tiptap-popup .editor-close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+.editor-container .tiptap-popup .preview-container {
+  position: fixed;
+  top: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80vw;
+  height: 80vh;
+  background: white;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  z-index: 10000;
+  overflow-y: auto;
+  border-radius: 8px;
+  padding: 1rem;
+}
+.editor-container .tiptap-popup .preview-close-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.75rem;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #333;
+}
+.editor-container .tiptap-popup .close-popup-btn {
+  position: absolute;
+  top: 8px;
+  right: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.editor-container .tiptap-popup .close-popup-btn svg {
+  width: 20px;
+  height: 20px;
+}
