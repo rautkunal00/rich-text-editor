@@ -1,15 +1,15 @@
-export function loadCSS(href: string, document: any): void {
-    if (document.querySelector(`link[href="${href}"]`)) {
-        return;
-    }
+export const loadCSS = (href: string, doc: Document = document) => {
+    return new Promise<void>((resolve, reject) => {
+        const link = doc.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = href;
+        link.onload = () => resolve();
+        link.onerror = () => reject(`Failed to load CSS: ${href}`);
+        doc.head.appendChild(link);
+    });
+};
 
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = href;
-    document.head.appendChild(link);
-}
-
-export function loadScript(src: string, document: any, async: boolean = true): Promise<void> {
+export const loadScript = (src: string, document: any, async: boolean = true): Promise<void> => {
     return new Promise((resolve, reject) => {
         if (document.querySelector(`script[src="${src}"]`)) {
             resolve();

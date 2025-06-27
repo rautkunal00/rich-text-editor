@@ -6,6 +6,7 @@ import { createEditor } from './editor/header';
 import { initMenu } from './editor/initMenu';
 import { createToolbar } from './editor/toolbar';
 import { EditorAPI, TiptapEditorOptions } from './globalInterface';
+import styleContent from './assets/styles/style.min.css?raw';
 
 const coreInit = (options: TiptapEditorOptions): Promise<EditorAPI> => {
     return new Promise((resolve, reject) => {
@@ -24,7 +25,7 @@ const coreInit = (options: TiptapEditorOptions): Promise<EditorAPI> => {
         const editoriframe = document.createElement('iframe');
         editoriframe.style.width = editorConfig.width || '100%';
         editoriframe.style.border = 'none';
-        editoriframe.srcdoc = `<!DOCTYPE html><html><head></head><body></body></html>`;
+        editoriframe.srcdoc = `<html><head><style>${styleContent}</style></head><body></body></html>`;
 
         editorParentContainer.appendChild(editoriframe);
 
@@ -66,9 +67,7 @@ const coreInit = (options: TiptapEditorOptions): Promise<EditorAPI> => {
                     .catch(console.error);
             });
 
-            const styles = import.meta.env.PROD
-                ? ['/dist/styles/style.min.css']
-                : ['./src/assets/styles/style.scss'];
+            const styles = [];
 
             if (editorConfig?.cssFiles) {
                 styles.push(...editorConfig.cssFiles.split(','));
@@ -120,9 +119,10 @@ function resizeIframe(editoriframe: HTMLIFrameElement, editorContainer: HTMLElem
     resizeframe();
 };
 
-export function initRichTextEditor(config: any) {
+const initRichTextEditor = (config: any) => {
     return coreInit(config);
 }
 
 (window as any).initRichTextEditor = initRichTextEditor;
 
+export { initRichTextEditor };
