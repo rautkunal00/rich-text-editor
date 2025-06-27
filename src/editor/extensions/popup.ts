@@ -48,15 +48,31 @@ export const PopupExtension = Extension.create<PopupExtensionOptions>({
                         popup.style.padding = '10px';
                         popup.style.borderRadius = '8px';
 
+                        const overlay = iframeDocument.createElement('div');
+                        overlay.className = this.options.overlayClass!;
+                        iframeDocument.body.appendChild(overlay);
+                        
                         iframeDocument.body.appendChild(popup);
 
                         if (config.onMount) {
                             config.onMount(popup);
                         }
 
+                        const escHandler = (e:KeyboardEvent) => {
+                            if(e.key === 'Escape') {
+                                overlay.remove();
+                                popup.remove();
+                                iframeDocument.removeEventListener('keydown', escHandler);
+                            }
+                        }
+                        iframeDocument.addEventListener('keydown',escHandler);
+
+                        (popup as any).escHandler = escHandler;
+
                         if (config.closeOnOutsideClick) {
                             const outsideClickHandler = (event: MouseEvent) => {
                                 if (!popup.contains(event.target as Node)) {
+                                    overlay.remove();
                                     popup.remove();
                                     iframeDocument.removeEventListener('mousedown', outsideClickHandler);
                                 }
@@ -71,7 +87,16 @@ export const PopupExtension = Extension.create<PopupExtensionOptions>({
                 () =>
                     (_props: CommandProps) => {
                         const existing = iframeDocument.querySelector('.tiptap-popup');
-                        if (existing) existing.remove();
+                        const overlay = iframeDocument.querySelector('.tiptap-popup-overlay');
+                        if (existing){
+                            const escHandler = (existing as any).escHandler;
+                            if(escHandler) {
+                                iframeDocument.removeEventListener('keydown',escHandler);
+                            }
+                            existing.remove();
+                            
+                        }
+                        if(overlay) overlay.remove();
                         return true;
                     },
         };
@@ -81,9 +106,18 @@ export const PopupExtension = Extension.create<PopupExtensionOptions>({
             const style = iframeDocument.createElement('style')
             style.innerHTML = `
         .${this.options.popupClass} { transition: opacity 0.2s ease-in-out; }
-        .${this.options.overlayClass} { transition: background 0.2s ease-in-out; }
-      `
-            iframeDocument.head.appendChild(style)
+        .${this.options.overlayClass} 
+        {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 9998;
+            transition: background 0.2s ease-in-out; 
+        }`
+        iframeDocument.head.appendChild(style)
         }
     },
 })
