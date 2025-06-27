@@ -7,15 +7,26 @@ export const setupSearchReplace = (editor: Editor) => {
 
   button.addEventListener('click', () => {
     const popupContent = createSearchReplacePopup(editor);
-    const rect = button.getBoundingClientRect();
-    const top = rect.bottom + iframeWindow.screenY;
-    const left = rect.left + iframeWindow.screenX;
+
+    const popupWidth = 280;
+    const popupHeight = 160;
+
+    const viewportWidth = iframeWindow.innerWidth;
+    const viewportHeight = iframeWindow.innerHeight;
+
+    const left = (viewportWidth - popupWidth) / 2 + iframeWindow.screenX;
+    const top = (viewportHeight - popupHeight) / 2 + iframeWindow.screenY;
 
     editor.commands.showPopup({
       html: popupContent,
       position: { top, left },
       closeOnOutsideClick: true,
     });
+
+    const lucide = (iframeWindow as any).lucide;
+    if (typeof lucide?.createIcons === 'function') {
+      lucide.createIcons();
+    }
   });
 };
 
@@ -32,6 +43,7 @@ function createSearchReplacePopup(editor: Editor): HTMLDivElement {
   searchInput.style.width = '100%';
   searchInput.style.marginBottom = '8px';
   searchInput.style.padding = '6px';
+  searchInput.style.marginTop = '30px';
 
   const replaceInput = iframeDocument.createElement('input');
   replaceInput.placeholder = 'Replace with...';
@@ -50,6 +62,16 @@ function createSearchReplacePopup(editor: Editor): HTMLDivElement {
   replaceAllBtn.textContent = 'Replace All';
   replaceAllBtn.style.marginLeft = '6px';
 
+  // creating button to close the popup
+  const closePopBtn = iframeDocument.createElement('button');
+  closePopBtn.type = 'button';
+  closePopBtn.title = 'Close';
+  closePopBtn.innerHTML = `<i data-lucide="x"></i>`;
+  closePopBtn.className = 'close-popup-btn';
+  closePopBtn.addEventListener('click', () => {
+    editor.commands.closePopup();
+  });
+
   const actions = iframeDocument.createElement('div');
   actions.style.marginTop = '8px';
   actions.appendChild(searchBtn);
@@ -65,8 +87,8 @@ function createSearchReplacePopup(editor: Editor): HTMLDivElement {
   container.appendChild(replaceInput);
   container.appendChild(actions);
   container.appendChild(resultMsg);
+  container.appendChild(closePopBtn);
 
-  
   const clearHighlights = () => {
     editor.chain().focus().unsetMark('highlight').run();
   };

@@ -487,6 +487,19 @@ $hover-color: #444;
             color: #333;
         }
 
+        .close-popup-btn {
+            position: absolute;
+             top: 8px;
+             right: 20px;
+             background: none;
+             border: none;
+             cursor: pointer;
+        }
+
+        .close-popup-btn svg {
+            width: 20px;
+            height: 20px;
+        }
     }
 
 }
