@@ -1,7 +1,3 @@
-Here's an updated `README.md` file based on your completed features and current progress:
-
----
-
 ````markdown
 # Tiptap Enhanced Rich Text Editor
 
@@ -135,9 +131,4 @@ This project is licensed under the **MIT License**.
 
 Feature suggestions, bug reports, or contributions are welcome! Feel free to open an issue or pull request.
 
-```
-
----
-
-Let me know if you'd like a separate **Contributing.md**, **Changelog.md**, or **example setup folder** to go with this!
 ```
