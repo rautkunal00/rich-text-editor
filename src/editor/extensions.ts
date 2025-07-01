@@ -24,17 +24,18 @@ import { ExtendedBulletList } from './extensions/extendedBulletList';
 import { ExtendedOrderedList } from './extensions/extendedOrderedList';
 import FontFamily from './extensions/fontFamily';
 import FontSize from './extensions/fontSize';
+import { CustomHorizontalRule } from './extensions/horizontalLine';
+import { PageBreak } from './extensions/pageBreak';
 import { PopupExtension } from './extensions/popup';
 import HighlightMark from './extensions/searchHighlight';
 import TextColor from './extensions/textColor';
-import { CustomHorizontalRule } from './extensions/horizontalLine';
 import { TextDirection } from './extensions/textDirection';
-import { PageBreak } from './extensions/pageBreak';
 import { VisualBlocks } from './extensions/visualBlocks';
 import { VisualCharacters } from './extensions/visualCharacters';
+import { ClearMarksOnEnter } from './extensions/clearFormattingOnEnter';
 
 export const getExtensions = (editorConfig: EditorOptions) => [
-    StarterKit,
+    StarterKit.configure({ history: false }),
     TextStyle,
     Color,
     Underline,
@@ -66,5 +67,6 @@ export const getExtensions = (editorConfig: EditorOptions) => [
     TextDirection,
     PageBreak,
     VisualBlocks,
-    VisualCharacters
+    VisualCharacters,
+    ClearMarksOnEnter
 ];
