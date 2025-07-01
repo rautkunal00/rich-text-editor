@@ -13,10 +13,10 @@
   <p>HTML Output</p>
   <div id="displayHTML" style="word-break: break-all;"></div>
 
-  <script type="module">
-    import { initTiptapEditor } from './src/index.ts';
+  <!-- <script type="module">
+    import { initRichTextEditor } from './src/index.ts';
 
-    const editorAPI = initTiptapEditor({
+    const editorAPI = initRichTextEditor({
       selector: '#editor',
       editorConfig: {
         disabled: false,
@@ -33,6 +33,24 @@
       editor.onUpdate(() => {
         document.getElementById('displayHTML').innerText = editor.getContent();
       });
+    });
+  </script> -->
+
+  <script src="./dist/rich-text-enhanced-editor.umd.min.js"></script>
+  <script>
+    const editor = initRichTextEditor({
+      selector: '#editor',
+
+      editorConfig: {
+        disabled: false,
+        showMenu: false,
+        showToolbar: true,
+        displayWordCount: true,
+        footerMessage: 'Malicious content in code will be automatically removed.',
+        cssFiles: '',
+        resize: true,
+        height: '250px'
+      }
     });
   </script>
 </body>

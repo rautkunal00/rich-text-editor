@@ -1,5 +1,3 @@
-/// <reference path="./editor/types/lucide.d.ts" />
-import { Editor } from '@tiptap/core';
 import { loadCSS, loadScript } from './editor/dynamicFunctions';
 import { sanitizeHTML } from './editor/extensions/sanitizer';
 import { createFooter } from './editor/footer';
@@ -8,8 +6,9 @@ import { createEditor } from './editor/header';
 import { initMenu } from './editor/initMenu';
 import { createToolbar } from './editor/toolbar';
 import { EditorAPI, TiptapEditorOptions } from './globalInterface';
+import styleContent from './assets/styles/style.css?raw';
 
-export const initTiptapEditor = (options: TiptapEditorOptions): Promise<EditorAPI> => {
+const coreInit = (options: TiptapEditorOptions): Promise<EditorAPI> => {
     return new Promise((resolve, reject) => {
         const { selector, editorConfig = {} } = options;
         const editorParentContainer = document.querySelector(selector) as HTMLElement;
@@ -40,7 +39,7 @@ export const initTiptapEditor = (options: TiptapEditorOptions): Promise<EditorAP
             z-index: 1000;
             border-radius: 8px;
         `;
-        
+
         const spinnerStyles = `
             .editor-loading-spinner {
                 text-align: center;
@@ -60,7 +59,7 @@ export const initTiptapEditor = (options: TiptapEditorOptions): Promise<EditorAP
                 100% { transform: rotate(360deg); }
             }
         `;
-        
+
         const styleSheet = document.createElement('style');
         styleSheet.textContent = spinnerStyles;
         document.head.appendChild(styleSheet);
@@ -76,8 +75,8 @@ export const initTiptapEditor = (options: TiptapEditorOptions): Promise<EditorAP
         editoriframe.style.width = editorConfig.width || '100%';
         editoriframe.style.border = 'none';
         editoriframe.style.opacity = '0';
-        editoriframe.style.transition = 'opacity 0.3s ease-in-out';
         editoriframe.srcdoc = `<!DOCTYPE html><html><head></head><body></body></html>`;
+        editoriframe.style.transition = 'opacity 0.3s ease-in-out';
 
         editorParentContainer.appendChild(editoriframe);
 
@@ -85,6 +84,11 @@ export const initTiptapEditor = (options: TiptapEditorOptions): Promise<EditorAP
             const editorWindow = editoriframe.contentWindow as Window;
             const editorDocument = editorWindow.document as Document;
             const editorContainer = editorDocument.body;
+
+            // add css from css file
+            const styleTag = editorDocument.createElement('style');
+            styleTag.innerHTML = styleContent;
+            editorDocument.head.appendChild(styleTag);
 
             editorContainer.classList.add('editor-container');
             setIframeContext(editorWindow, editorDocument);
@@ -95,9 +99,6 @@ export const initTiptapEditor = (options: TiptapEditorOptions): Promise<EditorAP
             editorElement.id = uniqueId;
             editorElement.className = 'tiptap-editor rich-text-editor';
             editorElement.style.height = editorConfig.height || '250px';
-            editorElement.style.width = '100%';
-            editorElement.style.boxSizing = 'border-box';
-            editorElement.style.overflowY = 'auto';
             editorContainer.appendChild(editorElement);
 
             const editorInstance = createEditor(editorElement, editorConfig);
@@ -119,7 +120,7 @@ export const initTiptapEditor = (options: TiptapEditorOptions): Promise<EditorAP
                             const win = editorWindow as Window & { lucide?: { createIcons: () => void } };
                             win.lucide?.createIcons();
                         }
-                        
+
                         // Check if all scripts are loaded
                         if (loadedScripts === totalScripts) {
                             finishLoading();
@@ -128,9 +129,7 @@ export const initTiptapEditor = (options: TiptapEditorOptions): Promise<EditorAP
                     .catch(console.error);
             });
 
-            const styles = import.meta.env.PROD
-                ? ['./src/assets/styles/style.min.css']
-                : ['./src/assets/styles/style.scss'];
+            const styles = [];
 
             if (editorConfig?.cssFiles) {
                 styles.push(...editorConfig.cssFiles.split(','));
@@ -152,7 +151,7 @@ export const initTiptapEditor = (options: TiptapEditorOptions): Promise<EditorAP
             function finishLoading() {
                 // Fade in the iframe
                 editoriframe.style.opacity = '1';
-                
+
                 // Remove loader after a short delay to ensure smooth transition
                 setTimeout(() => {
                     if (loader.parentNode) {
@@ -195,5 +194,12 @@ function resizeIframe(editoriframe: HTMLIFrameElement, editorContainer: HTMLElem
         editoriframe.style.height = newHeight + 'px';
     };
     resizeframe();
+};
+
+const initRichTextEditor = (config: any) => {
+    return coreInit(config);
 }
 
+(window as any).initRichTextEditor = initRichTextEditor;
+
+export { initRichTextEditor };

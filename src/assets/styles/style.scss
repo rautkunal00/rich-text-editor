@@ -9,7 +9,6 @@ $hover-color: #444;
     resize: vertical;
     overflow: hidden;
     min-height: 200px;
-    width: 100%;
 
     .toolbar {
         padding: 4px;
@@ -82,6 +81,9 @@ $hover-color: #444;
         padding: 0 4px;
         display: flex;
         flex-direction: column;
+        box-sizing: border-box;
+        overflow-y: auto;
+        width: 100%;
 
         &.tiptap-visual-blocks {
             .tiptap {
@@ -171,7 +173,7 @@ $hover-color: #444;
             }
 
             .page-break {
-                page-break-after:always;
+                page-break-after: always;
                 height: 10px;
                 border: 2px dashed #999;
                 margin: 1rem 0;
@@ -489,11 +491,11 @@ $hover-color: #444;
 
         .close-popup-btn {
             position: absolute;
-             top: 8px;
-             right: 20px;
-             background: none;
-             border: none;
-             cursor: pointer;
+            top: 8px;
+            right: 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
         }
 
         .close-popup-btn svg {
