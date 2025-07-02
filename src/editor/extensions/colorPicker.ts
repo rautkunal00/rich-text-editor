@@ -36,7 +36,7 @@ async function ensureIroLoaded(): Promise<any> {
     }
 }
 
-async function createColorPicker(container: HTMLElement, onChange: (hex: string) => void): Promise<any> {
+async function createColorPicker(container: HTMLElement, onChange: (hex: string) => void, currentColor: string = '#f00'): Promise<any> {
     try {
         const iro = await ensureIroLoaded();
         
@@ -49,7 +49,7 @@ async function createColorPicker(container: HTMLElement, onChange: (hex: string)
         }
         
         const picker = iro.ColorPicker(container!, {
-            color: '#f00',
+            color: currentColor,
             width: 150,
             layout: [
                 {
@@ -73,37 +73,103 @@ async function createColorPicker(container: HTMLElement, onChange: (hex: string)
 export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex: string) => void, toolbar: HTMLElement) {
     let isColorpaletteOpen = false;
     let colorContainer: HTMLElement | null = null;
-    let currentColor = '';
-    let tempColor = '';
+    let currentColor = ''; // No default color - start with original icon
+    let tempColor = ''; // No default temp color
     let iroPickerInitialized = false;
 
     // Function to update button color
     const updateButtonColor = (color: string) => {
         currentColor = color;
         if (color) {
-            button.style.backgroundColor = color;
-            button.style.color = getContrastColor(color);
+            // Add active class for light gray background (same as bold button)
+            button.classList.add('active');
+            // Also add inline styles as fallback
+            button.style.backgroundColor = '#f9f9f9';
+            
+            // Check if this is a text color button or highlight color button
+            const isTextColorButton = button.id === 'text-color-btn';
+            const isHighlightColorButton = button.id === 'highlight-color-btn';
+            
+            let icon = button.querySelector('i');
+            if (!icon) {
+                // Check if button has any content
+                if (button.innerHTML.trim() === '') {
+                    // Create icon element if button is completely empty
+                    icon = iframeDocument.createElement('i');
+                    icon.setAttribute('data-lucide', 'baseline');
+                    button.appendChild(icon);
+                } else {
+                    // Button has content but no icon element - replace the content
+                }
+            }
+            
+            if (icon) {
+                // Store the original icon data if not already stored
+                if (!button.dataset.originalIcon) {
+                    const originalIcon = icon.getAttribute('data-lucide');
+                    if (originalIcon) {
+                        button.dataset.originalIcon = originalIcon;
+                    }
+                }
+                
+                if (isTextColorButton || isHighlightColorButton) {
+                    // For both text color and highlight color buttons, keep the original icon but change its color
+                    icon.style.color = color;
+                } else {
+                    // For other buttons, use "A" as fallback
+                    icon.innerHTML = `<span style="color: ${color}; text-decoration: underline; font-weight: bold; font-size: 22px;">A</span>`;
+                    icon.removeAttribute('data-lucide');
+                }
+            } else {
+                // No icon element found, replace button content directly
+                if (!button.dataset.originalContent) {
+                    button.dataset.originalContent = button.innerHTML;
+                }
+                
+                if (isTextColorButton || isHighlightColorButton) {
+                    // For both text color and highlight color buttons, recreate the icon with the new color
+                    const originalIcon = button.dataset.originalIcon || (isTextColorButton ? 'baseline' : 'highlighter');
+                    button.innerHTML = `<i data-lucide="${originalIcon}" style="color: ${color};"></i>`;
+                    // Reinitialize the Lucide icon
+                    const lucide = (iframeWindow as any).lucide;
+                    if (typeof lucide?.createIcons === 'function') {
+                        lucide.createIcons();
+                    }
+                } else {
+                    button.innerHTML = `<span style="color: ${color}; text-decoration: underline; font-weight: bold; font-size: 22px;">A</span>`;
+                }
+            }
         } else {
+            // Remove active class and restore original icon
+            button.classList.remove('active');
+            // Remove inline styles
             button.style.backgroundColor = '';
-            button.style.color = '';
+            
+            const icon = button.querySelector('i');
+            if (icon && button.dataset.originalIcon) {
+                // Restore the original icon
+                icon.innerHTML = '';
+                icon.style.color = ''; // Reset color for both text and highlight buttons
+                icon.setAttribute('data-lucide', button.dataset.originalIcon);
+                delete button.dataset.originalIcon;
+                
+                // Reinitialize the Lucide icon
+                const lucide = (iframeWindow as any).lucide;
+                if (typeof lucide?.createIcons === 'function') {
+                    lucide.createIcons();
+                }
+            } else if (button.dataset.originalContent) {
+                // Restore original button content
+                button.innerHTML = button.dataset.originalContent;
+                delete button.dataset.originalContent;
+                
+                // Reinitialize the Lucide icon
+                const lucide = (iframeWindow as any).lucide;
+                if (typeof lucide?.createIcons === 'function') {
+                    lucide.createIcons();
+                }
+            }
         }
-    };
-
-    // Function to get contrasting text color
-    const getContrastColor = (hexColor: string) => {
-        // Remove the hash if it exists
-        const hex = hexColor.replace('#', '');
-
-        // Convert to RGB
-        const r = parseInt(hex.substr(0, 2), 16);
-        const g = parseInt(hex.substr(2, 2), 16);
-        const b = parseInt(hex.substr(4, 2), 16);
-
-        // Calculate luminance
-        const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-
-        // Return black or white based on luminance
-        return luminance > 0.5 ? '#000000' : '#ffffff';
     };
 
     // Function to close the color picker
@@ -158,6 +224,7 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
 
     button.addEventListener('click', (event: MouseEvent) => {
         event.stopPropagation(); // Prevent the document click handler from immediately closing
+        console.log('Button clicked, currentColor:', currentColor);
         if (isColorpaletteOpen) {
             closeColorPicker();
         } else {
@@ -262,7 +329,7 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
                         const picker = await createColorPicker(container, (hex) => {
                             tempColor = hex;
                             hexInput.value = hex;
-                        });
+                        }, currentColor || '#f00');
 
                         // Create hex input container
                         const hexInputContainer = iframeDocument.createElement('div');
@@ -286,7 +353,9 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
                         // Create hex input
                         const hexInput = iframeDocument.createElement('input');
                         hexInput.type = 'text';
-                        hexInput.value = tempColor;
+                        const initialColor = currentColor || '#f00';
+                        hexInput.value = initialColor;
+                        tempColor = initialColor;
                         hexInput.style.cssText = `
                             flex: 1;
                             padding: 4px 6px;
