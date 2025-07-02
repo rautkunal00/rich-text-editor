@@ -30,7 +30,7 @@ export const setupSearchReplace = (editor: Editor) => {
   });
 };
 
-function createSearchReplacePopup(editor: Editor): HTMLDivElement {
+const createSearchReplacePopup = (editor: Editor): HTMLDivElement => {
   const container = iframeDocument.createElement('div');
   container.style.width = '300px';
   container.style.padding = '12px';

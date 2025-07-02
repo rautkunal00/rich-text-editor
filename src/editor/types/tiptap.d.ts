@@ -35,12 +35,15 @@ declare module '@tiptap/core' {
     },
     pageBreak: {
       insertPageBreak: () => ReturnType;
-      },
+    },
     visualBlocks: {
       toggleVisualBlocks: () => ReturnType
     },
     visualCharacters: {
       toggleVisualCharacters: () => ReturnType
+    },
+    insertMedia: {
+      insertMedia: (attrs: { src: string; type: 'audio' | 'video' }) => ReturnType
     }
   }
 }

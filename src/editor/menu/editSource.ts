@@ -2,7 +2,7 @@ import { Editor } from "@tiptap/core";
 import { iframeDocument, iframeWindow } from "../globalVariables";
 import { sanitizeHTML } from "../extensions/sanitizer";
 
-export function addEditSource(editor: Editor) {
+export const addEditSource = (editor: Editor) => {
     const button = iframeDocument.getElementById('source-code-btn')
     if (!button) return
 
@@ -11,7 +11,7 @@ export function addEditSource(editor: Editor) {
     })
 }
 
-function openSourceEditorPopup(editor: Editor, button: HTMLElement) {
+const openSourceEditorPopup = (editor: Editor, button: HTMLElement) => {
     const popupHTML = iframeDocument.createElement('div');
     popupHTML.innerHTML = `
       <h3 style="margin: 0 0 10px;">Edit HTML Source</h3>
@@ -37,12 +37,17 @@ function openSourceEditorPopup(editor: Editor, button: HTMLElement) {
 
             const aceEditorScript = iframeDocument.createElement('script');
             aceEditorScript.type = 'text/javascript';
+            aceEditorScript.id = 'ace-script';
             aceEditorScript.innerText = popupScript;
-            // Once executed, remove it from the DOM
-            setTimeout(() => aceEditorScript.remove(), 1000);
-            aceEditorScript.onload = () => aceEditorScript.remove();
-
             iframeDocument.body.appendChild(aceEditorScript);
+            // Once executed, remove it from the DOM
+            setTimeout(() => {
+                const ele = iframeDocument.getElementById('ace-script');
+                if (ele?.parentNode) {
+                    ele.parentNode.removeChild(ele);
+                }
+            }, 1000);
+
             const windowWithAce = iframeWindow as Window & { aceEditor?: { setValue: (html: any, value: any) => void, getValue: () => any } };
 
             windowWithAce?.aceEditor?.setValue(editor.getHTML(), 1);

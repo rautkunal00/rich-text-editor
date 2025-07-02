@@ -1,4 +1,4 @@
-export function initAceInIframe(iframeWindow: Window, iframeDocument: Document) {
+export const initAceInIframe = (iframeWindow: Window, iframeDocument: Document) => {
     const ace = (iframeWindow as any).ace;
     if (!ace) {
         console.error('Ace editor not loaded in iframe.');

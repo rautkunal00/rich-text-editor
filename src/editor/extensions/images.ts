@@ -1,6 +1,6 @@
 import { Editor } from "@tiptap/core";
 
-export function allowBase64Images(editor: Editor) {
+export const allowBase64Images = (editor: Editor) => {
     editor.setOptions({
         editorProps: {
             handlePaste(view, event) {

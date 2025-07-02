@@ -1,7 +1,7 @@
 import { Editor } from "@tiptap/core";
 import { iframeDocument, iframeWindow } from "../globalVariables";
 
-export function addEmojisAndCharacters(editor: Editor) {
+export const addEmojisAndCharacters = (editor: Editor) => {
     const button = iframeDocument.getElementById('insert-emoji-char-btn');
     button?.addEventListener('click', () => {
         const popupContent = createEmojiPopupWithTabs();
@@ -21,7 +21,7 @@ export function addEmojisAndCharacters(editor: Editor) {
     });
 }
 
-function createEmojiPopupWithTabs(): HTMLDivElement {
+const createEmojiPopupWithTabs = (): HTMLDivElement => {
     const categories = {
         Emoji: ['😀', '😂', '😍', '😎', '👍', '🎉', '❤️', '🔥'],
         Symbols: ['©', '®', '™', '✓', '∞', '§', '¶', '•'],
