@@ -11,7 +11,7 @@ export type ToolbarItem = {
     options?: string[];
 };
 
-export function createToolbar(editor: any): HTMLElement {
+export const createToolbar = (editor: any): HTMLElement => {
     const toolbarConfig: ToolbarItem[] = [
         { type: 'button', id: 'undo', label: 'Undo', icon: 'undo-2' },
         { type: 'button', id: 'redo', label: 'Redo', icon: 'redo-2' },
@@ -54,6 +54,7 @@ export function createToolbar(editor: any): HTMLElement {
         { type: 'button', id: 'align-justify', label: 'Justify', icon: 'align-justify' },
         { type: 'button', id: 'clear-formatting', label: 'Clear Formatting', icon: 'remove-formatting' },
         { type: 'button', id: 'image-upload', label: 'Add Image', icon: 'image' },
+        { type: 'button', id: 'media-upload', label: 'Add Media', icon: 'file-image' },
         {
             type: 'select',
             id: 'heading-select',
@@ -114,17 +115,17 @@ export function createToolbar(editor: any): HTMLElement {
         { type: 'button', id: 'open-search-dialog', label: 'Search & Replace', icon: 'search' },
         { type: 'button', id: 'insert-datetime', label: 'Insert Date & Time', icon: 'calendar-days' },
         { type: 'button', id: 'insert-emoji-char', label: 'Insert Special Characters & Emoji', icon: 'asterisk' },
-        { type: 'button', id: 'fullscreen', label: 'Fullscreen', icon: 'expand'},
-        { type: 'button', id: 'preview', label: 'Preview', icon: 'scan-eye'},
+        { type: 'button', id: 'fullscreen', label: 'Fullscreen', icon: 'expand' },
+        { type: 'button', id: 'preview', label: 'Preview', icon: 'scan-eye' },
         { type: 'button', id: 'source-code', label: 'Source Code', icon: 'code' },
-        { type: 'button', id: 'horizontal', label: 'Horizontal Line', icon: 'move-horizontal'},
-        { type: 'button', id: 'left-to-right', label: 'Left to Right', icon: 'move-right'},
-        { type: 'button', id: 'right-to-left', label: 'Right to Left', icon: 'move-left'},
-        { type: 'button', id: 'format-painter', label: 'Format Painter', icon: 'paint-roller'},
-        { type: 'button', id: 'page-break', label: 'Page Break', icon: 'table-rows-split'},
-        { type: 'button', id: 'visual-block', label: 'Visual Blocks', icon: 'layout-panel-top'},
-        { type: 'button', id: 'visual-chars', label: 'Visual Characters', icon: 'pilcrow'},
-        { type: 'button', id: 'toggle-code', label: 'Toggle Code', icon: 'braces'},
+        { type: 'button', id: 'horizontal', label: 'Horizontal Line', icon: 'move-horizontal' },
+        { type: 'button', id: 'left-to-right', label: 'Left to Right', icon: 'move-right' },
+        { type: 'button', id: 'right-to-left', label: 'Right to Left', icon: 'move-left' },
+        { type: 'button', id: 'format-painter', label: 'Format Painter', icon: 'paint-roller' },
+        { type: 'button', id: 'page-break', label: 'Page Break', icon: 'table-rows-split' },
+        { type: 'button', id: 'visual-block', label: 'Visual Blocks', icon: 'layout-panel-top' },
+        { type: 'button', id: 'visual-chars', label: 'Visual Characters', icon: 'pilcrow' },
+        { type: 'button', id: 'toggle-code', label: 'Toggle Code', icon: 'braces' },
     ];
 
     const toolbar = iframeDocument.createElement('div');

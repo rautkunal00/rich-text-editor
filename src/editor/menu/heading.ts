@@ -18,6 +18,6 @@ export const setupHeadingStyle = (editor: Editor) => {
     });
 }
 
-function setHeading(editor: Editor, level: Level) {
+const setHeading = (editor: Editor, level: Level) => {
     editor.chain().focus().toggleHeading({ level }).run();
 }

@@ -28,7 +28,7 @@ export const setupLists = (editor: Editor) => {
     });
 }
 
-function applyAdvancedListStyle(editor: Editor, type: 'ordered' | 'bullet', style: string) {
+const applyAdvancedListStyle = (editor: Editor, type: 'ordered' | 'bullet', style: string) => {
     const nodeType = type === 'ordered' ? 'orderedList' : 'bulletList'
     if (!editor.isActive(nodeType)) {
         editor.chain().focus().toggleList(nodeType, 'listItem').updateAttributes(nodeType, { listStyleType: style }).run()

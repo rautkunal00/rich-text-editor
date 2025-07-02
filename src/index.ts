@@ -165,9 +165,11 @@ const coreInit = (options: TiptapEditorOptions): Promise<EditorAPI> => {
                 resolve({
                     setContent: (html: string) => editorInstance.commands.setContent(sanitizeHTML(html)),
                     getContent: () => sanitizeHTML(editorInstance.getHTML() || ''),
+                    getContentAsText: () => contentAsText(editorInstance.getText()),
                     destroy: () => editorInstance.destroy(),
                     enable: () => editorInstance.setEditable(true),
                     disable: () => editorInstance.setEditable(false),
+
                     onUpdate: fn => editorInstance.on('update', () => fn(editorInstance)),
                     onSelectionUpdate: fn => editorInstance.on('selectionUpdate', () => fn(editorInstance)),
                     onFocus: fn => editorInstance.on('focus', () => fn(editorInstance)),
@@ -183,7 +185,7 @@ const coreInit = (options: TiptapEditorOptions): Promise<EditorAPI> => {
 };
 
 
-function resizeIframe(editoriframe: HTMLIFrameElement, editorContainer: HTMLElement) {
+const resizeIframe = (editoriframe: HTMLIFrameElement, editorContainer: HTMLElement) => {
     const resizeObserver = new ResizeObserver(() => {
         editoriframe.style.height = editorContainer.scrollHeight + 'px';
     });
@@ -198,6 +200,10 @@ function resizeIframe(editoriframe: HTMLIFrameElement, editorContainer: HTMLElem
 
 const initRichTextEditor = (config: any) => {
     return coreInit(config);
+}
+
+const contentAsText = (value: any) => {
+    return value.replaceAll('&nbsp;', ' ').replaceAll('<br>', '\\n');
 }
 
 (window as any).initRichTextEditor = initRichTextEditor;
