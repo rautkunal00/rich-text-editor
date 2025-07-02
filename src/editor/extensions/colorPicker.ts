@@ -12,7 +12,7 @@ declare global {
 let activeColorPicker: HTMLElement | null = null;
 let iroLoaded = false;
 
-async function ensureIroLoaded(): Promise<any> {
+const ensureIroLoaded = async (): Promise<any> => {
     if (iroLoaded && iframeWindow.iro) {
         return iframeWindow.iro;
     }
@@ -20,10 +20,10 @@ async function ensureIroLoaded(): Promise<any> {
     try {
         // Load iro from CDN in the iframe context
         await loadScript('https://cdn.jsdelivr.net/npm/@jaames/iro@5', iframeDocument);
-        
+
         // Wait a bit for the script to initialize
         await new Promise(resolve => setTimeout(resolve, 100));
-        
+
         if (iframeWindow.iro) {
             iroLoaded = true;
             return iframeWindow.iro;
@@ -36,10 +36,10 @@ async function ensureIroLoaded(): Promise<any> {
     }
 }
 
-async function createColorPicker(container: HTMLElement, onChange: (hex: string) => void): Promise<any> {
+const createColorPicker = async (container: HTMLElement, onChange: (hex: string) => void): Promise<any> => {
     try {
         const iro = await ensureIroLoaded();
-        
+
         if (typeof iro === 'undefined' || !iro.ColorPicker) {
             console.error('iro library not found:', {
                 iro: typeof iro,
@@ -47,7 +47,7 @@ async function createColorPicker(container: HTMLElement, onChange: (hex: string)
             });
             throw new Error('iro library is not properly loaded');
         }
-        
+
         const picker = iro.ColorPicker(container!, {
             color: '#f00',
             width: 150,
@@ -70,7 +70,7 @@ async function createColorPicker(container: HTMLElement, onChange: (hex: string)
     }
 }
 
-export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex: string) => void, toolbar: HTMLElement) {
+export const createColorPickerWithPalette = (button: HTMLElement, onChange: (hex: string) => void, toolbar: HTMLElement) => {
     let isColorpaletteOpen = false;
     let colorContainer: HTMLElement | null = null;
     let currentColor = '';
@@ -428,7 +428,7 @@ export function createColorPickerWithPalette(button: HTMLElement, onChange: (hex
 
                         // Hide the Advanced button and button container
                         buttonContainer.style.display = 'none';
-                        
+
                     } catch (error) {
                         console.error('Error creating advanced color picker:', error);
                         alert('Error creating advanced color picker. Please try again.');

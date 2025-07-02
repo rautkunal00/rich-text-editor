@@ -19,12 +19,14 @@ import Underline from '@tiptap/extension-underline';
 import StarterKit from '@tiptap/starter-kit';
 import { EditorOptions } from '../globalInterface';
 import AnchorMark from './extensions/anchorMark';
+import { ClearMarksOnEnter } from './extensions/clearFormattingOnEnter';
 import EventLogger from './extensions/customEvents';
 import { ExtendedBulletList } from './extensions/extendedBulletList';
 import { ExtendedOrderedList } from './extensions/extendedOrderedList';
 import FontFamily from './extensions/fontFamily';
 import FontSize from './extensions/fontSize';
 import { CustomHorizontalRule } from './extensions/horizontalLine';
+import { InsertMedia } from './extensions/media';
 import { PageBreak } from './extensions/pageBreak';
 import { PopupExtension } from './extensions/popup';
 import HighlightMark from './extensions/searchHighlight';
@@ -32,7 +34,8 @@ import TextColor from './extensions/textColor';
 import { TextDirection } from './extensions/textDirection';
 import { VisualBlocks } from './extensions/visualBlocks';
 import { VisualCharacters } from './extensions/visualCharacters';
-import { ClearMarksOnEnter } from './extensions/clearFormattingOnEnter';
+import { AudioNode } from './extensions/audio';
+import { IframeNode } from './extensions/iframeNode';
 
 export const getExtensions = (editorConfig: EditorOptions) => [
     StarterKit.configure({ history: false }),
@@ -68,5 +71,8 @@ export const getExtensions = (editorConfig: EditorOptions) => [
     PageBreak,
     VisualBlocks,
     VisualCharacters,
-    ClearMarksOnEnter
+    ClearMarksOnEnter,
+    InsertMedia,
+    AudioNode,
+    IframeNode
 ];

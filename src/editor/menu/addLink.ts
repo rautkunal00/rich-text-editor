@@ -2,7 +2,7 @@ import { Editor } from '@tiptap/core';
 import { iframeDocument, iframeWindow } from '../globalVariables';
 
 // fetching the existing ids
-function getAnchorIds(editor: Editor): string[] {
+const getAnchorIds = (editor: Editor): string[] => {
   const ids = new Set<string>();
 
   editor.state.doc.descendants((node) => {
@@ -22,7 +22,7 @@ function getAnchorIds(editor: Editor): string[] {
   return Array.from(ids);
 }
 
-function createLinkPopup(editor: Editor): HTMLDivElement {
+const createLinkPopup = (editor: Editor): HTMLDivElement => {
   const container = iframeDocument.createElement('div');
   container.style.width = '320px';
   container.style.padding = '16px';

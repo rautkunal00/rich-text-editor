@@ -1,7 +1,7 @@
 import { Editor } from '@tiptap/core';
 import { iframeDocument, iframeWindow } from '../globalVariables';
 
-export function setupAddAnchorDialog(editor: Editor) {
+export const setupAddAnchorDialog = (editor: Editor) => {
   function isValidAnchorId(anchorId: string): boolean {
     return /^[A-Za-z][A-Za-z0-9-_:.]*$/.test(anchorId);
   }
