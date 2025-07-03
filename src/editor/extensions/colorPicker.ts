@@ -48,15 +48,38 @@ const createColorPicker = async (container: HTMLElement, onChange: (hex: string)
             throw new Error('iro library is not properly loaded');
         }
 
+        // Ensure container has proper dimensions for Box + Slider
+        container.style.width = '150px';
+        container.style.height = '220px';
+        container.style.minHeight = '220px';
+        container.style.display = 'flex';
+        container.style.flexDirection = 'column';
+        container.style.alignItems = 'center';
+        container.style.justifyContent = 'center';
+        container.style.gap = '0px';
+
         const picker = iro.ColorPicker(container!, {
-            color: currentColor,
-            width: 150,
+            color: '#ff0000', // Always start with red to ensure wheel is visible
+            width: 120,
             layout: [
                 {
-                    component: iro.ui.Wheel,
+                    component: iro.ui.Box,
+                },
+                {
+                    component: iro.ui.Slider,
+                    options: {
+                        sliderType: 'hue'
+                    }
                 }
             ]
         });
+
+        // Set the actual color after a short delay to ensure the wheel is rendered
+        setTimeout(() => {
+            if (picker && picker.color) {
+                picker.color.set(currentColor);
+            }
+        }, 50);
 
         picker.on('color:change', (color: { hexString: string }) => {
             onChange(color.hexString);
@@ -561,7 +584,7 @@ export const createColorPickerWithPalette = (button: HTMLElement, onChange: (hex
             // Position the color picker
             const buttonRect = button.getBoundingClientRect();
             const toolbarRect = toolbar.getBoundingClientRect();
-            const pickerWidth = 220;
+            const pickerWidth = 189;
             const pickerHeight = 180;
 
             // Calculate initial position
