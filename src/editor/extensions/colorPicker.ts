@@ -56,11 +56,11 @@ const createColorPicker = async (container: HTMLElement, onChange: (hex: string)
         container.style.flexDirection = 'column';
         container.style.alignItems = 'center';
         container.style.justifyContent = 'center';
-        container.style.gap = '3px';
+        container.style.gap = '0px';
 
         const picker = iro.ColorPicker(container!, {
             color: '#ff0000', // Always start with red to ensure wheel is visible
-            width: 100,
+            width: 120,
             layout: [
                 {
                     component: iro.ui.Box,
@@ -584,7 +584,7 @@ export const createColorPickerWithPalette = (button: HTMLElement, onChange: (hex
             // Position the color picker
             const buttonRect = button.getBoundingClientRect();
             const toolbarRect = toolbar.getBoundingClientRect();
-            const pickerWidth = 200;
+            const pickerWidth = 189;
             const pickerHeight = 180;
 
             // Calculate initial position
