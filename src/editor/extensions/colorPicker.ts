@@ -49,18 +49,18 @@ const createColorPicker = async (container: HTMLElement, onChange: (hex: string)
         }
 
         // Ensure container has proper dimensions for Box + Slider
-        container.style.width = '180px';
-        container.style.height = '268px';
-        container.style.minHeight = '268px';
+        container.style.width = '150px';
+        container.style.height = '220px';
+        container.style.minHeight = '220px';
         container.style.display = 'flex';
         container.style.flexDirection = 'column';
         container.style.alignItems = 'center';
         container.style.justifyContent = 'center';
-        container.style.gap = '10px';
+        container.style.gap = '3px';
 
         const picker = iro.ColorPicker(container!, {
             color: '#ff0000', // Always start with red to ensure wheel is visible
-            width: 150,
+            width: 100,
             layout: [
                 {
                     component: iro.ui.Box,
@@ -584,7 +584,7 @@ export const createColorPickerWithPalette = (button: HTMLElement, onChange: (hex
             // Position the color picker
             const buttonRect = button.getBoundingClientRect();
             const toolbarRect = toolbar.getBoundingClientRect();
-            const pickerWidth = 220;
+            const pickerWidth = 200;
             const pickerHeight = 180;
 
             // Calculate initial position
