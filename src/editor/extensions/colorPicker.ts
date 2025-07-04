@@ -1,13 +1,6 @@
 import { iframeDocument, iframeWindow } from '../globalVariables';
 import { loadScript } from '../dynamicFunctions';
 
-// Extend Window interface to include iro
-declare global {
-    interface Window {
-        iro?: any;
-    }
-}
-
 // Global state to track active color picker
 let activeColorPicker: HTMLElement | null = null;
 let iroLoaded = false;

@@ -1,27 +1,14 @@
-import { Editor } from "@tiptap/core";
-import { iframeDocument } from "../globalVariables";
+import { iframeDocument, iframeWindow } from "../globalVariables";
 
-export const setupFullscreenToggle = (editor:Editor) => {
-  const toggleBtn = iframeDocument.getElementById('fullscreen-btn');
-  const editorEle = editor.options.element;
-  const wrapperEle = editorEle?.parentElement;
+export const setupFullscreenToggle = () => {
+  window.addEventListener('fullscreenchange', () => {
+    const isFullscreen = !!document.fullscreenElement;
+    document.body.classList.toggle('fullscreen-mode', isFullscreen);
+    iframeDocument.body.classList.toggle('fullscreen-mode', isFullscreen);
+  });
 
-  if (!wrapperEle || !toggleBtn) return;
-
-  let isFloating = false;
-
-  const toggleFloatingEditor = () => {
-    isFloating = !isFloating;
-
-    if (isFloating) {
-      wrapperEle.classList.add('editor-floating');
-      iframeDocument.body.classList.add('editor-floating-active');
-    } else {
-      wrapperEle.classList.remove('editor-floating');
-      iframeDocument.body.classList.remove('editor-floating-active');
-    }
-  };
-
-    toggleBtn.addEventListener('click', toggleFloatingEditor);
-
+  const fullscreenBtn = iframeDocument.getElementById('fullscreen-btn');
+  fullscreenBtn?.addEventListener('click', () => {
+    iframeWindow.parent.postMessage({ type: 'TOGGLE_FULLSCREEN' }, '*');
+  });
 };
