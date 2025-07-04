@@ -80,6 +80,18 @@ const coreInit = (options: TiptapEditorOptions): Promise<EditorAPI> => {
 
         editorParentContainer.appendChild(editoriframe);
 
+        window.addEventListener('message', (event) => {
+            if (event.data?.type === 'TOGGLE_FULLSCREEN') {
+                if (!document.fullscreenElement) {
+                    editoriframe.requestFullscreen().catch(err => {
+                        console.error('Failed to enter fullscreen', err);
+                    });
+                } else {
+                    document.exitFullscreen();
+                }
+            }
+        });
+
         editoriframe.onload = () => {
             const editorWindow = editoriframe.contentWindow as Window;
             const editorDocument = editorWindow.document as Document;

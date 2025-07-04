@@ -34,35 +34,36 @@ const openSourceEditorPopup = (editor: Editor, button: HTMLElement) => {
         onMount: (popupEl: HTMLElement) => {
             const cancelBtn = popupEl.querySelector('#cancel-source-edit') as HTMLButtonElement;
             const saveBtn = popupEl.querySelector('#save-source-edit') as HTMLButtonElement;
+            const editorDiv = popupEl.querySelector('#source-editor');
 
-            const aceEditorScript = iframeDocument.createElement('script');
-            aceEditorScript.type = 'text/javascript';
-            aceEditorScript.id = 'ace-script';
-            aceEditorScript.innerText = popupScript;
-            iframeDocument.body.appendChild(aceEditorScript);
-            // Once executed, remove it from the DOM
-            setTimeout(() => {
-                const ele = iframeDocument.getElementById('ace-script');
-                if (ele?.parentNode) {
-                    ele.parentNode.removeChild(ele);
-                }
-            }, 1000);
+            // Check if ace is loaded and #source-editor exists
+            if (iframeWindow.ace && editorDiv) {
+                const aceEditor = iframeWindow.ace.edit(editorDiv as HTMLElement, {
+                    mode: 'ace/mode/html',
+                    theme: 'ace/theme/monokai',
+                    fontSize: '14px',
+                    wrap: true,
+                    tabSize: 2,
+                    enableBasicAutocompletion: true,
+                    enableLiveAutocompletion: true,
+                });
 
-            const windowWithAce = iframeWindow as Window & { aceEditor?: { setValue: (html: any, value: any) => void, getValue: () => any } };
-
-            windowWithAce?.aceEditor?.setValue(editor.getHTML(), 1);
+                iframeWindow.aceEditor = aceEditor;
+                aceEditor.setValue(editor.getHTML(), 1);
+            }
 
             cancelBtn.addEventListener('click', () => {
                 editor.commands.closePopup();
             });
+
             saveBtn.addEventListener('click', () => {
-                const newHTML = sanitizeHTML(windowWithAce?.aceEditor?.getValue());
+                const newHTML = sanitizeHTML(iframeWindow.aceEditor?.getValue?.() || '');
                 editor.commands.setContent(newHTML, false);
                 editor.commands.closePopup();
             });
         },
         position: { top: 0, left: 0 },
-        height: '100vh',
+        height: '100%',
         width: '100%',
         closeOnOutsideClick: true
     })

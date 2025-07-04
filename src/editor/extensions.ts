@@ -18,7 +18,11 @@ import TextStyle from '@tiptap/extension-text-style';
 import Underline from '@tiptap/extension-underline';
 import StarterKit from '@tiptap/starter-kit';
 import { EditorOptions } from '../globalInterface';
+import { AlignedBlockquote } from './extensions/alignment/alignedBlockquote';
+import { AlignedHeading } from './extensions/alignment/AlignedHeading';
+import { AlignedParagraph } from './extensions/alignment/alignedParagraph';
 import AnchorMark from './extensions/anchorMark';
+import { AudioNode } from './extensions/audio';
 import { ClearMarksOnEnter } from './extensions/clearFormattingOnEnter';
 import EventLogger from './extensions/customEvents';
 import { ExtendedBulletList } from './extensions/extendedBulletList';
@@ -26,6 +30,7 @@ import { ExtendedOrderedList } from './extensions/extendedOrderedList';
 import FontFamily from './extensions/fontFamily';
 import FontSize from './extensions/fontSize';
 import { CustomHorizontalRule } from './extensions/horizontalLine';
+import { IframeNode } from './extensions/iframeNode';
 import { InsertMedia } from './extensions/media';
 import { PageBreak } from './extensions/pageBreak';
 import { PopupExtension } from './extensions/popup';
@@ -34,8 +39,6 @@ import TextColor from './extensions/textColor';
 import { TextDirection } from './extensions/textDirection';
 import { VisualBlocks } from './extensions/visualBlocks';
 import { VisualCharacters } from './extensions/visualCharacters';
-import { AudioNode } from './extensions/audio';
-import { IframeNode } from './extensions/iframeNode';
 
 export const getExtensions = (editorConfig: EditorOptions) => [
     StarterKit.configure({ history: false }),
@@ -74,5 +77,8 @@ export const getExtensions = (editorConfig: EditorOptions) => [
     ClearMarksOnEnter,
     InsertMedia,
     AudioNode,
-    IframeNode
+    IframeNode,
+    AlignedParagraph,
+    AlignedHeading,
+    AlignedBlockquote,
 ];

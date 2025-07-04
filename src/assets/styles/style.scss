@@ -10,6 +10,26 @@ $hover-color: #444;
     overflow: hidden;
     min-height: 200px;
 
+    &.fullscreen-mode {
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+        flex-direction: column;
+
+        .toolbar {
+            flex-shrink: 0;
+        }
+
+        .tiptap-editor {
+            flex-shrink: 1;
+            height: inherit !important;
+        }
+
+        .footer {
+            flex-shrink: 0;
+        }
+    }
+
     .toolbar {
         padding: 4px;
         display: flex;
@@ -170,6 +190,15 @@ $hover-color: #444;
                 &.custom-dash>li::marker {
                     content: "– ";
                 }
+
+                &[data-type="taskList"]>li {
+                    display: flex;
+                    flex-direction: row;
+
+                    &>div>p {
+                        margin: 0;
+                    }
+                }
             }
 
             .page-break {
@@ -207,6 +236,8 @@ $hover-color: #444;
     }
 
     .tiptap-popup {
+
+        // special characters, emojis, math icons
         .special-char-popup button {
             border: none;
             background: #eee;
@@ -237,6 +268,7 @@ $hover-color: #444;
             padding: 0 2px;
         }
 
+        // search & replace 
         .search-dialog {
             position: fixed;
             top: 60px;
@@ -325,6 +357,7 @@ $hover-color: #444;
             background: rgba(255, 255, 255, 0.1);
         }
 
+        // custom link 
         #custom-link-dialog {
             display: none;
             position: fixed;
@@ -408,6 +441,7 @@ $hover-color: #444;
             transform: translateY(-1px);
         }
 
+        // custom anchor
         #custom-anchor-dialog form>div:first-child {
             margin-bottom: 18px;
         }
@@ -435,25 +469,6 @@ $hover-color: #444;
             color: currentColor;
         }
 
-        .editor-floating {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: 10000;
-            background: #fff;
-            display: flex;
-            flex-direction: column;
-            padding: 1rem;
-            box-sizing: border-box;
-            overflow: auto;
-        }
-
-        .editor-floating-active {
-            overflow: hidden;
-        }
-
         .editor-close-btn {
             position: absolute;
             top: 10px;
@@ -463,6 +478,7 @@ $hover-color: #444;
             cursor: pointer;
         }
 
+        // preview 
         .preview-container {
             position: fixed;
             top: 5%;
@@ -533,22 +549,13 @@ $hover-color: #444;
         color: #333;
         z-index: 10001;
 
-    &:hover {
-        color: #000;
-    }
+        &:hover {
+            color: #000;
+        }
     }
 
     .preview-content {
         flex: 1;
         overflow: auto;
-    }
-
-    ul[data-type="taskList"] > li {
-        display: flex;
-        flex-direction: row;
-    }
-
-    ul[data-type="taskList"] > li > div > p {
-        margin: 0;
     }
 }

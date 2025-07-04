@@ -56,7 +56,7 @@ export const initMenu = (editor: Editor, editorElement: HTMLDivElement) => {
     addAdditionalButtons(editor);
     setupAddLink(editor);
     addEmojisAndCharacters(editor);
-    setupFullscreenToggle(editor);
+    setupFullscreenToggle();
     showPreview(editor);
     addEditSource(editor);
     setupHorizontalRule(editor);

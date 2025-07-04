@@ -6,6 +6,22 @@
   overflow: hidden;
   min-height: 200px;
 }
+.editor-container.fullscreen-mode {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+}
+.editor-container.fullscreen-mode .toolbar {
+  flex-shrink: 0;
+}
+.editor-container.fullscreen-mode .tiptap-editor {
+  flex-shrink: 1;
+  height: inherit !important;
+}
+.editor-container.fullscreen-mode .footer {
+  flex-shrink: 0;
+}
 .editor-container .toolbar {
   padding: 4px;
   display: flex;
@@ -132,6 +148,13 @@
 }
 .editor-container .tiptap-editor .tiptap ul.custom-dash > li::marker {
   content: "– ";
+}
+.editor-container .tiptap-editor .tiptap ul[data-type=taskList] > li {
+  display: flex;
+  flex-direction: row;
+}
+.editor-container .tiptap-editor .tiptap ul[data-type=taskList] > li > div > p {
+  margin: 0;
 }
 .editor-container .tiptap-editor .tiptap .page-break {
   page-break-after: always;
@@ -361,23 +384,6 @@
   stroke-width: 2;
   color: currentColor;
 }
-.editor-container .tiptap-popup .editor-floating {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 10000;
-  background: #fff;
-  display: flex;
-  flex-direction: column;
-  padding: 1rem;
-  box-sizing: border-box;
-  overflow: auto;
-}
-.editor-container .tiptap-popup .editor-floating-active {
-  overflow: hidden;
-}
 .editor-container .tiptap-popup .editor-close-btn {
   position: absolute;
   top: 10px;
@@ -421,4 +427,39 @@
 .editor-container .tiptap-popup .close-popup-btn svg {
   width: 20px;
   height: 20px;
+}
+.editor-container .preview-container {
+  position: fixed;
+  top: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80vw;
+  height: 80vh;
+  background: white;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  z-index: 10000;
+  overflow-y: auto;
+  border-radius: 8px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.editor-container .preview-close-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.75rem;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #333;
+  z-index: 10001;
+}
+.editor-container .preview-close-btn:hover {
+  color: #000;
+}
+.editor-container .preview-content {
+  flex: 1;
+  overflow: auto;
 }
