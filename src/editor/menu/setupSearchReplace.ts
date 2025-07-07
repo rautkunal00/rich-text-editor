@@ -1,6 +1,9 @@
 import { Editor } from '@tiptap/core';
 import { iframeDocument, iframeWindow } from '../globalVariables';
 
+let lastSearchTerm = "";
+let lastReplaceTerm = "";
+
 export const setupSearchReplace = (editor: Editor) => {
   const button = iframeDocument.getElementById('open-search-dialog-btn');
   if (!button) return;
@@ -30,7 +33,7 @@ export const setupSearchReplace = (editor: Editor) => {
   });
 };
 
-const createSearchReplacePopup = (editor: Editor): HTMLDivElement => {
+function createSearchReplacePopup(editor: Editor): HTMLDivElement {
   const container = iframeDocument.createElement('div');
   container.style.width = '300px';
   container.style.padding = '12px';
@@ -44,12 +47,22 @@ const createSearchReplacePopup = (editor: Editor): HTMLDivElement => {
   searchInput.style.marginBottom = '8px';
   searchInput.style.padding = '6px';
   searchInput.style.marginTop = '30px';
+  searchInput.value = lastSearchTerm;
 
   const replaceInput = iframeDocument.createElement('input');
   replaceInput.placeholder = 'Replace with...';
   replaceInput.style.width = '100%';
   replaceInput.style.marginBottom = '8px';
   replaceInput.style.padding = '6px';
+  replaceInput.value = lastReplaceTerm;
+
+  searchInput.addEventListener('input',()=>{
+    lastSearchTerm = searchInput.value;
+  })
+
+  replaceInput.addEventListener('input',()=>{
+    lastReplaceTerm = replaceInput.value;
+  })
 
   const searchBtn = iframeDocument.createElement('button');
   searchBtn.textContent = 'Search';
@@ -93,25 +106,37 @@ const createSearchReplacePopup = (editor: Editor): HTMLDivElement => {
     editor.chain().focus().unsetMark('highlight').run();
   };
 
-  const findMatches = (searchTerm: string) => {
-    const matches: { from: number; to: number }[] = [];
-    if (!searchTerm) return matches;
+ function findMatches(editor: Editor, searchTerm: string): { from: number; to: number }[] {
+  const matches: { from: number; to: number }[] = [];
+  if (!searchTerm) return matches;
 
-    const regex = new RegExp(searchTerm, 'gi');
-    const docText = editor.state.doc.textBetween(0, editor.state.doc.content.size, '\n', '\n');
+  const regex = new RegExp(searchTerm, 'gi');
 
+  editor.state.doc.descendants((node, pos) => {
+    if (!node.isText) return true;
+
+    const text = node.text || '';
     let match;
-    while ((match = regex.exec(docText)) !== null) {
+
+    while ((match = regex.exec(text)) !== null) {
+      const start = pos + match.index;
+      const end = start + match[0].length;
+
       matches.push({
-        from: match.index,
-        to: match.index + match[0].length,
+        from: start,
+        to: end,
       });
 
-      if (regex.lastIndex === match.index) regex.lastIndex++;
+      if (regex.lastIndex === match.index) {
+        regex.lastIndex++;
+      }
     }
 
-    return matches;
-  };
+    return true;
+  });
+
+  return matches;
+}
 
   const highlightMatches = (matches: { from: number; to: number }[]) => {
     if (matches.length === 0) return;
@@ -122,17 +147,18 @@ const createSearchReplacePopup = (editor: Editor): HTMLDivElement => {
       editor
         .chain()
         .focus()
-        .setTextSelection({ from: from + 1, to: to + 1 })
+        .setTextSelection({ from, to })  
         .setMark('highlight')
         .run();
     });
   };
 
   searchBtn.addEventListener('click', () => {
+    lastSearchTerm = searchInput.value.trim();
     const searchTerm = searchInput.value.trim();
     if (!searchTerm) return;
 
-    const matches = findMatches(searchTerm);
+    const matches = findMatches(editor, searchTerm);
 
     if (matches.length === 0) {
       resultMsg.textContent = 'No matches found.';
@@ -145,44 +171,69 @@ const createSearchReplacePopup = (editor: Editor): HTMLDivElement => {
   });
 
   replaceBtn.addEventListener('click', () => {
-    const searchTerm = searchInput.value.trim();
-    const replaceTerm = replaceInput.value;
-    if (!searchTerm) return;
+  lastSearchTerm = searchInput.value.trim(); 
+  lastReplaceTerm = replaceInput.value; 
+  const searchTerm = searchInput.value.trim();
+  const replaceTerm = replaceInput.value;
+  if (!searchTerm) return;
 
-    clearHighlights();
+  clearHighlights();
 
-    const matches = findMatches(searchTerm);
-    if (matches.length === 0) {
-      resultMsg.textContent = 'No match found to replace.';
-      return;
-    }
+  const matches = findMatches(editor, searchTerm);
+  if (matches.length === 0) {
+    resultMsg.textContent = 'No match found to replace.';
+    return;
+  }
 
-    const firstMatch = matches[0];
+  const firstMatch = matches[0];
+
+  const docText = editor.state.doc.textBetween(firstMatch.from, firstMatch.to + 1, '\n', '\n');
+  const nextChar = docText[searchTerm.length]; 
+  const adjustedReplacement = replaceTerm + (nextChar === ' ' ? ' ' : '');
+
+  editor
+    .chain()
+    .focus()
+    .deleteRange({ from: firstMatch.from, to: firstMatch.to })
+    .insertContentAt(firstMatch.from, adjustedReplacement)
+    .run();
+
+  resultMsg.textContent = 'Replaced first match.';
+});
+
+
+  replaceAllBtn.addEventListener('click', () => {
+  lastSearchTerm = searchInput.value.trim();
+  lastReplaceTerm = replaceInput.value; 
+  const searchTerm = searchInput.value.trim();
+  const replaceTerm = replaceInput.value;
+  if (!searchTerm) return;
+
+  clearHighlights();
+
+  const matches = findMatches(editor, searchTerm);
+
+  if (matches.length === 0) {
+    resultMsg.textContent = 'No matches found to replace.';
+    return;
+  }
+
+  matches.reverse().forEach(({ from, to }) => {
+    const nextChar = editor.state.doc.textBetween(to, to + 1, '\n', '\n');
+    const adjustedReplacement =
+      replaceTerm + (nextChar === ' ' ? ' ' : '');
 
     editor
       .chain()
       .focus()
-      .deleteRange({ from: firstMatch.from + 1, to: firstMatch.to + 1 })
-      .insertContentAt(firstMatch.from + 1, replaceTerm)
+      .deleteRange({ from, to })
+      .insertContentAt(from, adjustedReplacement)
       .run();
-
-    resultMsg.textContent = 'Replaced first match.';
   });
 
-  replaceAllBtn.addEventListener('click', () => {
-    const searchTerm = searchInput.value.trim();
-    const replaceTerm = replaceInput.value;
-    if (!searchTerm) return;
+  resultMsg.textContent = `Replaced ${matches.length} match${matches.length > 1 ? 'es' : ''}.`;
+});
 
-    clearHighlights();
-
-    const docText = editor.state.doc.textBetween(0, editor.state.doc.content.size, '\n', '\n');
-    const regex = new RegExp(searchTerm, 'gi');
-    const replacedText = docText.replace(regex, replaceTerm);
-
-    editor.commands.setContent(replacedText, false);
-    resultMsg.textContent = 'Replaced all matches.';
-  });
 
   return container;
 }
