@@ -207,6 +207,13 @@ $hover-color: #444;
                 border: 2px dashed #999;
                 margin: 1rem 0;
             }
+
+            .resizable-image-wrapper {
+                .resize-handle {
+                    box-sizing: border-box;
+                }
+            }
+
         }
     }
 

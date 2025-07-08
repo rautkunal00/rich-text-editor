@@ -19,7 +19,7 @@ import Underline from '@tiptap/extension-underline';
 import StarterKit from '@tiptap/starter-kit';
 import { EditorOptions } from '../globalInterface';
 import { AlignedBlockquote } from './extensions/alignment/alignedBlockquote';
-import { AlignedHeading } from './extensions/alignment/AlignedHeading';
+import { AlignedHeading } from './extensions/alignment/alignedHeading';
 import { AlignedParagraph } from './extensions/alignment/alignedParagraph';
 import AnchorMark from './extensions/anchorMark';
 import { AudioNode } from './extensions/audio';
@@ -39,6 +39,7 @@ import TextColor from './extensions/textColor';
 import { TextDirection } from './extensions/textDirection';
 import { VisualBlocks } from './extensions/visualBlocks';
 import { VisualCharacters } from './extensions/visualCharacters';
+import { ResizableImage } from './extensions/imageResizeExtension';
 
 export const getExtensions = (editorConfig: EditorOptions) => [
     StarterKit.configure({ history: false }),
@@ -47,7 +48,8 @@ export const getExtensions = (editorConfig: EditorOptions) => [
     Underline,
     Highlight.configure({ multicolor: true }),
     Link,
-    Image.configure({ inline: false, allowBase64: true, }),
+    // Image.configure({ inline: false, allowBase64: true, }),
+    ResizableImage.configure({ allowBase64: true, }),
     Table.configure({ resizable: true }),
     TableRow,
     TableHeader,
