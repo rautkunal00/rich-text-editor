@@ -4,7 +4,6 @@ import Heading from '@tiptap/extension-heading';
 import Highlight from '@tiptap/extension-highlight';
 import Image from '@tiptap/extension-image';
 import Link from '@tiptap/extension-link';
-import Strike from '@tiptap/extension-strike';
 import Subscript from '@tiptap/extension-subscript';
 import Superscript from '@tiptap/extension-superscript';
 import Table from '@tiptap/extension-table';
@@ -29,7 +28,6 @@ import { ExtendedBulletList } from './extensions/extendedBulletList';
 import { ExtendedOrderedList } from './extensions/extendedOrderedList';
 import FontFamily from './extensions/fontFamily';
 import FontSize from './extensions/fontSize';
-import { CustomHorizontalRule } from './extensions/horizontalLine';
 import { IframeNode } from './extensions/iframeNode';
 import { InsertMedia } from './extensions/media';
 import { PageBreak } from './extensions/pageBreak';
@@ -42,7 +40,7 @@ import { VisualCharacters } from './extensions/visualCharacters';
 import { History } from '@tiptap/extension-history'
 
 export const getExtensions = (editorConfig: EditorOptions) => [
-    StarterKit.configure({ history: false }),
+    StarterKit.configure({ history: false, orderedList: false, blockquote: false, bulletList: false }),
     TextStyle,
     Color,
     Underline,
@@ -65,12 +63,10 @@ export const getExtensions = (editorConfig: EditorOptions) => [
     AnchorMark,
     Subscript,
     Superscript,
-    Strike,
     EventLogger,
     ExtendedOrderedList,
     ExtendedBulletList,
     PopupExtension,
-    CustomHorizontalRule,
     TextDirection,
     PageBreak,
     VisualBlocks,
