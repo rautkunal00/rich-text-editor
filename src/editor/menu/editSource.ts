@@ -15,8 +15,8 @@ const openSourceEditorPopup = (editor: Editor, button: HTMLElement) => {
     const popupHTML = iframeDocument.createElement('div');
     popupHTML.innerHTML = `
       <h3 style="margin: 0 0 10px;">Edit HTML Source</h3>
-      <div id="source-editor" style="height: 300px; width: 100%;"></div>
-      <div style="margin-top: 10px; text-align: right;">
+      <div id="source-editor" style="min-height: 200px; width: 100%;"></div>
+      <div style="margin-top: 10px; text-align: right; margin-right: 20px">
         <button id="cancel-source-edit">Cancel</button>
         <button id="save-source-edit" style="margin-left: 10px;">Save</button>
       </div>
@@ -24,10 +24,6 @@ const openSourceEditorPopup = (editor: Editor, button: HTMLElement) => {
 
     const popupScript = `const aceEditor = ace.edit("source-editor", { mode: "ace/mode/html", theme: "ace/theme/monokai", fontSize: "14px", wrap: true, tabSize: 2, enableBasicAutocompletion: true, enableLiveAutocompletion: true, }); window.aceEditor = aceEditor;`;
 
-    // get position for popup
-    const rect = button.getBoundingClientRect();
-    const top = rect.bottom + iframeWindow.scrollY;
-    const left = rect.left + iframeWindow.scrollX;
 
     editor.commands.showPopup({
         html: popupHTML,
@@ -63,8 +59,8 @@ const openSourceEditorPopup = (editor: Editor, button: HTMLElement) => {
             });
         },
         position: { top: 0, left: 0 },
-        height: '100%',
-        width: '80%',
+        height: '90%',
+        width: '100%',
         closeOnOutsideClick: true
     })
 }

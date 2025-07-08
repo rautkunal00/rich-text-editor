@@ -38,7 +38,7 @@ export const PopupExtension = Extension.create<PopupExtensionOptions>({
                         popup.appendChild(config.html);
 
                         popup.style.position = 'absolute';
-                        popup.style.width = `${config.width || '300px'}`;
+                        popup.style.width = `${config.width || 'auto'}`;
                         popup.style.height = `${config.height || 'auto'}`;
                         popup.style.zIndex = '9999';
                         popup.style.background = 'white';
