@@ -29,7 +29,7 @@ const createLinkPopup = (editor: Editor): HTMLDivElement => {
   container.style.background = '#fff';
   container.style.fontFamily = 'sans-serif';
   container.style.zIndex = '9999';
-  container.style.maxHeight = '70vh';
+  container.style.maxHeight = '100vh';
   container.style.overflowY = 'auto';
 
   const heading = iframeDocument.createElement('h3');
@@ -193,7 +193,7 @@ export const setupAddLink = (editor: Editor) => {
 
     editor.commands.showPopup({
       html: popupContent,
-      position: { top, left },
+      position: { left: left, top: 10 },
       closeOnOutsideClick: true,
     });
 

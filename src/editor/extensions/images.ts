@@ -21,7 +21,7 @@ export const allowBase64Images = (editor: Editor) => {
                                 editor.chain().focus().setImage({ src }).run();
                             };
                             reader.readAsDataURL(file);
-                            return true; // prevent default paste
+                            return true; 
                         }
                     }
                 }

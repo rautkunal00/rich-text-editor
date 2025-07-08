@@ -259,11 +259,8 @@ export const createColorPickerWithPalette = (button: HTMLElement, onChange: (hex
                 display: block;
                 position: relative;
                 background: #fff;
-                border: 1px solid #e5e7eb;
-                border-radius: 8px;
                 padding: 8px;
                 z-index: 1000;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             `;
             colorContainer.appendChild(paletteContainer);
 

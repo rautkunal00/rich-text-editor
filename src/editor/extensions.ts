@@ -37,6 +37,7 @@ import TextColor from './extensions/textColor';
 import { TextDirection } from './extensions/textDirection';
 import { VisualBlocks } from './extensions/visualBlocks';
 import { VisualCharacters } from './extensions/visualCharacters';
+import { ResizableImage } from './extensions/imageResizeExtension';
 import { History } from '@tiptap/extension-history'
 
 export const getExtensions = (editorConfig: EditorOptions) => [
@@ -46,7 +47,8 @@ export const getExtensions = (editorConfig: EditorOptions) => [
     Underline,
     Highlight.configure({ multicolor: true }),
     Link,
-    Image.configure({ inline: false, allowBase64: true, }),
+    // Image.configure({ inline: false, allowBase64: true, }),
+    ResizableImage.configure({ allowBase64: true, }),
     Table.configure({ resizable: true }),
     TableRow,
     TableHeader,

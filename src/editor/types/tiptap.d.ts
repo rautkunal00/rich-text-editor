@@ -24,6 +24,7 @@ declare module '@tiptap/core' {
         position?: { top: number; left: number };
         width?: string;
         height?: string;
+        center?: boolean;
         onMount?: (popup: HTMLElement) => void;
         closeOnOutsideClick?: boolean;
       }) => ReturnType;
@@ -44,6 +45,21 @@ declare module '@tiptap/core' {
     },
     insertMedia: {
       insertMedia: (attrs: { src: string; type: 'audio' | 'video' }) => ReturnType
+    },
+    resizableImage: {
+      setImage: (attrs: {
+        src: string
+        alt?: string
+        width?: string
+        height?: string
+      }) => ReturnType
+      updateImage: (attrs: {
+        src?: string
+        alt?: string
+        width?: string
+        height?: string
+      }) => ReturnType
     }
+
   }
 }

@@ -1,5 +1,5 @@
 import { CommandProps, Extension } from "@tiptap/core"
-import { iframeDocument } from "../globalVariables"
+import { iframeDocument, iframeWindow } from "../globalVariables"
 
 export interface PopupExtensionOptions {
     overlayClass?: string
@@ -25,6 +25,7 @@ export const PopupExtension = Extension.create<PopupExtensionOptions>({
                     position?: { top: number; left: number };
                     height?: string;
                     width?: string;
+                    center?: boolean;
                     onMount?: (popup: HTMLElement) => void;
                     closeOnOutsideClick?: boolean;
                 }) =>
@@ -37,10 +38,8 @@ export const PopupExtension = Extension.create<PopupExtensionOptions>({
                         popup.appendChild(config.html);
 
                         popup.style.position = 'absolute';
-                        popup.style.top = `${config.position?.top || 0}px`;
-                        popup.style.left = `${config.position?.left || 0}px`;
-                        popup.style.width = `${config.width}`;
-                        popup.style.height = `${config.height}`;
+                        popup.style.width = `${config.width || '300px'}`;
+                        popup.style.height = `${config.height || 'auto'}`;
                         popup.style.zIndex = '9999';
                         popup.style.background = 'white';
                         popup.style.border = '1px solid #ccc';
@@ -48,25 +47,41 @@ export const PopupExtension = Extension.create<PopupExtensionOptions>({
                         popup.style.padding = '10px';
                         popup.style.borderRadius = '8px';
 
+                        // --- 👇 Handle Centering Logic ---
+                        if (config.center) {
+                            const editorContainer = iframeDocument.querySelector('.editor-container') as HTMLElement;
+                            const containerRect = editorContainer?.getBoundingClientRect();
+
+                            const popupWidth = parseInt(config.width || '300');
+                            const popupHeight = parseInt(config.height || '200');
+
+                            const top = containerRect.top + iframeWindow.scrollY + (containerRect.height / 2) - (popupHeight / 2);
+                            const left = containerRect.left + iframeWindow.scrollX + (containerRect.width / 2) - (popupWidth / 2);
+
+                            popup.style.top = `${Math.max(top, 20)}px`;
+                            popup.style.left = `${Math.max(left, 20)}px`;
+                        } else {
+                            popup.style.top = `${config.position?.top || 0}px`;
+                            popup.style.left = `${config.position?.left || 0}px`;
+                        }
+
                         const overlay = iframeDocument.createElement('div');
                         overlay.className = this.options.overlayClass!;
                         iframeDocument.body.appendChild(overlay);
-                        
                         iframeDocument.body.appendChild(popup);
 
                         if (config.onMount) {
                             config.onMount(popup);
                         }
 
-                        const escHandler = (e:KeyboardEvent) => {
-                            if(e.key === 'Escape') {
+                        const escHandler = (e: KeyboardEvent) => {
+                            if (e.key === 'Escape') {
                                 overlay.remove();
                                 popup.remove();
                                 iframeDocument.removeEventListener('keydown', escHandler);
                             }
-                        }
-                        iframeDocument.addEventListener('keydown',escHandler);
-
+                        };
+                        iframeDocument.addEventListener('keydown', escHandler);
                         (popup as any).escHandler = escHandler;
 
                         if (config.closeOnOutsideClick) {
@@ -82,21 +97,20 @@ export const PopupExtension = Extension.create<PopupExtensionOptions>({
 
                         return true;
                     },
-
             closePopup:
                 () =>
                     (_props: CommandProps) => {
                         const existing = iframeDocument.querySelector('.tiptap-popup');
                         const overlay = iframeDocument.querySelector('.tiptap-popup-overlay');
-                        if (existing){
+                        if (existing) {
                             const escHandler = (existing as any).escHandler;
-                            if(escHandler) {
-                                iframeDocument.removeEventListener('keydown',escHandler);
+                            if (escHandler) {
+                                iframeDocument.removeEventListener('keydown', escHandler);
                             }
                             existing.remove();
-                            
+
                         }
-                        if(overlay) overlay.remove();
+                        if (overlay) overlay.remove();
                         return true;
                     },
         };
@@ -117,7 +131,7 @@ export const PopupExtension = Extension.create<PopupExtensionOptions>({
             z-index: 9998;
             transition: background 0.2s ease-in-out; 
         }`
-        iframeDocument.head.appendChild(style)
+            iframeDocument.head.appendChild(style)
         }
     },
 })
