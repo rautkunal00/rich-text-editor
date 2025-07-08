@@ -182,18 +182,9 @@ export const setupAddLink = (editor: Editor) => {
     const input = popupContent.querySelector('#link-text') as HTMLInputElement;
     if (input) input.value = selectedText || '';
 
-    const popupWidth = 280;
-    const popupHeight = 250;
-
-    const viewportWidth = iframeWindow.innerWidth;
-    const viewportHeight = iframeWindow.innerHeight;
-
-    const left = (viewportWidth - popupWidth) / 2 + iframeWindow.screenX;
-    const top = (viewportHeight - popupHeight) / 2 + iframeWindow.screenY;
-
     editor.commands.showPopup({
       html: popupContent,
-      position: { left: left, top: 10 },
+      center: true,
       closeOnOutsideClick: true,
     });
 

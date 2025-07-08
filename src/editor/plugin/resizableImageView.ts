@@ -145,7 +145,7 @@ export class ResizableImageView {
 
     editor.commands.showPopup?.({
       html: this.createAttributePopup(currentAttrs),
-      width: '300px',
+      center: true,
       closeOnOutsideClick: true,
     })
   }
