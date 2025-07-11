@@ -49,7 +49,7 @@ export const setupMediaUpload = (editor: Editor) => {
         },
         () => editor.commands.closePopup()
       ),
-      width: '320px',
+      center: true,
       closeOnOutsideClick: true,
     });
   });

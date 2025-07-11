@@ -108,18 +108,9 @@ export const setupAddAnchorDialog = (editor: Editor) => {
 
     const popupContent = createAnchorPopup();
 
-    const popupWidth = 280;
-    const popupHeight = 160;
-
-    const viewportWidth = iframeWindow.innerWidth;
-    const viewportHeight = iframeWindow.innerHeight;
-
-    const left = (viewportWidth - popupWidth) / 2 + iframeWindow.screenX;
-    const top = (viewportHeight - popupHeight) / 2 + iframeWindow.screenY;
-
     editor.commands.showPopup({
       html: popupContent,
-      position: { top, left },
+      center: true,
       closeOnOutsideClick: true,
     });
 
