@@ -105,10 +105,7 @@ const coreInit = (options: TiptapEditorOptions): Promise<EditorAPI> => {
             editorContainer.classList.add('editor-container');
             setIframeContext(editorWindow, editorDocument);
 
-            const uniqueId = 'editor-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
-
             const editorElement = editorDocument.createElement('div');
-            editorElement.id = uniqueId;
             editorElement.className = 'tiptap-editor rich-text-editor';
             editorElement.style.height = editorConfig.height || '250px';
             editorContainer.appendChild(editorElement);
