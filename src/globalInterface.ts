@@ -20,7 +20,7 @@ export interface EditorOptions {
 export interface EditorAPI {
     setContent: (html: string) => void;
     getContent: () => string;
-    getContentAsText: () => void;
+    getContentAsText: () => string;
     destroy: () => void;
     enable: () => void;
     disable: () => void;
