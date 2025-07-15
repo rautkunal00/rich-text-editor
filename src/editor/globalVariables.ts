@@ -6,6 +6,9 @@ declare global {
         iro?: any;
         ace?: any;
         aceEditor?: any;
+        lucide?: {
+            createIcons: (options?: Record<string, any>) => void;
+        };
     }
 }
 

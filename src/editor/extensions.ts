@@ -2,7 +2,7 @@ import CharacterCount from '@tiptap/extension-character-count';
 import Color from '@tiptap/extension-color';
 import Heading from '@tiptap/extension-heading';
 import Highlight from '@tiptap/extension-highlight';
-import Image from '@tiptap/extension-image';
+import { History } from '@tiptap/extension-history';
 import Link from '@tiptap/extension-link';
 import Subscript from '@tiptap/extension-subscript';
 import Superscript from '@tiptap/extension-superscript';
@@ -29,6 +29,7 @@ import { ExtendedOrderedList } from './extensions/extendedOrderedList';
 import FontFamily from './extensions/fontFamily';
 import FontSize from './extensions/fontSize';
 import { IframeNode } from './extensions/iframeNode';
+import { ResizableImage } from './extensions/imageResizeExtension';
 import { InsertMedia } from './extensions/media';
 import { PageBreak } from './extensions/pageBreak';
 import { PopupExtension } from './extensions/popup';
@@ -37,48 +38,45 @@ import TextColor from './extensions/textColor';
 import { TextDirection } from './extensions/textDirection';
 import { VisualBlocks } from './extensions/visualBlocks';
 import { VisualCharacters } from './extensions/visualCharacters';
-import { ResizableImage } from './extensions/imageResizeExtension';
-import { History } from '@tiptap/extension-history'
 
 export const getExtensions = (editorConfig: EditorOptions) => [
-    StarterKit.configure({ history: false, orderedList: false, blockquote: false, bulletList: false }),
-    TextStyle,
-    Color,
-    Underline,
-    Highlight.configure({ multicolor: true }),
-    Link,
-    // Image.configure({ inline: false, allowBase64: true, }),
-    ResizableImage.configure({ allowBase64: true, }),
-    Table.configure({ resizable: true }),
-    TableRow,
-    TableHeader,
-    TableCell,
-    TextAlign.configure({ types: ['heading', 'paragraph'] }),
-    Heading.configure({ levels: [1, 2, 3, 4, 5, 6] }),
-    FontSize,
-    FontFamily,
-    TextColor,
-    CharacterCount.configure({ limit: 10000 }),
-    TaskList,
-    TaskItem.configure({ nested: true, }),
-    HighlightMark,
+    AlignedBlockquote,
+    AlignedHeading,
+    AlignedParagraph,
     AnchorMark,
+    AudioNode,
+    CharacterCount.configure({ limit: 10000 }),
+    ClearMarksOnEnter,
+    Color,
+    EventLogger,
+    ExtendedBulletList,
+    ExtendedOrderedList,
+    FontFamily,
+    FontSize,
+    Heading.configure({ levels: [1, 2, 3, 4, 5, 6] }),
+    Highlight.configure({ multicolor: true }),
+    HighlightMark,
+    History,
+    IframeNode,
+    InsertMedia,
+    Link,
+    PageBreak,
+    PopupExtension,
+    ResizableImage.configure({ allowBase64: true }),
+    StarterKit.configure({ history: false, orderedList: false, blockquote: false, bulletList: false }),
     Subscript,
     Superscript,
-    EventLogger,
-    ExtendedOrderedList,
-    ExtendedBulletList,
-    PopupExtension,
+    Table.configure({ resizable: true }),
+    TableCell,
+    TableHeader,
+    TableRow,
+    TaskItem.configure({ nested: true }),
+    TaskList,
+    TextAlign.configure({ types: ['heading', 'paragraph'] }),
+    TextColor,
     TextDirection,
-    PageBreak,
+    TextStyle,
+    Underline,
     VisualBlocks,
     VisualCharacters,
-    ClearMarksOnEnter,
-    InsertMedia,
-    AudioNode,
-    IframeNode,
-    AlignedParagraph,
-    AlignedHeading,
-    AlignedBlockquote,
-    History
 ];
