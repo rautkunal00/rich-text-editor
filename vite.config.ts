@@ -3,16 +3,37 @@ import path from 'path';
 
 export default defineConfig({
   build: {
+    emptyOutDir: false,
+
+    cssCodeSplit: false,
+
     lib: {
       entry: path.resolve(__dirname, 'src/index.ts'),
-      name: 'TiptapEnhancedEditor',
+      name: 'WolkenUnifiedRichTextEditor',
+
       formats: ['es', 'umd'],
-      fileName: (format) => `rich-text-enhanced-editor.${format}.min.js`,
+
+      fileName: (format) => {
+        if (format === 'es') {
+          return 'wolken-unified-rich-text-editor.es.js';
+        }
+
+        return 'wolken-unified-rich-text-editor.umd.cjs';
+      },
     },
+
     rollupOptions: {
-      external: [],
+      external: [
+        '@tiptap/core',
+        '@tiptap/starter-kit',
+        '@tiptap/extensions'
+      ],
+
       output: {
         globals: {
+          '@tiptap/core': 'TiptapCore',
+          '@tiptap/starter-kit': 'StarterKit',
+          '@tiptap/extensions': 'TiptapExtensions'
         }
       }
     }

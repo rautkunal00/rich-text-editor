@@ -4,7 +4,7 @@ import { Plugin, PluginKey } from 'prosemirror-state'
 const EventLogger = Extension.create({
   name: 'eventLogger',
 
-  addEventsPlugins() {
+  addProseMirrorPlugins() {
     return [
       new Plugin({
         key: new PluginKey('eventLogger'),

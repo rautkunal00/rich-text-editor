@@ -1,25 +1,27 @@
 {
   "compilerOptions": {
-    "target": "es2016",
+    "target": "ES2020",
     "module": "ESNext",
-    "declaration": true,
     "moduleResolution": "node",
+    "declaration": true,
+    "declarationMap": true,
+    "emitDeclarationOnly": true,
+    "rootDir": "./src",
+    "outDir": "./dist",
     "strict": true,
     "esModuleInterop": true,
-    "outDir": "./dist",
-    "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
     "typeRoots": [
       "./node_modules/@types",
       "./src/types"
     ],
     "lib": [
-      "dom",
-      "es2016"
+      "DOM",
+      "ES2020"
     ]
   },
   "include": [
-    "src/**/*",
-    "vite.config.ts"
+    "src/**/*"
   ]
 }

@@ -1,134 +1,127 @@
-````markdown
-# Tiptap Enhanced Rich Text Editor
+# Rich Text Enhanced Editor
 
-A modular, iframe-based rich text editor built using **Tiptap v2**, offering advanced editing features with enhanced UI, plugin support, and secure isolation via iframes.
+A modular, iframe-based rich text editor built using **Tiptap v3**, offering advanced editing features with enhanced UI, secure isolation, and extensive plugin support.
 
 ---
 
 ## 🚀 Features
 
-### ✒️ Core Editing Features
+### ✒️ Core Editing
+- **Tiptap v3 Engine**: Built on the latest powerful headless editor framework.
+- **Iframe Isolation**: Styles and scripts are completely isolated from the host application.
+- **History Management**: Robust Undo / Redo functionality.
+- **Security**: Full HTML sanitization via **DOMPurify**.
 
-- **Tiptap v2 Integration**
-- **MIT License Compliance** (Ace, Tiptap, DOMPurify, etc.)
-- **Iframe-Based Rendering** for style/script isolation
-- **Toolbar with Essential Formatting Tools:**
-  - Undo / Redo
-  - Bold, Italic, Underline, Strikethrough
-  - Subscript / Superscript
-  - Text Alignment: Left, Center, Right, Justify
-  - Clear Formatting
-  - Text Direction (LTR/RTL)
-  - Font Family & Font Size dropdowns (configurable)
-  - Heading levels (H1–H6)
-  - Capitalization options (Uppercase, Lowercase, Title Case)
-  - Text & Background color highlighting
-  - Horizontal Line
-- **Lists**
-  - Ordered, Unordered
-  - Custom Styles
-- **Anchors & Hyperlinks**
-- **Checkboxes / Task Lists**
-- **Tables**: Add/delete rows & columns
-- **Special Characters & Emojis**
-- **Date & Time Insertion**
-- **Search & Replace**
-- **Preview Mode**
-- **Visual Blocks** (e.g., block-level indicators)
-- **Visual Characters** (e.g., `¶` for soft/hard returns)
+### 🎨 Text & Formatting
+- **Typography**:
+  - Customizable **Font Family** and **Font Size** (12px - 28px).
+  - **Capitalization**: Uppercase, Lowercase, Capitalize.
+  - **Heading Levels**: H1 through H6 + Paragraph.
+- **Styling**:
+  - Bold, Italic, Underline, Strikethrough.
+  - Subscript & Superscript.
+  - **Text Color** & **Highlight Color** with custom palette support.
+  - **Clear Formatting** utility.
 
----
+### 📋 Lists & Layout
+- **Advanced Lists**:
+  - **Bullet Lists**: Disc, Circle, Square, Dash, Checkmark.
+  - **Ordered Lists**: Decimal, Alpha (Lower/Upper), Roman (Lower/Upper), Greek.
+  - **Task Lists**: Interactive checkboxes (Checklist).
+- **Alignment**: Left, Center, Right, Justify.
+- **Text Direction**: RTL / LTR support.
+- **Structure**:
+  - **Page Breaks** for print-layout simulation.
+  - **Horizontal Lines**.
+  - **Indentation**.
 
-### 🔐 Security & Flexibility
+### 🎬 Media & Objects
+- **Images**: Drag-and-drop upload with **Resizing** capabilities.
+- **Media Embedding**: Support for Audio and other media types.
+- **Tables**: Comprehensive table management (Add/Delete Rows, Cols, Tables).
+- **Links**: Hyperlinks and Anchor support.
+- **Special Characters**: Emoji and Symbol insertion.
+- **Date & Time**: Quick insertion of current date/time.
 
-- **DOM Sanitization** via [DOMPurify](https://github.com/cure53/DOMPurify)
-- **Lifecycle Hooks**: `onUpdate`, `onFocus`, `onBlur`, `onDestroy`, etc.
-- **TypeScript-safe API**:
-  - `setContent()`, `getContent()`, `enable()`, `disable()`, etc.
-
----
-
-### 🧩 Code Support
-
-- **Code Block** with syntax highlighting via [lowlight]
-- **View & Edit HTML Source** with embedded Ace Editor
-- **Dynamic Resource Loader**: Load scripts & styles at runtime
-
----
-
-### 🪟 UI Enhancements
-
-- **Isolated Iframe Editing Environment**
-- **Custom Popup Component** with overlay and lifecycle control
-- **Auto Iframe Resizing** with `ResizeObserver`
-- **Draggable Vertical Resize Handle**
-- **Configurable Footer**:
-  - Word Count
-  - Footer Message
-
----
-
-## 🛠 Currently in Progress
-
-- Media Insertion (Images, Videos)
-- Fullscreen Mode
-- Format Painter
-- Page Break Support
-- Spellcheck Integration
-- Toolbar Customization via Config
-- Custom Icons Support
+### 🛠 Powerful Tools
+- **Format Painter**: Copy formatting from one text section to another.
+- **Search & Replace**: Advanced find/replace within the editor.
+- **Source Code Editor**: Direct HTML editing via embedded **Ace Editor** with syntax highlighting.
+- **Visual Aids**:
+  - **Visual Blocks**: View block-level element boundaries.
+  - **Visual Characters**: View invisible characters (tabs, spaces, breaks).
+- **Preview Mode**: Toggle between edit and read-only preview.
+- **Fullscreen**: Distraction-free editing.
 
 ---
 
 ## 🔧 Installation
 
 ```bash
-npm install your-rich-text-editor
-````
-
-Or use via CDN (coming soon).
+npm install rich-text-enhanced-editor
+```
 
 ---
 
 ## 🧑‍💻 Usage
 
-```ts
-import { initTiptapEditor } from 'your-rich-text-editor';
+The editor is initialized via the `initRichTextEditor` function.
 
-initTiptapEditor({
+```typescript
+import { initRichTextEditor } from 'rich-text-enhanced-editor';
+
+initRichTextEditor({
   selector: '#editor-container',
   editorConfig: {
-    height: '300px',
+    height: '400px',
+    width: '100%',
     showToolbar: true,
     displayWordCount: true,
-    footerMessage: 'Powered by Tiptap',
-    resize: true
+    footerMessage: 'My Custom Editor',
+    resize: true,
+    // Load custom CSS inside the iframe
+    cssFiles: 'https://example.com/my-styles.css'
   }
 }).then(editor => {
-  editor.setContent('<p>Hello World!</p>');
+  console.log('Editor initialized!');
+  
+  // Set initial content
+  editor.setContent('<p>Hello World</p>');
+  
+  // Listen to updates
+  editor.onUpdate(() => {
+    console.log('Content changed:', editor.getContent());
+  });
 });
 ```
 
 ---
 
+## ⚙️ Configuration
+
+| Option | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `selector` | String | *Required* | CSS selector for the container element. |
+| `editorConfig.height` | String | `'250px'` | Height of the editor area. |
+| `editorConfig.width` | String | `'100%'` | Width of the editor iframe. |
+| `editorConfig.showToolbar` | Boolean | `true` | Show or hide the toolbar. |
+| `editorConfig.resize` | Boolean | `false` | Enable vertical resizing handle. |
+| `editorConfig.displayWordCount` | Boolean | `false` | Show word count in footer. |
+| `editorConfig.footerMessage` | String | `''` | Custom text for the footer. |
+| `editorConfig.cssFiles` | String | `undefined` | Comma-separated URLs for external CSS. |
+
+---
+
 ## 📦 Dependencies
 
-* [Tiptap v2](https://tiptap.dev)
-* [Ace Editor](https://ace.c9.io)
-* [DOMPurify](https://github.com/cure53/DOMPurify)
-* [lowlight](https://github.com/wooorm/lowlight)
-* Lucide Icons (via CDN)
+*   [Tiptap v3](https://tiptap.dev) - The headless editor framework.
+*   [Ace Editor](https://ace.c9.io) - For source code editing.
+*   [DOMPurify](https://github.com/cure53/DOMPurify) - For HTML sanitization.
+*   [Lucide Icons](https://lucide.dev) - For UI icons.
+*   [Floating UI](https://floating-ui.com/) - For positioning popups.
 
 ---
 
 ## 📄 License
 
 This project is licensed under the **MIT License**.
-
----
-
-## 📣 Feedback
-
-Feature suggestions, bug reports, or contributions are welcome! Feel free to open an issue or pull request.
-
-```

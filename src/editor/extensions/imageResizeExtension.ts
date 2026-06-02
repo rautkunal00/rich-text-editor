@@ -55,7 +55,7 @@ export const ResizableImage = Node.create<ResizableImageOptions>({
 
     addNodeView() {
         return ({ node, editor, getPos, view }) => {
-            return new ResizableImageView({ node, editor, getPos, view })
+            return new ResizableImageView({ node, editor, getPos: getPos as () => number, view })
         }
     },
     addCommands() {

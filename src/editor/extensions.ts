@@ -6,6 +6,7 @@ import { TableKit } from '@tiptap/extension-table';
 import { TextStyleKit } from '@tiptap/extension-text-style';
 import { CharacterCount } from '@tiptap/extensions';
 import StarterKit from '@tiptap/starter-kit';
+import TextAlign from '@tiptap/extension-text-align';
 import { EditorOptions } from '../globalInterface';
 import { AlignedBlockquote } from './extensions/alignment/alignedBlockquote';
 import { AlignedHeading } from './extensions/alignment/alignedHeading';
@@ -56,6 +57,7 @@ export const getExtensions = (editorConfig: EditorOptions) => [
     TableKit,
     TaskItem.configure({ nested: true }),
     TaskList,
+    TextAlign.configure({ types: ['heading', 'paragraph', 'blockquote'] }),
     TextColor,
     TextDirection,
     TextStyleKit,
