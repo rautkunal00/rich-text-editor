@@ -54,7 +54,7 @@ const openSourceEditorPopup = (editor: Editor, button: HTMLElement) => {
 
             saveBtn.addEventListener('click', () => {
                 const newHTML = sanitizeHTML(iframeWindow.aceEditor?.getValue?.() || '');
-                editor.commands.setContent(newHTML, false);
+                editor.commands.setContent(newHTML, { emitUpdate: false });
                 editor.commands.closePopup();
             });
         },

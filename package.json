@@ -1,55 +1,79 @@
 {
-  "name": "rich-text-enhanced-editor",
-  "version": "0.0.6",
-  "description": "A powerful, extensible iframe-based custom rich text editor built on Tiptap v3.",
-  "main": "dist/rich-text-enhanced-editor.umd.min.js",
-  "module": "dist/rich-text-enhanced-editor.es.min.js",
-  "types": "dist/index.d.ts",
+  "name": "wolken-unified-rich-text-editor",
+  "version": "1.0.0",
+  "description": "A powerful, extensible custom rich text editor built on Tiptap v3.",
+  "main": "./dist/wolken-unified-rich-text-editor.umd.cjs",
+  "module": "./dist/wolken-unified-rich-text-editor.es.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/rich-text-enhanced-editor.es.min.js",
-      "require": "./dist/rich-text-enhanced-editor.umd.min.js"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/wolken-unified-rich-text-editor.es.js",
+      "require": "./dist/wolken-unified-rich-text-editor.umd.cjs"
     }
   },
   "files": [
     "dist"
   ],
+  "sideEffects": [
+    "*.css"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "start": "vite",
     "dev": "npm run build:sass && vite",
     "build:sass": "sass src/assets/styles/style.scss src/assets/styles/style.css --no-source-map",
-    "build": "npm run build:sass && tsc",
-    "prod-build": "npm run build:sass && vite build",
+    "build": "npm run build:sass && tsc && vite build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
+    "rich-text-editor",
     "editor",
     "tiptap",
-    "typescript"
+    "wysiwyg",
+    "typescript",
+    "iframe-editor",
+    "angular-editor"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://bitbucket.org/wolkenenterprise-frontend/poc-editor-temp/wolken-unified-rich-text-editor.git"
+  },
+  "homepage": "https://bitbucket.org/wolkenenterprise-frontend/poc-editor-temp/src/master/",
+  "bugs": {
+    "url": "https://bitbucket.org/wolkenenterprise-frontend/poc-editor-temp/issues"
+  },
   "author": "Kunal Raut",
   "license": "MIT",
+  "type": "module",
+  "peerDependencies": {
+    "@tiptap/core": "^3.24.0",
+    "@tiptap/starter-kit": "^3.24.0",
+    "@tiptap/extensions": "^3.24.0"
+  },
   "dependencies": {
-    "@floating-ui/dom": "^1.7.2",
+    "@floating-ui/dom": "^1.7.6",
     "@jaames/iro": "^5.5.2",
-    "@tiptap/core": "^3.0.1",
-    "@tiptap/extension-highlight": "^3.0.7",
-    "@tiptap/extension-subscript": "^3.0.7",
-    "@tiptap/extension-superscript": "^3.0.7",
-    "@tiptap/extension-table": "^3.0.7",
-    "@tiptap/extension-table-cell": "^3.0.7",
-    "@tiptap/extension-table-header": "^3.0.7",
-    "@tiptap/extension-table-row": "^3.0.7",
-    "@tiptap/extension-text-align": "^3.0.7",
-    "@tiptap/extension-text-style": "^3.0.7",
-    "@tiptap/extensions": "^3.0.7",
-    "@tiptap/starter-kit": "^3.0.1",
-    "dompurify": "^3.2.6"
+    "@tiptap/extension-highlight": "^3.24.0",
+    "@tiptap/extension-subscript": "^3.24.0",
+    "@tiptap/extension-superscript": "^3.24.0",
+    "@tiptap/extension-table": "^3.24.0",
+    "@tiptap/extension-table-cell": "^3.24.0",
+    "@tiptap/extension-table-header": "^3.24.0",
+    "@tiptap/extension-table-row": "^3.24.0",
+    "@tiptap/extension-text-align": "^3.24.0",
+    "@tiptap/extension-text-style": "^3.24.0",
+    "dompurify": "^3.4.7"
   },
   "devDependencies": {
-    "@types/node": "^24.0.4",
-    "sass": "^1.89.2",
-    "typescript": "^5.8.3",
-    "vite": "^6.3.5"
+    "@types/node": "^25.9.1",
+    "@tiptap/core": "^3.24.0",
+    "@tiptap/starter-kit": "^3.24.0",
+    "@tiptap/extensions": "^3.24.0",
+    "sass": "^1.100.0",
+    "typescript": "^5.9.3",
+    "vite": "^6.4.2"
   }
 }

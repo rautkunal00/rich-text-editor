@@ -29,11 +29,11 @@
         height: '550px'
       }
     });
-    // editorAPI.then(editor => {
-    //   editor.onUpdate(() => {
-    //     document.getElementById('displayHTML').innerText = editor.getContent();
-    //   });
-    // });
+    editorAPI.then(editor => {
+      editor.onUpdate(() => {
+        document.getElementById('displayHTML').innerText = editor.getContent();
+      });
+    });
   </script>
 
   <!-- <script src="./dist/rich-text-enhanced-editor.umd.min.js"></script>
