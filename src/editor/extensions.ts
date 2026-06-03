@@ -27,6 +27,8 @@ import TextColor from './extensions/textColor';
 import { TextDirection } from './extensions/textDirection';
 import { VisualBlocks } from './extensions/visualBlocks';
 import { VisualCharacters } from './extensions/visualCharacters';
+import { getHierarchicalIndexes, TableOfContents } from '@tiptap/extension-table-of-contents';
+import Link from '@tiptap/extension-link';
 
 export const getExtensions = (editorConfig: EditorOptions) => [
     AlignedBlockquote,
@@ -55,6 +57,10 @@ export const getExtensions = (editorConfig: EditorOptions) => [
     Subscript,
     Superscript,
     TableKit,
+    TableOfContents.configure({
+        anchorTypes: ['heading'],
+        getIndex: getHierarchicalIndexes
+    }),
     TaskItem.configure({ nested: true }),
     TaskList,
     TextAlign.configure({ types: ['heading', 'paragraph', 'blockquote'] }),
@@ -63,4 +69,11 @@ export const getExtensions = (editorConfig: EditorOptions) => [
     TextStyleKit,
     VisualBlocks,
     VisualCharacters,
+    Link.configure({
+        openOnClick: false,
+        HTMLAttributes: {
+            target:null,
+            rel:null
+        }
+    }),
 ];
