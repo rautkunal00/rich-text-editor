@@ -29,6 +29,7 @@ import { setupHorizontalRule } from './menu/setupHorizontal';
 import { textDirectionMenu } from './menu/textDirection';
 import { pageBreakMenu } from './menu/pageBreakMenu';
 import { setupMediaUpload } from './menu/mediaPicker';
+import { toc } from './menu/table-of-content';
 
 export const initMenu = (editor: Editor, editorElement: HTMLDivElement) => {
     setupFormatting(editor);
@@ -62,4 +63,5 @@ export const initMenu = (editor: Editor, editorElement: HTMLDivElement) => {
     setupHorizontalRule(editor);
     textDirectionMenu(editor);
     pageBreakMenu(editor);
+    toc(editor);
 }
