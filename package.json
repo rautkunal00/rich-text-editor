@@ -1,0 +1,83 @@
+{
+  "name": "wolken-unified-rich-text-editor",
+  "version": "1.1.0",
+  "description": "A powerful, extensible custom rich text editor built on Tiptap v3.",
+  "main": "./dist/wolken-unified-rich-text-editor.umd.min.cjs",
+  "module": "./dist/wolken-unified-rich-text-editor.es.min.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/wolken-unified-rich-text-editor.es.min.js",
+      "require": "./dist/wolken-unified-rich-text-editor.umd.min.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": [
+    "*.css"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=20.19.0"
+  },
+  "scripts": {
+    "start": "vite",
+    "dev": "npm run build:sass && vite",
+    "build:sass": "sass src/assets/styles/style.scss src/assets/styles/style.css --no-source-map",
+    "build": "npm run build:sass && tsc && vite build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "rich-text-editor",
+    "editor",
+    "tiptap",
+    "wysiwyg",
+    "typescript",
+    "iframe-editor",
+    "angular-editor"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://bitbucket.org/wolkenenterprise-frontend/poc-editor-temp/wolken-unified-rich-text-editor.git"
+  },
+  "homepage": "https://bitbucket.org/wolkenenterprise-frontend/poc-editor-temp/src/master/",
+  "bugs": {
+    "url": "https://bitbucket.org/wolkenenterprise-frontend/poc-editor-temp/issues"
+  },
+  "author": "Kunal Raut",
+  "license": "MIT",
+  "type": "module",
+  "peerDependencies": {
+    "@tiptap/core": "^3.24.0",
+    "@tiptap/starter-kit": "^3.24.0",
+    "@tiptap/extensions": "^3.24.0"
+  },
+  "dependencies": {
+    "@floating-ui/dom": "1.7.6",
+    "@jaames/iro": "5.5.2",
+    "@tiptap/extension-highlight": "3.24.0",
+    "@tiptap/extension-subscript": "3.24.0",
+    "@tiptap/extension-superscript": "3.24.0",
+    "@tiptap/extension-table": "3.24.0",
+    "@tiptap/extension-table-cell": "3.24.0",
+    "@tiptap/extension-table-header": "3.24.0",
+    "@tiptap/extension-table-row": "3.24.0",
+    "@tiptap/extension-text-align": "3.24.0",
+    "@tiptap/extension-text-style": "3.24.0",
+    "dompurify": "3.4.7",
+    "@tiptap/extension-table-of-contents": "3.24.0"
+  },
+  "devDependencies": {
+    "@types/node": "25.9.1",
+    "@tiptap/core": "3.24.0",
+    "@tiptap/starter-kit": "3.24.0",
+    "@tiptap/extensions": "3.24.0",
+    "sass": "1.100.0",
+    "typescript": "5.9.3",
+    "vite": "6.4.2"
+  }
+}
