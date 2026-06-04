@@ -18,6 +18,7 @@ export const loadScript = (src: string, document: any, async: boolean = true): P
         const script = document.createElement('script');
         script.src = src;
         script.async = async;
+        script.crossOrigin = 'anonymous';
         script.onload = () => resolve();
         script.onerror = () => reject(new Error(`Failed to load script: ${src}`));
         document.head.appendChild(script);

@@ -19,7 +19,7 @@ export const sanitizeHTML = (value: string): string => {
         ],
         //  Explicitly allow iframe and its attributes
         ADD_TAGS: ['iframe'],
-        ADD_ATTR: ['allow', 'allowfullscreen', 'frameborder'],
+        ADD_ATTR: ['allow', 'allowfullscreen', 'frameborder', 'sandbox'],
 
         ALLOW_ARIA_ATTR: true,
         USE_PROFILES: { html: true },
@@ -31,7 +31,7 @@ export const sanitizeHTML = (value: string): string => {
             'onreset', 'onkeydown', 'onkeyup', 'onkeypress',
             'oncontextmenu', 'ondblclick', 'onmousemove', 'onmouseout'
         ],
-        ALLOWED_URI_REGEXP: /^(?:(?:https?|mailto|ftp|tel|file|blob):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i
+        ALLOWED_URI_REGEXP: /^(?:(?:https?|mailto|ftp|tel):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i
     });
 
     return removeWAFTraps(purified);

@@ -14,7 +14,6 @@ import { AlignedParagraph } from './extensions/alignment/alignedParagraph';
 import AnchorMark from './extensions/anchorMark';
 import { AudioNode } from './extensions/audio';
 import { ClearMarksOnEnter } from './extensions/clearFormattingOnEnter';
-import EventLogger from './extensions/customEvents';
 import { ExtendedBulletList } from './extensions/extendedBulletList';
 import { ExtendedOrderedList } from './extensions/extendedOrderedList';
 import { IframeNode } from './extensions/iframeNode';
@@ -29,6 +28,8 @@ import { VisualBlocks } from './extensions/visualBlocks';
 import { VisualCharacters } from './extensions/visualCharacters';
 import { getHierarchicalIndexes, TableOfContents } from '@tiptap/extension-table-of-contents';
 import Link from '@tiptap/extension-link';
+import FontFamily from './extensions/fontFamily';
+import FontSize from './extensions/fontSize';
 
 export const getExtensions = (editorConfig: EditorOptions) => [
     AlignedBlockquote,
@@ -38,9 +39,10 @@ export const getExtensions = (editorConfig: EditorOptions) => [
     AudioNode,
     CharacterCount,
     ClearMarksOnEnter,
-    EventLogger,
     ExtendedBulletList,
     ExtendedOrderedList,
+    FontFamily,
+    FontSize,
     Highlight.configure({ multicolor: true }),
     HighlightMark,
     IframeNode,

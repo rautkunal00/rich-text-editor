@@ -15,10 +15,10 @@ export default defineConfig({
 
       fileName: (format) => {
         if (format === 'es') {
-          return 'wolken-unified-rich-text-editor.es.js';
+          return 'wolken-unified-rich-text-editor.es.min.js';
         }
 
-        return 'wolken-unified-rich-text-editor.umd.cjs';
+        return 'wolken-unified-rich-text-editor.umd.min.cjs';
       },
     },
 

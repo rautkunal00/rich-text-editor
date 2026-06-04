@@ -5,18 +5,13 @@ import { setIframeContext } from './editor/globalVariables';
 import { createEditor } from './editor/header';
 import { initMenu } from './editor/initMenu';
 import { createToolbar } from './editor/toolbar';
-import { EditorAPI, TiptapEditorOptions } from './globalInterface';
+import { EditorAPI, TiptapEditorOptions, EditorOptions } from './globalInterface';
 import styleContent from './assets/styles/style.css?raw';
 
-const coreInit = (options: TiptapEditorOptions): Promise<EditorAPI> => {
+const coreInit = (editorParentContainer: HTMLElement, editorConfig: EditorOptions = {}): Promise<EditorAPI> => {
+    // Clear container to prevent duplicate iframes and memory leaks on reconnection
+    editorParentContainer.innerHTML = '';
     return new Promise((resolve, reject) => {
-        const { selector, editorConfig = {} } = options;
-        const editorParentContainer = document.querySelector(selector) as HTMLElement;
-
-        if (!editorParentContainer) {
-            reject(new Error(`Selector "${selector}" did not match any element in the DOM.`));
-            return;
-        }
 
         // Create and show loader
         const loader = document.createElement('div');
@@ -64,6 +59,8 @@ const coreInit = (options: TiptapEditorOptions): Promise<EditorAPI> => {
         styleSheet.textContent = spinnerStyles;
         document.head.appendChild(styleSheet);
 
+        editorParentContainer.style.display = 'block';
+        editorParentContainer.style.boxSizing = 'border-box';
         editorParentContainer.style.position = 'relative';
         editorParentContainer.style.border = '1px solid #ccc';
         editorParentContainer.style.borderRadius = '8px';
@@ -72,6 +69,8 @@ const coreInit = (options: TiptapEditorOptions): Promise<EditorAPI> => {
         editorParentContainer.appendChild(loader);
 
         const editoriframe = document.createElement('iframe');
+        editoriframe.style.display = 'block';
+        editoriframe.style.boxSizing = 'border-box';
         editoriframe.style.width = editorConfig.width || '100%';
         editoriframe.style.border = 'none';
         editoriframe.style.opacity = '0';
@@ -81,6 +80,7 @@ const coreInit = (options: TiptapEditorOptions): Promise<EditorAPI> => {
         editorParentContainer.appendChild(editoriframe);
 
         window.addEventListener('message', (event) => {
+            if (event.source !== editoriframe.contentWindow) return;
             if (event.data?.type === 'TOGGLE_FULLSCREEN') {
                 if (!document.fullscreenElement) {
                     editoriframe.requestFullscreen().catch(err => {
@@ -207,8 +207,230 @@ const resizeIframe = (editoriframe: HTMLIFrameElement, editorContainer: HTMLElem
     resizeframe();
 };
 
-const initRichTextEditor = (config: any) => {
-    return coreInit(config);
+class WolkenRichTextEditor extends HTMLElement {
+    private _editorConfig: EditorOptions = {};
+    private _api: EditorAPI | null = null;
+    private _initPromise: Promise<EditorAPI> | null = null;
+    private _isInitialized = false;
+
+    static get observedAttributes() {
+        return [
+            'disabled',
+            'show-menu',
+            'show-toolbar',
+            'height',
+            'width',
+            'css-files',
+            'resize',
+            'display-word-count',
+            'footer-message'
+        ];
+    }
+
+    constructor() {
+        super();
+    }
+
+    connectedCallback() {
+        this.readAttributes();
+        setTimeout(() => {
+            if (!this._isInitialized) {
+                this.initialize();
+            }
+        }, 0);
+    }
+
+    attributeChangedCallback(name: string, oldValue: string | null, newValue: string | null) {
+        if (oldValue === newValue) return;
+        const propName = this.attributeToProperty(name);
+        const parsedValue = this.parseAttributeValue(name, newValue);
+        (this._editorConfig as any)[propName] = parsedValue;
+
+        if (this._api) {
+            if (name === 'disabled') {
+                if (parsedValue) this._api.disable();
+                else this._api.enable();
+            }
+            if (name === 'height' || name === 'width') {
+                const iframe = this.querySelector('iframe');
+                if (iframe) iframe.style[name as any] = newValue || '';
+            }
+        }
+    }
+
+    get editorConfig(): EditorOptions {
+        return this._editorConfig;
+    }
+
+    set editorConfig(val: EditorOptions) {
+        this._editorConfig = { ...this._editorConfig, ...val };
+        if (this.isConnected) {
+            if (!this._isInitialized) {
+                this.initialize();
+            } else if (this._api) {
+                if (val.disabled !== undefined) {
+                    if (val.disabled) this._api.disable();
+                    else this._api.enable();
+                }
+                if (val.height) {
+                    const iframe = this.querySelector('iframe');
+                    if (iframe) iframe.style.height = val.height;
+                }
+                if (val.width) {
+                    const iframe = this.querySelector('iframe');
+                    if (iframe) iframe.style.width = val.width;
+                }
+            }
+        }
+    }
+
+    private attributeToProperty(attr: string): string {
+        return attr.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
+    }
+
+    private parseAttributeValue(attr: string, value: string | null): any {
+        if (value === null) return undefined;
+        if (value === 'true') return true;
+        if (value === 'false') return false;
+        if (attr === 'disabled' || attr === 'show-menu' || attr === 'show-toolbar' || attr === 'resize' || attr === 'display-word-count') {
+            return value !== 'false';
+        }
+        return value;
+    }
+
+    private readAttributes() {
+        const attrs = WolkenRichTextEditor.observedAttributes;
+        for (const attr of attrs) {
+            if (this.hasAttribute(attr)) {
+                const propName = this.attributeToProperty(attr);
+                const val = this.getAttribute(attr);
+                (this._editorConfig as any)[propName] = this.parseAttributeValue(attr, val);
+            }
+        }
+    }
+
+    async initialize() {
+        if (this._isInitialized) return;
+        this._isInitialized = true;
+
+        this._initPromise = coreInit(this, this._editorConfig);
+        try {
+            this._api = await this._initPromise;
+            this.dispatchEvent(new CustomEvent('ready', {
+                detail: { api: this._api },
+                bubbles: true,
+                composed: true
+            }));
+        } catch (error) {
+            console.error('Failed to initialize WolkenRichTextEditor:', error);
+            this.dispatchEvent(new CustomEvent('error', {
+                detail: { error },
+                bubbles: true,
+                composed: true
+            }));
+        }
+    }
+
+    async setContent(html: string) {
+        const api = this._api || await this._initPromise;
+        if (api) api.setContent(html);
+    }
+
+    async getContent(): Promise<string> {
+        const api = this._api || await this._initPromise;
+        return api ? api.getContent() : '';
+    }
+
+    async getContentAsText(): Promise<string> {
+        const api = this._api || await this._initPromise;
+        return api ? api.getContentAsText() : '';
+    }
+
+    async destroy() {
+        if (this._api) {
+            this._api.destroy();
+            this._api = null;
+            this._isInitialized = false;
+        }
+    }
+
+    async enable() {
+        const api = this._api || await this._initPromise;
+        if (api) api.enable();
+    }
+
+    async disable() {
+        const api = this._api || await this._initPromise;
+        if (api) api.disable();
+    }
+
+    async onUpdate(fn: (editor: any) => void) {
+        const api = this._api || await this._initPromise;
+        if (api) api.onUpdate(fn);
+    }
+
+    async onSelectionUpdate(fn: (editor: any) => void) {
+        const api = this._api || await this._initPromise;
+        if (api) api.onSelectionUpdate(fn);
+    }
+
+    async onFocus(fn: (editor: any) => void) {
+        const api = this._api || await this._initPromise;
+        if (api) api.onFocus(fn);
+    }
+
+    async onBlur(fn: (editor: any) => void) {
+        const api = this._api || await this._initPromise;
+        if (api) api.onBlur(fn);
+    }
+
+    async onDestroy(fn: (editor: any) => void) {
+        const api = this._api || await this._initPromise;
+        if (api) api.onDestroy(fn);
+    }
+
+    async afterInit(fn: (editor: any) => void) {
+        const api = this._api || await this._initPromise;
+        if (api) api.afterInit(fn);
+    }
+
+    async onPaste(fn: (editor: any) => void) {
+        const api = this._api || await this._initPromise;
+        if (api) api.onPaste(fn);
+    }
+
+    async onDrop(fn: (editor: any) => void) {
+        const api = this._api || await this._initPromise;
+        if (api) api.onDrop(fn);
+    }
+
+    disconnectedCallback() {
+        this.destroy();
+    }
+}
+
+const initRichTextEditor = (options: TiptapEditorOptions): Promise<EditorAPI> => {
+    const { selector, editorConfig = {} } = options;
+
+    if (!selector) {
+        return Promise.reject(new Error("Selector is required when calling initRichTextEditor directly."));
+    }
+
+    const editorParentContainer = document.querySelector(selector) as HTMLElement;
+
+    if (!editorParentContainer) {
+        return Promise.reject(new Error(`Selector "${selector}" did not match any element in the DOM.`));
+    }
+
+    const element = document.createElement('wolken-rich-text-editor') as WolkenRichTextEditor;
+    element.editorConfig = editorConfig;
+    editorParentContainer.appendChild(element);
+
+    return new Promise((resolve) => {
+        element.addEventListener('ready', (event: any) => {
+            resolve(event.detail.api);
+        });
+    });
 }
 
 const contentAsText = (value: any) => {
@@ -217,4 +439,8 @@ const contentAsText = (value: any) => {
 
 (window as any).initRichTextEditor = initRichTextEditor;
 
-export { initRichTextEditor };
+if (!customElements.get('wolken-rich-text-editor')) {
+    customElements.define('wolken-rich-text-editor', WolkenRichTextEditor);
+}
+
+export { initRichTextEditor, WolkenRichTextEditor };

@@ -1,7 +1,7 @@
 import { Editor } from "@tiptap/core";
 
 export interface TiptapEditorOptions {
-    selector: string
+    selector?: string
     editorConfig?: EditorOptions
 }
 
@@ -33,4 +33,15 @@ export interface EditorAPI {
     afterInit: (fn: (editor: Editor) => void) => void;
     onPaste: (fn: (editor: Editor) => void) => void;
     onDrop: (fn: (editor: Editor) => void) => void;
+}
+
+declare global {
+    interface HTMLElementTagNameMap {
+        'wolken-rich-text-editor': HTMLElement;
+    }
+    namespace JSX {
+        interface IntrinsicElements {
+            'wolken-rich-text-editor': any;
+        }
+    }
 }

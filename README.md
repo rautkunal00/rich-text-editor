@@ -65,7 +65,37 @@ npm install rich-text-enhanced-editor
 
 ## 🧑‍💻 Usage
 
-The editor is initialized via the `initRichTextEditor` function.
+You can use the editor either as a modern Web Component (recommended) or via the legacy programmatic initialization helper.
+
+### 1. Web Component (Recommended)
+You can directly declare the `<wolken-rich-text-editor>` custom element in your HTML:
+
+```html
+<wolken-rich-text-editor
+  id="my-editor"
+  height="400px"
+  show-toolbar="true"
+  display-word-count="true"
+  footer-message="My Custom Editor"
+></wolken-rich-text-editor>
+```
+
+```javascript
+// Simply import the package to register the custom element
+import 'rich-text-enhanced-editor';
+
+const editor = document.getElementById('my-editor');
+
+// Exposes all EditorAPI methods directly on the element (methods return promises before init is complete)
+editor.setContent('<p>Hello World</p>');
+
+editor.onUpdate(() => {
+  editor.getContent().then(html => console.log('Content:', html));
+});
+```
+
+### 2. Programmatic Helper (Legacy)
+The editor can also be initialized dynamically via the `initRichTextEditor` function:
 
 ```typescript
 import { initRichTextEditor } from 'rich-text-enhanced-editor';
@@ -79,20 +109,151 @@ initRichTextEditor({
     displayWordCount: true,
     footerMessage: 'My Custom Editor',
     resize: true,
-    // Load custom CSS inside the iframe
     cssFiles: 'https://example.com/my-styles.css'
   }
 }).then(editor => {
   console.log('Editor initialized!');
   
-  // Set initial content
   editor.setContent('<p>Hello World</p>');
-  
-  // Listen to updates
   editor.onUpdate(() => {
     console.log('Content changed:', editor.getContent());
   });
 });
+```
+
+---
+
+## 🧩 Framework Integration
+
+### React / TSX
+For TSX projects, the package exports global JSX typings automatically.
+```tsx
+import React, { useEffect, useRef } from 'react';
+import 'rich-text-enhanced-editor';
+
+export function EditorComponent() {
+  const editorRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const editor = editorRef.current;
+    if (editor) {
+      // Access APIs directly on the element ref
+      (editor as any).onUpdate?.(() => {
+        (editor as any).getContent().then(console.log);
+      });
+    }
+  }, []);
+
+  return (
+    <wolken-rich-text-editor
+      ref={editorRef}
+      height="400px"
+      show-toolbar="true"
+    />
+  );
+}
+```
+
+### Next.js (SSR / App Router & Pages Router)
+Because Web Components use browser-only APIs (`window`, `customElements`), importing them directly during server-side rendering (SSR) will throw errors. You must dynamically import the package or mount it only after client-side hydration.
+
+#### App Router / Client Component
+Add `"use client"` at the top and load the registration dynamically inside `useEffect`:
+```tsx
+"use client";
+
+import React, { useEffect, useRef, useState } from 'react';
+
+export default function NextEditor() {
+  const editorRef = useRef<HTMLElement>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    // Dynamically import client-side component registry
+    import('rich-text-enhanced-editor').then(() => {
+      setMounted(true);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (mounted && editorRef.current) {
+      const editor = editorRef.current;
+      (editor as any).onUpdate?.(() => {
+        (editor as any).getContent().then(console.log);
+      });
+    }
+  }, [mounted]);
+
+  if (!mounted) return <div>Loading editor...</div>;
+
+  return (
+    <wolken-rich-text-editor
+      ref={editorRef}
+      height="450px"
+      show-toolbar="true"
+    />
+  );
+}
+```
+
+#### Pages Router (Dynamic Import wrapper)
+Or wrap the editor component dynamically with SSR disabled:
+```tsx
+import dynamic from 'next/dynamic';
+
+const EditorWithNoSSR = dynamic(
+  () => import('../components/EditorComponent'),
+  { ssr: false }
+);
+
+export default function Page() {
+  return <EditorWithNoSSR />;
+}
+```
+
+### Angular
+1. Add `CUSTOM_ELEMENTS_SCHEMA` to your module's `@NgModule` definition to allow non-Angular custom elements:
+```typescript
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+@NgModule({
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+})
+export class AppModule { }
+```
+2. Import the package in your component or `main.ts`:
+```typescript
+import 'rich-text-enhanced-editor';
+```
+3. Add the tag in your template:
+```html
+<wolken-rich-text-editor height="400px" [attr.show-toolbar]="true"></wolken-rich-text-editor>
+```
+
+### Vue
+1. Configure Vite compiler options in your `vite.config.js` to recognize the custom element tag:
+```javascript
+export default defineConfig({
+  plugins: [
+    vue({
+      template: {
+        compilerOptions: {
+          isCustomElement: (tag) => tag.startsWith('wolken-')
+        }
+      }
+    })
+  ]
+})
+```
+2. Import the package and use:
+```vue
+<template>
+  <wolken-rich-text-editor height="400px" show-toolbar="true"></wolken-rich-text-editor>
+</template>
+
+<script>
+import 'rich-text-enhanced-editor';
+</script>
 ```
 
 ---

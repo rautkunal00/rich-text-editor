@@ -5,54 +5,38 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Rich Text Editor</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      overflow-x: hidden;
+      box-sizing: border-box;
+    }
+    body {
+      padding: 20px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+  </style>
 </head>
 
 <body>
-  <div id="editor" spellcheck="true"></div>
+  <wolken-rich-text-editor id="my-editor" height="550px" show-toolbar="true" display-word-count="true"
+    footer-message="Malicious content in code will be automatically removed." resize="true"></wolken-rich-text-editor>
 
   <p>HTML Output</p>
   <div id="displayHTML" style="word-break: break-all;"></div>
 
   <script type="module">
-    import { initRichTextEditor } from './src/index.ts';
+    import './src/index.ts';
 
-    const editorAPI = initRichTextEditor({
-      selector: '#editor',
-      editorConfig: {
-        disabled: false,
-        showMenu: false,
-        showToolbar: true,
-        displayWordCount: true,
-        footerMessage: 'Malicious content in code will be automatically removed.',
-        cssFiles: '',
-        resize: true,
-        height: '550px'
-      }
-    });
-    editorAPI.then(editor => {
-      editor.onUpdate(() => {
-        document.getElementById('displayHTML').innerText = editor.getContent();
+    const editor = document.getElementById('my-editor');
+    editor.onUpdate(() => {
+      editor.getContent().then(content => {
+        document.getElementById('displayHTML').innerText = content;
       });
     });
   </script>
-
-  <!-- <script src="./dist/rich-text-enhanced-editor.umd.min.js"></script>
-  <script>
-    const editor = initRichTextEditor({
-      selector: '#editor',
-
-      editorConfig: {
-        disabled: false,
-        showMenu: false,
-        showToolbar: true,
-        displayWordCount: true,
-        footerMessage: 'Malicious content in code will be automatically removed.',
-        cssFiles: '',
-        resize: true,
-        height: '250px'
-      }
-    });
-  </script> -->
 </body>
 
 </html>

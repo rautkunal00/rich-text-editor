@@ -11,6 +11,7 @@ export const IframeNode = Node.create({
             src: { default: '' },
             frameborder: { default: 0 },
             allowfullscreen: { default: true },
+            sandbox: { default: 'allow-scripts allow-same-origin allow-popups allow-forms' },
         }
     },
 
